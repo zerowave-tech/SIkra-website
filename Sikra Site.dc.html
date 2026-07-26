@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +9,24 @@
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sikra — Full-Cycle Software Development | Web &amp; Mobile Apps</title>
+<meta name="description" content="Sikra is a full-cycle software studio building web and mobile apps for B2B and enterprise — from idea and design to architecture and launch.">
+<meta name="robots" content="index, follow">
+<meta name="domain" content="sikra.agency">
+<meta name="theme-color" content="#0A0A0B">
+<link rel="canonical" href="https://sikra.agency/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sikra">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Sikra — Full-Cycle Software Development | Web &amp; Mobile Apps">
+<meta property="og:description" content="Sikra is a full-cycle software studio building web and mobile apps for B2B and enterprise — from idea and design to architecture and launch.">
+<meta property="og:url" content="https://sikra.agency/">
+<meta property="og:image" content="https://sikra.agency/assets/sikra-logo-dark.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sikra — Full-Cycle Software Development | Web &amp; Mobile Apps">
+<meta name="twitter:description" content="Sikra is a full-cycle software studio building web and mobile apps for B2B and enterprise — from idea and design to architecture and launch.">
+<meta name="twitter:image" content="https://sikra.agency/assets/sikra-logo-dark.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Sikra","url":"https://sikra.agency/","logo":"https://sikra.agency/assets/sikra-logo-dark.png","image":"https://sikra.agency/assets/sikra-logo-dark.png","description":"Full-cycle software development studio building web and mobile apps for B2B and enterprise clients — from idea and design to architecture and launch.","email":"hello@sikra.dev","sameAs":["https://t.me/sikra_team"],"areaServed":["HU","UA"],"knowsLanguage":["ru","en","uk","hu"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0B'/%3E%3Cpath d='M19 5 L10 17 L15 17 L13 27 L22 15 L17 15 Z' fill='%23F6F6F5'/%3E%3C/svg%3E">
@@ -614,11 +632,29 @@ class Component extends DCLogic {
     document.addEventListener('scroll', this._sc, {passive:true, capture:true});
     this._lastPage=this.state.page;
     this.applyTokens();
+    this.applySEO();
     requestAnimationFrame(()=>{ this.initReveal(); this._sc(); });
   }
   componentWillUnmount(){ window.removeEventListener('hashchange', this._hh); window.removeEventListener('scroll', this._sc, {capture:true}); document.removeEventListener('scroll', this._sc, {capture:true}); if(this._heroEl&&this._heroMove){ this._heroEl.removeEventListener('pointermove', this._heroMove); this._heroEl.removeEventListener('pointerleave', this._heroLeave); } }
+  applySEO(){
+    try{
+      const st=this.state;
+      const L=this.T[st.lang]||this.T.ru;
+      const seo=(L.seo && (L.seo[st.page]||L.seo.home));
+      if(!seo) return;
+      document.title=seo.title;
+      document.documentElement.lang=st.lang;
+      const setMeta=(sel,attr,val)=>{ const el=document.head.querySelector(sel); if(el) el.setAttribute(attr,val); };
+      setMeta('meta[name="description"]','content',seo.desc);
+      setMeta('meta[property="og:title"]','content',seo.title);
+      setMeta('meta[property="og:description"]','content',seo.desc);
+      setMeta('meta[name="twitter:title"]','content',seo.title);
+      setMeta('meta[name="twitter:description"]','content',seo.desc);
+    }catch(e){}
+  }
   componentDidUpdate(){
     this.applyTokens();
+    this.applySEO();
     if(this._lastPage!==this.state.page){
       this._lastPage=this.state.page;
       try{ window.scrollTo(0,0); }catch(e){}
@@ -637,6 +673,14 @@ class Component extends DCLogic {
       ru:{
         cta:'Обсудить проект', viewAll:'Все',
         nav:['Услуги','Набор','О нас','Отзывы','Контакты'],
+        seo:{
+          home:{title:'Sikra — разработка ПО под ключ | Веб и мобильные приложения', desc:'Sikra — студия full-cycle разработки. Создаём веб- и мобильные приложения для B2B и enterprise: от идеи и дизайна до архитектуры и запуска.'},
+          services:{title:'Услуги: веб-разработка, мобильные приложения, дизайн | Sikra', desc:'Услуги Sikra: продукт под ключ, мобильные приложения, UI/UX-дизайн, Supabase-бэкенд и деплой. Берём продукт от идеи до запуска.'},
+          stack:{title:'Технологический стек разработки | Sikra', desc:'Стек Sikra: React, TypeScript, Supabase, PostgreSQL, React Native — проверенные инструменты для веба и мобильных приложений.'},
+          about:{title:'О компании Sikra — студия разработки ПО', desc:'Sikra — небольшая команда full-cycle разработки ПО. Прозрачные сроки, инженерная культура и продукты, которые решают реальные задачи бизнеса.'},
+          feedback:{title:'Отзывы клиентов | Sikra', desc:'Что говорят клиенты о работе с Sikra: запуск MVP, перенос на Supabase, мобильные приложения и дизайн-системы.'},
+          contact:{title:'Контакты — обсудить проект | Sikra', desc:'Свяжитесь с Sikra, чтобы обсудить ваш проект. Ответим в течение одного рабочего дня с планом первых шагов.'}
+        },
         hero:{eyebrow:'B2B и enterprise-разработка', title:'Когда рождается идея, вспыхивает искра.', sub:'Sikra строит приложения — от идеи и дизайна до архитектуры и запуска.', cta1:'Обсудить проект', cta2:'Смотреть услуги'},
         metrics:['Проектов','Лет на рынке','Клиентов','NPS'],
         secServices:{tag:'Услуги', title:'Что мы делаем', sub:'Берём продукт от первого наброска до готового результата — и остаёмся рядом после запуска.'},
@@ -685,6 +729,14 @@ class Component extends DCLogic {
       en:{
         cta:'Start a project', viewAll:'View all',
         nav:['Services','Toolkit','About','Feedback','Contact'],
+        seo:{
+          home:{title:'Sikra — Full-Cycle Software Development | Web & Mobile Apps', desc:'Sikra is a full-cycle software studio building web and mobile apps for B2B and enterprise — from idea and design to architecture and launch.'},
+          services:{title:'Services: Web Development, Mobile Apps, Design | Sikra', desc:'Sikra services: turnkey products, mobile apps, UI/UX design, Supabase backend and deployment. We take your product from idea to launch.'},
+          stack:{title:'Technology Stack | Sikra', desc:"Sikra's tech stack: React, TypeScript, Supabase, PostgreSQL, React Native — proven tools for web and mobile products."},
+          about:{title:'About Sikra — Software Development Studio', desc:'Sikra is a small full-cycle software studio. Transparent timelines, engineering culture and products that solve real business problems.'},
+          feedback:{title:'Client Feedback | Sikra', desc:'What clients say about working with Sikra — MVP launches, Supabase migrations, mobile apps and design systems.'},
+          contact:{title:'Contact Us — Start a Project | Sikra', desc:'Get in touch with Sikra to discuss your project. We reply within one business day with a plan for first steps.'}
+        },
         hero:{eyebrow:'B2B & enterprise software', title:'When an idea is born, a spark ignites.', sub:'Sikra builds apps — from idea and design to architecture and launch.', cta1:'Start a project', cta2:'View services'},
         metrics:['Projects','Years running','Clients','NPS'],
         secServices:{tag:'Services', title:'What we do', sub:'We take a product from the first sketch to a finished result — and stay with you after launch.'},
@@ -733,6 +785,14 @@ class Component extends DCLogic {
       uk:{
         cta:'Обговорити проєкт', viewAll:'Усі',
         nav:['Послуги','Набір','Про нас','Відгуки','Контакти'],
+        seo:{
+          home:{title:'Sikra — розробка ПЗ під ключ | Веб та мобільні застосунки', desc:'Sikra — студія full-cycle розробки. Створюємо веб- та мобільні застосунки для B2B і enterprise: від ідеї та дизайну до архітектури і запуску.'},
+          services:{title:'Послуги: веброзробка, мобільні застосунки, дизайн | Sikra', desc:'Послуги Sikra: продукт під ключ, мобільні застосунки, UI/UX-дизайн, Supabase-бекенд і деплой.'},
+          stack:{title:'Технологічний стек розробки | Sikra', desc:'Стек Sikra: React, TypeScript, Supabase, PostgreSQL, React Native — перевірені інструменти для вебу та мобільних застосунків.'},
+          about:{title:'Про компанію Sikra — студія розробки ПЗ', desc:'Sikra — невелика команда full-cycle розробки ПЗ. Прозорі терміни, інженерна культура та продукти, що вирішують реальні задачі бізнесу.'},
+          feedback:{title:'Відгуки клієнтів | Sikra', desc:'Що кажуть клієнти про роботу з Sikra: запуск MVP, перенесення на Supabase, мобільні застосунки та дизайн-системи.'},
+          contact:{title:'Контакти — обговорити проєкт | Sikra', desc:'Зв’яжіться з Sikra, щоб обговорити ваш проєкт. Відповімо протягом одного робочого дня з планом перших кроків.'}
+        },
         hero:{eyebrow:'B2B та enterprise-розробка', title:'Коли народжується ідея, спалахує іскра.', sub:'Sikra будує застосунки — від ідеї та дизайну до архітектури і запуску.', cta1:'Обговорити проєкт', cta2:'Дивитися послуги'},
         metrics:['Проєктів','Років на ринку','Клієнтів','NPS'],
         secServices:{tag:'Послуги', title:'Що ми робимо', sub:'Ведемо продукт від першого начерку до готового результату — і залишаємось поруч після запуску.'},
@@ -781,6 +841,14 @@ class Component extends DCLogic {
       hu:{
         cta:'Projekt indítása', viewAll:'Összes',
         nav:['Szolgáltatások','Eszköztár','Rólunk','Vélemények','Kapcsolat'],
+        seo:{
+          home:{title:'Sikra — Teljes Ciklusú Szoftverfejlesztés | Web és Mobilalkalmazások', desc:'A Sikra teljes ciklusú szoftverstúdió, amely web- és mobilalkalmazásokat épít B2B és enterprise ügyfeleknek — az ötlettől az indulásig.'},
+          services:{title:'Szolgáltatások: Webfejlesztés, Mobilalkalmazások, Dizájn | Sikra', desc:'A Sikra szolgáltatásai: kulcsrakész termékek, mobilalkalmazások, UI/UX dizájn, Supabase backend és üzembe helyezés.'},
+          stack:{title:'Technológiai Eszköztár | Sikra', desc:'A Sikra technológiai stackje: React, TypeScript, Supabase, PostgreSQL, React Native — bevált eszközök web- és mobiltermékekhez.'},
+          about:{title:'A Sikráról — szoftverfejlesztő stúdió', desc:'A Sikra egy kis, teljes ciklusú szoftverstúdió. Átlátható határidők, mérnöki kultúra és valós üzleti problémákat megoldó termékek.'},
+          feedback:{title:'Ügyfélvélemények | Sikra', desc:'Mit mondanak az ügyfelek a Sikrával való együttműködésről — MVP indítások, Supabase migrációk, mobilalkalmazások és dizájnrendszerek.'},
+          contact:{title:'Kapcsolat — Indíts Projektet | Sikra', desc:'Vedd fel a kapcsolatot a Sikrával a projekted megbeszéléséhez. Egy munkanapon belül válaszolunk az első lépésekkel.'}
+        },
         hero:{eyebrow:'B2B és enterprise szoftver', title:'Amikor egy ötlet megszületik, szikra lobban.', sub:'A Sikra alkalmazásokat épít — az ötlettől és a dizájntól az architektúráig és az indulásig.', cta1:'Projekt indítása', cta2:'Szolgáltatások'},
         metrics:['Projekt','Év a piacon','Ügyfél','NPS'],
         secServices:{tag:'Szolgáltatások', title:'Amit csinálunk', sub:'A terméket az első vázlattól a kész eredményig visszük — és az indulás után is veled maradunk.'},
