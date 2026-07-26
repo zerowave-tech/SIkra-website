@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="ext-resource-dependency" content="../assets/sikra-logo-dark.png" data-resource-id="logoDark" />
+<meta name="ext-resource-dependency" content="../assets/sikra-logo-light.png" data-resource-id="logoLight" />
+<meta name="ext-resource-dependency" content="../assets/sikra-mark-dark.png" data-resource-id="markDark" />
+<meta name="ext-resource-dependency" content="../assets/sikra-mark-light.png" data-resource-id="markLight" />
+<template id="__bundler_thumbnail" data-bg-color="#0A0A0B">
+  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <rect width="200" height="200" fill="#0A0A0B"/>
+    <path d="M118 40 L67 100 L98 100 L74 160 L133 92 L100 92 Z" fill="#F6F6F5"/>
+  </svg>
+</template>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0B'/%3E%3Cpath d='M19 5 L10 17 L15 17 L13 27 L22 15 L17 15 Z' fill='%23F6F6F5'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:#0A0A0B;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  ::selection{background:#f6f6f5;color:#0a0a0b;}
+  @keyframes sk-marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes sk-float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-14px) rotate(1.5deg);}}
+  @keyframes sk-pulse{0%,100%{opacity:.35;}50%{opacity:1;}}
+  @keyframes sk-sheen{from{background-position:-200% 0;}to{background-position:200% 0;}}
+  input,textarea,button{font-family:inherit;}
+</style>
+</helmet>
+<div id="sikra-root" style="background:var(--bg,#0A0A0B);color:var(--text,#F6F6F5);min-height:100vh;font-family:'Space Grotesk',sans-serif;transition:background .45s ease,color .45s ease;overflow-x:hidden;">
+  <div data-scrollbar style="position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:var(--text,#F6F6F5);z-index:100;will-change:transform;"></div>
+
+  <!-- ===== NAV ===== -->
+  <nav data-nav style="position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--navbg,rgba(10,10,11,.72));border-bottom:1px solid var(--line,rgba(255,255,255,.10));transform:translateY(0);transition:transform .35s cubic-bezier(.2,.7,.2,1);will-change:transform;">
+    <div style="max-width:1240px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <a onClick="{{ goHome }}" style="display:flex;align-items:center;cursor:pointer;flex:0 0 auto;">
+        <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" style="height:26px;width:auto;display:block;" />
+      </a>
+      <div style="display:flex;align-items:center;gap:30px;flex-wrap:wrap;justify-content:flex-end;">
+        <div style="display:flex;align-items:center;gap:26px;">
+          <sc-for list="{{ navLinks }}" as="item" hint-placeholder-count="5">
+            <a onClick="{{ item.go }}" style="position:relative;cursor:pointer;font-size:14px;letter-spacing:.01em;color:var(--navtext,#c9c9cf);padding:6px 0;transition:color .2s;" style-hover="color:var(--text,#F6F6F5);">
+              {{ item.label }}
+              <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--text,#F6F6F5);"></span>
+              </sc-if>
+            </a>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="display:flex;align-items:center;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:6px;overflow:hidden;">
+            <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="4">
+              <button onClick="{{ lg.set }}" style="{{ lg.style }}border:none;background:transparent;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;padding:6px 8px;text-transform:uppercase;">{{ lg.code }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ goContact }}" style="font-family:'Space Grotesk';font-size:13.5px;font-weight:600;padding:9px 18px;border-radius:6px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s,opacity .2s;white-space:nowrap;" style-hover="transform:translateY(-1px);opacity:.9;">{{ L.cta }}</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HOME ===== -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <!-- HERO -->
+    <section data-hero style="position:relative;overflow:hidden;border-bottom:1px solid var(--line,rgba(255,255,255,.10));cursor:none;">
+      <div data-hero-glow style="position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 62%);pointer-events:none;left:50%;top:30%;transform:translate(-50%,-50%);opacity:0;transition:opacity .5s ease;z-index:0;"></div>
+      <div data-hero-cursor style="position:fixed;left:0;top:0;width:26px;height:26px;border-radius:50%;background:#F6F6F5;border:3px solid #0A0A0B;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(0);transition:opacity .2s ease;z-index:60;will-change:transform;"></div>
+      <div style="position:absolute;inset:0;background-image:linear-gradient(var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 90% 80% at 70% 20%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse 90% 80% at 70% 20%,#000 30%,transparent 80%);"></div>
+      <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;">
+        <span style="position:absolute;left:6%;top:16%;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.22;animation:sk-float 9s ease-in-out infinite;">REACT</span>
+        <span style="position:absolute;left:14%;top:68%;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:600;color:var(--text,#F6F6F5);opacity:.05;animation:sk-float 12s ease-in-out infinite 1.2s;">01</span>
+        <span style="position:absolute;left:38%;top:8%;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.18;animation:sk-float 10.5s ease-in-out infinite .6s;">SUPABASE</span>
+        <span style="position:absolute;right:6%;top:12%;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.2;animation:sk-float 8.5s ease-in-out infinite 2s;">UI/UX</span>
+        <span style="position:absolute;right:16%;top:78%;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.2;animation:sk-float 11s ease-in-out infinite .3s;">MOBILE</span>
+        <span style="position:absolute;left:50%;top:82%;font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:600;color:var(--text,#F6F6F5);opacity:.04;animation:sk-float 13s ease-in-out infinite 1.8s;">2026</span>
+        <span style="position:absolute;left:30%;top:42%;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.15;animation:sk-float 9.5s ease-in-out infinite 2.6s;">TYPESCRIPT</span>
+        <span style="position:absolute;right:30%;top:46%;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.2;animation:sk-float 10s ease-in-out infinite 1s;">99.9%</span>
+      </div>
+      <div style="position:relative;max-width:1240px;margin:0 auto;padding:96px 32px 84px;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;z-index:1;">
+        <div>
+          <div data-reveal style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:26px;">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--text,#F6F6F5);animation:sk-pulse 2.4s ease-in-out infinite;"></span>{{ L.hero.eyebrow }}
+          </div>
+          <h1 data-reveal style="position:relative;z-index:1;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(38px,4.4vw,64px);line-height:1.08;letter-spacing:-.01em;margin:0 0 26px;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.hero.title }}</h1>
+          <p data-reveal style="font-size:19px;line-height:1.55;color:var(--sub,#9C9CA2);max-width:520px;margin:0 0 38px;">{{ L.hero.sub }}</p>
+          <div data-reveal style="display:flex;gap:14px;flex-wrap:wrap;">
+            <button onClick="{{ goContact }}" style="font-size:15px;font-weight:600;padding:14px 26px;border-radius:7px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s,box-shadow .2s;" style-hover="transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.25);">{{ L.hero.cta1 }}</button>
+            <button onClick="{{ goServices }}" style="font-size:15px;font-weight:500;padding:14px 26px;border-radius:7px;cursor:pointer;background:transparent;color:var(--text,#F6F6F5);border:1px solid var(--lineS,rgba(255,255,255,.22));transition:border-color .2s,transform .18s;" style-hover="transform:translateY(-2px);border-color:var(--text,#F6F6F5);">{{ L.hero.cta2 }}</button>
+          </div>
+        </div>
+        <div data-reveal style="position:relative;aspect-ratio:1/1;border:1px solid var(--line,rgba(255,255,255,.10));border-radius:12px;background:var(--elev,#101012);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(var(--grid,rgba(255,255,255,.04)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(255,255,255,.04)) 1px,transparent 1px);background-size:40px 40px;"></div>
+          <div data-parallax style="position:relative;z-index:1;width:38%;transition:transform .6s cubic-bezier(.2,.7,.2,1);will-change:transform;">
+            <img data-sikra-img="mark" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" style="display:block;width:100%;height:auto;animation:sk-float 7s ease-in-out infinite;" />
+          </div>
+          <div style="position:absolute;left:20px;bottom:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--faint,#5B5B61);">// full-cycle engineering</div>
+          <div style="position:absolute;right:20px;top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--faint,#5B5B61);">v.2026</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div style="border-bottom:1px solid var(--line,rgba(255,255,255,.10));overflow:hidden;padding:26px 0;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;width:max-content;animation:sk-marquee 34s linear infinite;">
+        <div style="display:flex;font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--faint,#5B5B61);white-space:nowrap;">{{ marqueeText }}</div>
+        <div style="display:flex;font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--faint,#5B5B61);white-space:nowrap;">{{ marqueeText }}</div>
+      </div>
+      <div style="display:flex;width:max-content;animation:sk-marquee 46s linear infinite reverse;">
+        <div style="display:flex;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;letter-spacing:.02em;color:var(--text,#F6F6F5);white-space:nowrap;opacity:.12;">{{ marqueeText2 }}</div>
+        <div style="display:flex;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;letter-spacing:.02em;color:var(--text,#F6F6F5);white-space:nowrap;opacity:.12;">{{ marqueeText2 }}</div>
+      </div>
+    </div>
+
+    <!-- METRICS -->
+    <section style="max-width:1240px;margin:0 auto;padding:64px 32px;border-bottom:1px solid var(--line,rgba(255,255,255,.10));">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;">
+        <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+          <div data-reveal>
+            <div data-counter="{{ m.num }}" style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,3.4vw,48px);color:var(--text,#F6F6F5);line-height:1;">{{ m.num }}</div>
+            <div style="margin-top:8px;font-size:14px;color:var(--sub,#9C9CA2);">{{ m.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- SERVICES PREVIEW -->
+    <section style="max-width:1240px;margin:0 auto;padding:96px 32px;">
+      <div data-reveal style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:14px;">{{ L.secServices.tag }}</div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(28px,3vw,42px);margin:0;letter-spacing:-.01em;color:var(--text,#F6F6F5);max-width:640px;text-wrap:balance;">{{ L.secServices.title }}</h2>
+        </div>
+        <a onClick="{{ goServices }}" style="cursor:pointer;font-size:14px;color:var(--sub,#9C9CA2);border-bottom:1px solid var(--lineS,rgba(255,255,255,.2));padding-bottom:2px;transition:color .2s;" style-hover="color:var(--text,#F6F6F5);">{{ L.viewAll }} →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line,rgba(255,255,255,.10));border:1px solid var(--line,rgba(255,255,255,.10));border-radius:12px;overflow:hidden;">
+        <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+          <div data-reveal style="background:var(--bg,#0A0A0B);padding:34px 28px;min-height:200px;display:flex;flex-direction:column;transition:background .25s;cursor:default;" style-hover="background:var(--elev,#101012);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint,#5B5B61);margin-bottom:24px;">{{ s.no }}</div>
+            <h3 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:20px;margin:0 0 10px;color:var(--text,#F6F6F5);">{{ s.t }}</h3>
+            <p style="font-size:14.5px;line-height:1.55;color:var(--sub,#9C9CA2);margin:0;">{{ s.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- STACK PREVIEW -->
+    <section style="border-top:1px solid var(--line,rgba(255,255,255,.10));border-bottom:1px solid var(--line,rgba(255,255,255,.10));background:var(--elev,#101012);">
+      <div style="max-width:1240px;margin:0 auto;padding:96px 32px;">
+        <div data-reveal style="margin-bottom:48px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:14px;">{{ L.secTech.tag }}</div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(28px,3vw,42px);margin:0;letter-spacing:-.01em;color:var(--text,#F6F6F5);max-width:640px;text-wrap:balance;">{{ L.secTech.title }}</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+          <sc-for list="{{ techTiles }}" as="c" hint-placeholder-count="4">
+            <a onClick="{{ goStack }}" data-reveal style="--sk-fill:{{ c.fill }};--sk-ibd:var(--line,rgba(255,255,255,.14));--sk-ibg:transparent;position:relative;cursor:pointer;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:10px;padding:26px 22px;background:var(--bg,#0A0A0B);transition:transform .25s cubic-bezier(.2,.7,.2,1),border-color .25s;display:block;overflow:hidden;" style-hover="--sk-fill:100%;--sk-ibd:var(--lineS,rgba(255,255,255,.32));--sk-ibg:var(--chip,rgba(255,255,255,.05));transform:translateY(-6px);border-color:var(--lineS,rgba(255,255,255,.32));">
+              <span style="position:absolute;top:0;left:0;height:2px;width:var(--sk-fill);background:var(--text,#F6F6F5);transition:width .5s cubic-bezier(.2,.7,.2,1);"></span>
+              <span style="position:absolute;right:-12px;bottom:-20px;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:104px;line-height:1;color:var(--text,#F6F6F5);opacity:.16;filter:blur(3px);pointer-events:none;user-select:none;">{{ c.no }}</span>
+              <div style="position:relative;width:38px;height:38px;border-radius:9px;border:1px solid var(--sk-ibd);background:var(--sk-ibg);display:flex;align-items:center;justify-content:center;margin-bottom:22px;color:var(--text,#F6F6F5);transition:border-color .25s,background .25s;">
+                <sc-if value="{{ c.isFront }}" hint-placeholder-val="{{ false }}">
+                  <div style="width:18px;height:14px;border:1.4px solid currentColor;border-radius:2px;position:relative;">
+                    <div style="position:absolute;top:0;left:0;right:0;height:4px;border-bottom:1.4px solid currentColor;"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.isBack }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:3px;width:18px;">
+                    <div style="height:3px;border:1.4px solid currentColor;border-radius:1px;"></div>
+                    <div style="height:3px;border:1.4px solid currentColor;border-radius:1px;"></div>
+                    <div style="height:3px;border:1.4px solid currentColor;border-radius:1px;"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.isUiux }}" hint-placeholder-val="{{ false }}">
+                  <div style="width:17px;height:17px;border:1.4px solid currentColor;border-radius:50%;position:relative;">
+                    <div style="position:absolute;width:6px;height:6px;background:currentColor;border-radius:50%;top:-2px;right:-2px;"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.isMobile }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;width:20px;height:17px;">
+                    <div style="position:absolute;left:0;top:1px;width:13px;height:15px;border:1.4px solid currentColor;border-radius:2px;"></div>
+                    <div style="position:absolute;right:0;bottom:0;width:9px;height:11px;border:1.4px solid currentColor;border-radius:2px;background:var(--bg,#0A0A0B);"></div>
+                  </div>
+                </sc-if>
+              </div>
+              <h3 style="position:relative;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:18px;margin:8px 0 8px;color:var(--text,#F6F6F5);">{{ c.t }}</h3>
+              <p style="position:relative;font-size:13.5px;line-height:1.5;color:var(--sub,#9C9CA2);margin:0;">{{ c.tools }}</p>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEEDBACK PREVIEW -->
+    <section style="position:relative;max-width:1240px;margin:0 auto;padding:96px 32px;overflow:hidden;">
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;flex-direction:column;justify-content:space-around;">
+        <div style="display:flex;width:max-content;animation:sk-marquee 38s linear infinite;">
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:120px;letter-spacing:.01em;color:var(--text,#F6F6F5);opacity:.045;white-space:nowrap;">{{ feedMarquee1 }}</span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:120px;letter-spacing:.01em;color:var(--text,#F6F6F5);opacity:.045;white-space:nowrap;">{{ feedMarquee1 }}</span>
+        </div>
+        <div style="display:flex;width:max-content;animation:sk-marquee 44s linear infinite reverse;">
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:120px;letter-spacing:.01em;color:var(--text,#F6F6F5);opacity:.035;white-space:nowrap;">{{ feedMarquee2 }}</span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:120px;letter-spacing:.01em;color:var(--text,#F6F6F5);opacity:.035;white-space:nowrap;">{{ feedMarquee2 }}</span>
+        </div>
+      </div>
+      <div data-reveal style="position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:14px;">{{ L.secFeed.tag }}</div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(28px,3vw,42px);margin:0;letter-spacing:-.01em;color:var(--text,#F6F6F5);max-width:640px;text-wrap:balance;">{{ L.secFeed.title }}</h2>
+        </div>
+        <a onClick="{{ goFeedback }}" style="cursor:pointer;font-size:14px;color:var(--sub,#9C9CA2);border-bottom:1px solid var(--lineS,rgba(255,255,255,.2));padding-bottom:2px;transition:color .2s;" style-hover="color:var(--text,#F6F6F5);">{{ L.viewAll }} →</a>
+      </div>
+      <div style="position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <sc-for list="{{ feedTop }}" as="f" hint-placeholder-count="3">
+          <div data-reveal style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;padding:30px 26px;background:var(--bg,#0A0A0B);display:flex;flex-direction:column;gap:22px;">
+            <p style="font-size:16px;line-height:1.6;color:var(--text,#F6F6F5);margin:0;">“{{ f.q }}”</p>
+            <div style="margin-top:auto;display:flex;align-items:center;gap:12px;">
+              <div style="width:38px;height:38px;border-radius:50%;background:var(--chip,rgba(255,255,255,.06));border:1px solid var(--line,rgba(255,255,255,.12));display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch';font-weight:600;font-size:15px;color:var(--text,#F6F6F5);">{{ f.i }}</div>
+              <div>
+                <div style="font-size:14px;font-weight:600;color:var(--text,#F6F6F5);">{{ f.n }}</div>
+                <div style="font-size:12.5px;color:var(--sub,#9C9CA2);">{{ f.r }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <section data-reveal style="max-width:1240px;margin:0 auto 96px;padding:0 32px;">
+      <div style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;padding:72px 48px;background:var(--elev,#101012);text-align:center;position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(circle at 50% 0%,#000,transparent 70%);-webkit-mask-image:radial-gradient(circle at 50% 0%,#000,transparent 70%);"></div>
+        <div style="position:relative;">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(30px,3.4vw,46px);margin:0 0 16px;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.ctaBand.title }}</h2>
+          <p style="font-size:17px;color:var(--sub,#9C9CA2);margin:0 auto 34px;max-width:520px;">{{ L.ctaBand.sub }}</p>
+          <button onClick="{{ goContact }}" style="font-size:15px;font-weight:600;padding:15px 30px;border-radius:8px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s;" style-hover="transform:translateY(-2px);">{{ L.cta }}</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <!-- ===== SERVICES PAGE ===== -->
+  <sc-if value="{{ isServices }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1240px;margin:0 auto;padding:80px 32px 96px;">
+    <div data-reveal style="max-width:720px;margin-bottom:64px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secServices.tag }}</div>
+      <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secServices.title }}</h1>
+      <p style="font-size:18px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;">{{ L.secServices.sub }}</p>
+    </div>
+    <div style="display:flex;flex-direction:column;">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+        <div data-reveal style="display:grid;grid-template-columns:120px 1fr;gap:32px;padding:40px 0;border-top:1px solid var(--line,rgba(255,255,255,.12));align-items:start;">
+          <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:40px;color:var(--faint,#5B5B61);">{{ s.no }}</div>
+          <div>
+            <h3 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 12px;color:var(--text,#F6F6F5);">{{ s.t }}</h3>
+            <p style="font-size:16px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0 0 16px;max-width:640px;">{{ s.d }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <sc-for list="{{ s.tags }}" as="tg" hint-placeholder-count="3">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--sub,#9C9CA2);border:1px solid var(--line,rgba(255,255,255,.12));border-radius:5px;padding:5px 10px;">{{ tg }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div data-reveal style="margin-top:64px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;padding:56px 40px;background:var(--elev,#101012);text-align:center;">
+      <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);margin:0 0 24px;color:var(--text,#F6F6F5);">{{ L.ctaBand.title }}</h2>
+      <button onClick="{{ goContact }}" style="font-size:15px;font-weight:600;padding:14px 28px;border-radius:8px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s;" style-hover="transform:translateY(-2px);">{{ L.cta }}</button>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ===== STACK PAGE ===== -->
+  <sc-if value="{{ isStack }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1080px;margin:0 auto;padding:80px 32px 96px;">
+    <div data-reveal style="max-width:720px;margin-bottom:56px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secTech.tag }}</div>
+      <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secTech.title }}</h1>
+      <p style="font-size:18px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;">{{ L.secTech.sub }}</p>
+    </div>
+    <div style="border-top:1px solid var(--line,rgba(255,255,255,.12));">
+      <sc-for list="{{ tech }}" as="c" hint-placeholder-count="4">
+        <div style="border-bottom:1px solid var(--line,rgba(255,255,255,.12));">
+          <button onClick="{{ c.toggle }}" style="width:100%;text-align:left;background:transparent;border:none;cursor:pointer;padding:30px 4px;display:flex;align-items:center;gap:24px;color:var(--text,#F6F6F5);">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--faint,#5B5B61);flex:0 0 auto;width:34px;">{{ c.no }}</span>
+            <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:clamp(22px,2.4vw,30px);flex:1;">{{ c.t }}</span>
+            <span style="{{ c.iconStyle }}font-size:26px;font-weight:300;color:var(--sub,#9C9CA2);transition:transform .3s;flex:0 0 auto;">+</span>
+          </button>
+          <sc-if value="{{ c.open }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:0 4px 36px 58px;">
+              <p style="font-size:16.5px;line-height:1.65;color:var(--sub,#9C9CA2);margin:0 0 22px;max-width:680px;">{{ c.d }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                <sc-for list="{{ c.chips }}" as="tool" hint-placeholder-count="6">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text,#F6F6F5);border:1px solid var(--lineS,rgba(255,255,255,.2));border-radius:6px;padding:8px 14px;background:var(--chip,rgba(255,255,255,.04));">{{ tool }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ===== ABOUT PAGE ===== -->
+  <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1240px;margin:0 auto;padding:80px 32px 96px;">
+    <div data-reveal style="max-width:760px;margin-bottom:64px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secAbout.tag }}</div>
+      <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 24px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secAbout.title }}</h1>
+      <p style="font-size:18px;line-height:1.65;color:var(--sub,#9C9CA2);margin:0 0 16px;">{{ L.secAbout.p1 }}</p>
+      <p style="font-size:18px;line-height:1.65;color:var(--sub,#9C9CA2);margin:0;">{{ L.secAbout.p2 }}</p>
+    </div>
+    <div data-reveal style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:44px 0;border-top:1px solid var(--line,rgba(255,255,255,.12));border-bottom:1px solid var(--line,rgba(255,255,255,.12));margin-bottom:64px;">
+      <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+        <div>
+          <div data-counter="{{ m.num }}" style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(30px,3vw,44px);color:var(--text,#F6F6F5);line-height:1;">{{ m.num }}</div>
+          <div style="margin-top:8px;font-size:14px;color:var(--sub,#9C9CA2);">{{ m.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div data-reveal style="margin-bottom:64px;">
+      <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:clamp(24px,2.6vw,34px);margin:0 0 32px;color:var(--text,#F6F6F5);">{{ L.valuesTitle }}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
+          <div style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;padding:30px 26px;background:var(--elev,#101012);">
+            <h3 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:19px;margin:0 0 10px;color:var(--text,#F6F6F5);">{{ v.t }}</h3>
+            <p style="font-size:14.5px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;">{{ v.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div data-reveal>
+      <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:clamp(24px,2.6vw,34px);margin:0 0 32px;color:var(--text,#F6F6F5);">{{ L.processTitle }}</h2>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line,rgba(255,255,255,.12));border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;overflow:hidden;">
+        <sc-for list="{{ process }}" as="p" hint-placeholder-count="4">
+          <div style="background:var(--bg,#0A0A0B);padding:30px 24px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint,#5B5B61);margin-bottom:18px;">{{ p.no }}</div>
+            <h3 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:18px;margin:0 0 8px;color:var(--text,#F6F6F5);">{{ p.t }}</h3>
+            <p style="font-size:13.5px;line-height:1.55;color:var(--sub,#9C9CA2);margin:0;">{{ p.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ===== FEEDBACK PAGE ===== -->
+  <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1240px;margin:0 auto;padding:80px 32px 96px;">
+    <div data-reveal style="max-width:720px;margin-bottom:56px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secFeed.tag }}</div>
+      <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secFeed.title }}</h1>
+      <p style="font-size:18px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;">{{ L.secFeed.sub }}</p>
+    </div>
+    <div style="columns:3;column-gap:16px;">
+      <sc-for list="{{ feed }}" as="f" hint-placeholder-count="6">
+        <div data-reveal style="break-inside:avoid;margin-bottom:16px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;padding:28px 26px;background:var(--elev,#101012);">
+          <div style="font-family:'Chakra Petch';font-size:40px;line-height:.6;color:var(--faint,#5B5B61);margin-bottom:14px;">“</div>
+          <p style="font-size:16px;line-height:1.6;color:var(--text,#F6F6F5);margin:0 0 22px;">{{ f.q }}</p>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--chip,rgba(255,255,255,.06));border:1px solid var(--line,rgba(255,255,255,.12));display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch';font-weight:600;font-size:15px;color:var(--text,#F6F6F5);">{{ f.i }}</div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--text,#F6F6F5);">{{ f.n }}</div>
+              <div style="font-size:12.5px;color:var(--sub,#9C9CA2);">{{ f.r }}</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ===== CONTACT PAGE ===== -->
+  <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1240px;margin:0 auto;padding:80px 32px 96px;">
+    <div data-reveal style="max-width:760px;margin-bottom:52px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secContact.tag }}</div>
+      <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4.4vw,58px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secContact.title }}</h1>
+      <p style="font-size:18px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;max-width:480px;">{{ L.secContact.sub }}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <sc-for list="{{ contactMethods }}" as="cm" hint-placeholder-count="2">
+        <a data-reveal href="{{ cm.href }}" target="_blank" rel="noopener" style="text-decoration:none;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;padding:38px 34px;background:var(--elev,#101012);display:flex;flex-direction:column;gap:26px;transition:transform .28s cubic-bezier(.2,.7,.2,1),border-color .28s,background .28s;" style-hover="transform:translateY(-6px);border-color:var(--lineS,rgba(255,255,255,.32));background:var(--surface,#161619);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint,#5B5B61);">{{ cm.k }}</span>
+            <span style="font-size:22px;color:var(--sub,#9C9CA2);">↗</span>
+          </div>
+          <div>
+            <div style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:clamp(24px,2.6vw,34px);color:var(--text,#F6F6F5);word-break:break-word;">{{ cm.v }}</div>
+            <div style="margin-top:12px;font-size:14.5px;color:var(--sub,#9C9CA2);">{{ cm.hint }}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+    <div data-reveal style="margin-top:24px;border-top:1px solid var(--line,rgba(255,255,255,.12));padding-top:26px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint,#5B5B61);margin-bottom:6px;">{{ L.secContact.locLabel }}</div>
+      <div style="font-size:16px;color:var(--text,#F6F6F5);">Budapest · Kyiv · Remote</div>
+    </div>
+  </main>
+  </sc-if>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="border-top:1px solid var(--line,rgba(255,255,255,.10));">
+    <div style="max-width:1240px;margin:0 auto;padding:56px 32px 44px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;">
+      <div>
+        <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" style="height:24px;width:auto;display:block;margin-bottom:18px;" />
+        <p style="font-size:14.5px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;max-width:300px;">{{ L.footer.tagline }}</p>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint,#5B5B61);margin-bottom:16px;">{{ L.footer.nav }}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ navLinks }}" as="item" hint-placeholder-count="5">
+            <a onClick="{{ item.go }}" style="cursor:pointer;font-size:14.5px;color:var(--sub,#9C9CA2);transition:color .2s;width:fit-content;" style-hover="color:var(--text,#F6F6F5);">{{ item.label }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint,#5B5B61);margin-bottom:16px;">{{ L.footer.contactT }}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;color:var(--sub,#9C9CA2);">
+          <span>hello@sikra.dev</span>
+          <span>Budapest · Kyiv · Remote</span>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--line,rgba(255,255,255,.10));">
+      <div style="max-width:1240px;margin:0 auto;padding:22px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint,#5B5B61);">
+        <span>© 2026 Sikra. {{ L.footer.rights }}</span>
+        <span>{{ L.footer.made }}</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark'|'light'&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ru&quot;,&quot;en&quot;,&quot;uk&quot;,&quot;hu&quot;],&quot;default&quot;:&quot;ru&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  constructor(p){
+    super(p);
+    this.PAGES = ['home','services','stack','about','feedback','contact'];
+    const ls = (k,d)=>{ try{ return localStorage.getItem(k)||d; }catch(e){ return d; } };
+    let hp = (typeof location!=='undefined' ? (location.hash||'') : '').replace('#','').replace('/','');
+    if(!this.PAGES.includes(hp)) hp='home';
+    this.state = {
+      theme: 'dark',
+      lang:  ls('sikra-lang',  this.props.defaultLang  || 'ru'),
+      page:  hp,
+      openTech: 0,
+      sent: false
+    };
+    this.TOOLS = {
+      front:  ['React','Next.js','TypeScript','Tailwind CSS','Vite','Framer Motion','Zustand'],
+      back:   ['Supabase','PostgreSQL','Edge Functions','Row-Level Security','Auth','Storage','Realtime','Node.js'],
+      uiux:   ['Figma','Design Systems','Prototyping','User Research','Motion','Accessibility'],
+      mobile: ['React Native','Expo','PWA','Responsive','App Store','Google Play']
+    };
+    this.T = this.buildDict();
+  }
+
+  setTheme(v){ try{ localStorage.setItem('sikra-theme',v); }catch(e){} this.setState({theme:v}); }
+  toggleTheme(){ this.setTheme(this.state.theme==='dark'?'light':'dark'); }
+  setLang(v){ try{ localStorage.setItem('sikra-lang',v); }catch(e){} this.setState({lang:v}); }
+  goTo(pg){
+    if(pg==='home'){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+    else { try{ location.hash = pg; }catch(e){} }
+    this.setState({page:pg, sent:false});
+  }
+  syncHash(){
+    let hp=(location.hash||'').replace('#','').replace('/','');
+    if(!this.PAGES.includes(hp)) hp='home';
+    if(hp!==this.state.page) this.setState({page:hp});
+  }
+  toggleTech(i){ this.setState(s=>({ openTech: s.openTech===i ? -1 : i })); }
+  submit(e){ e.preventDefault(); this.setState({sent:true}); }
+
+  initReveal(){
+    const root=document.getElementById('sikra-root'); if(!root) return;
+    const els=[...root.querySelectorAll('[data-reveal]')];
+    if(this.props.reduceMotion){ els.forEach(e=>{e.style.opacity='1';e.style.transform='none';}); return; }
+    const vh=window.innerHeight||800;
+    const io=new IntersectionObserver((ents)=>{
+      ents.forEach(en=>{ if(en.isIntersecting){ en.target.style.opacity='1'; en.target.style.transform='none'; io.unobserve(en.target); } });
+    },{threshold:0.08, rootMargin:'0px 0px -5% 0px'});
+    els.forEach((e,i)=>{
+      const r=e.getBoundingClientRect();
+      const inView = r.top < vh*0.92 && r.bottom > -40;
+      e.style.transition='opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1)';
+      e.style.opacity='0';
+      e.style.transform='translateY(22px)';
+      if(inView){
+        e.style.transitionDelay=(Math.min(i,7)*0.05)+'s';
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ e.style.opacity='1'; e.style.transform='none'; }));
+      } else {
+        io.observe(e);
+      }
+    });
+    this.enhance();
+  }
+  showAll(){
+    const root=document.getElementById('sikra-root'); if(!root) return;
+    root.querySelectorAll('[data-reveal]').forEach(e=>{ e.style.opacity='1'; e.style.transform='none'; });
+    this.enhance();
+  }
+  enhance(){
+    this.splitReveal();
+    this.setupCounters();
+    this.setupHero();
+  }
+  splitReveal(){
+    if(this.props.reduceMotion) return;
+    const root=document.getElementById('sikra-root'); if(!root) return;
+    root.querySelectorAll('[data-split]').forEach(el=>{
+      if(el.getAttribute('data-split-done')==='1') return;
+      const txt=(el.getAttribute('data-text')||el.textContent||'').trim();
+      if(!txt) return;
+      el.setAttribute('data-text', txt);
+      el.setAttribute('data-split-done','1');
+      el.textContent='';
+      txt.split(' ').forEach((w,i)=>{
+        const wrap=document.createElement('span');
+        wrap.style.display='inline-block';
+        wrap.style.overflow='hidden';
+        wrap.style.verticalAlign='top';
+        wrap.style.paddingBottom='0.14em';
+        const inner=document.createElement('span');
+        inner.style.display='inline-block';
+        inner.textContent=w;
+        inner.style.transform='translateY(118%)';
+        inner.style.transition='transform .9s cubic-bezier(.16,.84,.28,1)';
+        inner.style.transitionDelay=(0.12+i*0.07)+'s';
+        wrap.appendChild(inner);
+        el.appendChild(wrap);
+        el.appendChild(document.createTextNode(' '));
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ inner.style.transform='translateY(0)'; }));
+      });
+    });
+  }
+  setupCounters(){
+    const root=document.getElementById('sikra-root'); if(!root) return;
+    const els=[...root.querySelectorAll('[data-counter]')];
+    if(this.props.reduceMotion){ els.forEach(e=>{ e.textContent=e.getAttribute('data-counter'); }); return; }
+    const run=(el)=>{
+      if(el.getAttribute('data-cnt-done')==='1') return;
+      el.setAttribute('data-cnt-done','1');
+      const raw=el.getAttribute('data-counter')||el.textContent||'';
+      const m=raw.match(/^(\D*)(\d[\d.,]*)(\D*)$/);
+      if(!m){ return; }
+      const pre=m[1], suf=m[3], target=parseFloat(m[2].replace(/,/g,''));
+      const dur=1200, t0=performance.now();
+      const step=(now)=>{ const p=Math.min(1,(now-t0)/dur); const e=1-Math.pow(1-p,3); el.textContent=pre+Math.round(target*e)+suf; if(p<1) requestAnimationFrame(step); };
+      el.textContent=pre+'0'+suf;
+      requestAnimationFrame(step);
+    };
+    const io=new IntersectionObserver((ents)=>{ ents.forEach(en=>{ if(en.isIntersecting){ run(en.target); io.unobserve(en.target); } }); },{threshold:0.4});
+    const vh=window.innerHeight||800;
+    els.forEach(el=>{ const r=el.getBoundingClientRect(); if(r.top<vh*0.9 && r.bottom>0){ run(el); } else { io.observe(el); } });
+  }
+  setupHero(){
+    if(this.props.reduceMotion) return;
+    const root=document.getElementById('sikra-root'); if(!root) return;
+    if(this._heroEl && this._heroMove){ this._heroEl.removeEventListener('pointermove', this._heroMove); this._heroEl.removeEventListener('pointerleave', this._heroLeave); this._heroEl=null; }
+    const hero=root.querySelector('[data-hero]'); if(!hero) return;
+    const glow=hero.querySelector('[data-hero-glow]');
+    const mark=hero.querySelector('[data-parallax]');
+    const cursor=hero.querySelector('[data-hero-cursor]');
+    let raf=0, mx=0, my=0, cx=0, cy=0, rect=null;
+    this._heroMove=(ev)=>{
+      rect=rect||hero.getBoundingClientRect();
+      mx=ev.clientX-rect.left; my=ev.clientY-rect.top; cx=ev.clientX; cy=ev.clientY;
+      if(glow) glow.style.opacity='1';
+      if(cursor){ cursor.style.opacity='1'; cursor.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%) scale(1)'; }
+      if(!raf) raf=requestAnimationFrame(()=>{ raf=0; rect=hero.getBoundingClientRect();
+        if(glow){ glow.style.left=mx+'px'; glow.style.top=my+'px'; }
+        if(mark){ const dx=mx/rect.width-0.5, dy=my/rect.height-0.5; mark.style.transform='translate('+(dx*34)+'px,'+(dy*34)+'px)'; }
+      });
+    };
+    this._heroLeave=()=>{ if(glow) glow.style.opacity='0'; if(mark) mark.style.transform='translate(0,0)'; if(cursor){ cursor.style.opacity='0'; cursor.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%) scale(0)'; } };
+    this._heroEl=hero;
+    hero.addEventListener('pointermove', this._heroMove);
+    hero.addEventListener('pointerleave', this._heroLeave);
+  }
+  applyTokens(){
+    const root=document.getElementById('sikra-root'); if(!root) return;
+    const t=this.tokens();
+    Object.keys(t).forEach(k=>root.style.setProperty(k, t[k]));
+    root.style.setProperty('background', t['--bg']);
+    root.style.setProperty('color', t['--text']);
+    const dark=this.state.theme==='dark';
+    const R=(window.__resources)||{};
+    const logo=dark?(R.logoDark||'assets/sikra-logo-dark.png'):(R.logoLight||'assets/sikra-logo-light.png');
+    const mark=dark?(R.markDark||'assets/sikra-mark-dark.png'):(R.markLight||'assets/sikra-mark-light.png');
+    root.querySelectorAll('[data-sikra-img="logo"]').forEach(el=>{ if(el.getAttribute('src')!==logo) el.setAttribute('src',logo); });
+    root.querySelectorAll('[data-sikra-img="mark"]').forEach(el=>{ if(el.getAttribute('src')!==mark) el.setAttribute('src',mark); });
+  }
+  componentDidMount(){
+    this._hh=()=>this.syncHash();
+    window.addEventListener('hashchange', this._hh);
+    this._navLastY=0;
+    this._navInit=false;
+    this._sc=(ev)=>{
+      let scroller = (ev && ev.target && ev.target.nodeType===1) ? ev.target : document.documentElement;
+      let y = scroller.scrollTop;
+      let max = scroller.scrollHeight - scroller.clientHeight;
+      if(!max || scroller===document.documentElement){
+        const h=document.documentElement;
+        y = window.scrollY || h.scrollTop || 0;
+        max = (h.scrollHeight - h.clientHeight) || 1;
+      }
+      if(!this._navInit){ this._navLastY=y; this._navInit=true; }
+      const bar=document.querySelector('[data-scrollbar]');
+      if(bar){ const p=Math.min(1,Math.max(0,y/(max||1))); bar.style.transform='scaleX('+p+')'; }
+      const nav=document.querySelector('[data-nav]');
+      if(nav){
+        const dy=y-this._navLastY;
+        if(y<80){ nav.style.transform='translateY(0)'; }
+        else if(dy>4){ nav.style.transform='translateY(-102%)'; }
+        else if(dy<-4){ nav.style.transform='translateY(0)'; }
+      }
+      this._navLastY=y;
+    };
+    window.addEventListener('scroll', this._sc, {passive:true, capture:true});
+    document.addEventListener('scroll', this._sc, {passive:true, capture:true});
+    this._lastPage=this.state.page;
+    this.applyTokens();
+    requestAnimationFrame(()=>{ this.initReveal(); this._sc(); });
+  }
+  componentWillUnmount(){ window.removeEventListener('hashchange', this._hh); window.removeEventListener('scroll', this._sc, {capture:true}); document.removeEventListener('scroll', this._sc, {capture:true}); if(this._heroEl&&this._heroMove){ this._heroEl.removeEventListener('pointermove', this._heroMove); this._heroEl.removeEventListener('pointerleave', this._heroLeave); } }
+  componentDidUpdate(){
+    this.applyTokens();
+    if(this._lastPage!==this.state.page){
+      this._lastPage=this.state.page;
+      try{ window.scrollTo(0,0); }catch(e){}
+      requestAnimationFrame(()=>this.initReveal());
+    } else {
+      requestAnimationFrame(()=>this.showAll());
+    }
+  }
+
+  tokens(){
+    return {'--bg':'#0A0A0B','--elev':'#101012','--surface':'#161619','--line':'rgba(255,255,255,.10)','--lineS':'rgba(255,255,255,.22)','--text':'#F6F6F5','--sub':'#9C9CA2','--faint':'#5B5B61','--inv':'#F6F6F5','--invText':'#0A0A0B','--chip':'rgba(255,255,255,.05)','--grid':'rgba(255,255,255,.035)','--navbg':'rgba(10,10,11,.72)','--navtext':'#c9c9cf'};
+  }
+
+  buildDict(){
+    return {
+      ru:{
+        cta:'Обсудить проект', viewAll:'Все',
+        nav:['Услуги','Стек','О нас','Отзывы','Контакты'],
+        hero:{eyebrow:'Разработка ПО под ключ', title:'Проектируем и строим продукты, которые работают.', sub:'Sikra — команда полного цикла: от идеи и UI/UX до фронтенда, бэкенда на Supabase и запуска.', cta1:'Обсудить проект', cta2:'Смотреть услуги'},
+        metrics:['Проектов','Лет на рынке','Клиентов','NPS'],
+        secServices:{tag:'Услуги', title:'Что мы делаем', sub:'Берём продукт от первого наброска до продакшена — и остаёмся рядом после запуска.'},
+        services:[
+          {t:'Продукт под ключ', d:'Полный цикл: аналитика, дизайн, разработка, запуск и поддержка одной командой.', tags:['Discovery','MVP','Поддержка']},
+          {t:'Веб-приложения', d:'Быстрые и надёжные веб-продукты на React и Next.js с продуманной архитектурой.', tags:['React','Next.js','SaaS']},
+          {t:'Мобильные приложения', d:'Кроссплатформенные приложения на React Native — один код для iOS и Android.', tags:['React Native','Expo']},
+          {t:'UI/UX дизайн', d:'Интерфейсы и дизайн-системы, которые понятны пользователю и легко масштабируются.', tags:['Figma','Design System']},
+          {t:'Бэкенд на Supabase', d:'Базы данных, авторизация, storage и realtime на Supabase и PostgreSQL.', tags:['Supabase','PostgreSQL']},
+          {t:'MVP за 6 недель', d:'Проверяем гипотезу и выпускаем работающий продукт в руки первым пользователям.', tags:['Sprint','Prototype']}
+        ],
+        secTech:{tag:'С чем мы работаем', title:'Наш технологический стек', sub:'Проверенные инструменты по всем направлениям — раскройте блок, чтобы увидеть детали.'},
+        tech:[
+          {t:'Frontend', d:'Собираем быстрые интерфейсы с чистой архитектурой, типизацией и вниманием к производительности.'},
+          {t:'Backend / Supabase', d:'Строим бэкенд на Supabase: база данных, авторизация, файловое хранилище и realtime — безопасно и масштабируемо.'},
+          {t:'UI / UX', d:'Исследуем пользователей, проектируем потоки и собираем дизайн-системы, которые живут в продакшене.'},
+          {t:'Mobile / Web', d:'Один код для iOS, Android и веба — нативный опыт без раздувания команды.'}
+        ],
+        secAbout:{tag:'О нас', title:'Небольшая команда с большим бэкграундом', p1:'Sikra — студия разработки ПО полного цикла. Мы собираем продукты, которые решают реальные задачи бизнеса, а не просто выглядят красиво.', p2:'Работаем прозрачно: понятные сроки, регулярные демо и один ответственный за результат. Ваш продукт — наш продукт.'},
+        valuesTitle:'Наши принципы',
+        values:[
+          {t:'Прозрачность', d:'Понятные оценки, честные сроки и доступ к прогрессу на каждом этапе.'},
+          {t:'Инженерная культура', d:'Тесты, ревью и чистый код — чтобы продукт жил и рос годами.'},
+          {t:'Скорость', d:'Работаем спринтами и показываем результат уже в первые недели.'}
+        ],
+        processTitle:'Как мы работаем',
+        process:[
+          {t:'Discovery', d:'Погружаемся в задачу, цели и пользователей.'},
+          {t:'Design', d:'Прототипы, UI и дизайн-система.'},
+          {t:'Build', d:'Разработка спринтами с регулярными демо.'},
+          {t:'Launch', d:'Запуск, аналитика и поддержка.'}
+        ],
+        secFeed:{tag:'Отзывы', title:'Что говорят клиенты', sub:'Мнения команд, с которыми мы строили и запускали продукты.'},
+        feed:[
+          {q:'Собрали MVP за шесть недель и вышли на первых пользователей. Sikra реально работает как часть нашей команды.', n:'Артём Ковач', r:'CEO, Fintrail'},
+          {q:'Чистый код и прозрачный процесс. Наконец-то подрядчик, за которым не нужно перепроверять каждый шаг.', n:'Мария Лендь', r:'CTO, Nordis'},
+          {q:'Перенесли бэкенд на Supabase — стало быстрее и дешевле в поддержке. Отличная работа.', n:'Давид Надь', r:'Product Lead, Kelp'},
+          {q:'Дизайн-система, которую они собрали, до сих пор экономит нам недели на каждой новой фиче.', n:'Оля Стеценко', r:'Head of Design, Vela'},
+          {q:'Мобильное приложение на React Native вышло на обе платформы без сюрпризов и в срок.', n:'Балаж Тот', r:'Founder, Rideo'},
+          {q:'Коммуникация на высоте: демо каждую неделю, никаких чёрных ящиков.', n:'Ирина Мороз', r:'COO, Brightwave'}
+        ],
+        secContact:{tag:'Контакты', title:'Расскажите о проекте', sub:'Оставьте заявку — вернёмся в течение одного рабочего дня с планом первых шагов.', fName:'Имя', fEmail:'Email', fCompany:'Компания', fMsg:'О проекте', submit:'Отправить заявку', sentTitle:'Спасибо!', sentSub:'Мы получили заявку и скоро свяжемся с вами.'},
+        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Телеграм',v:'@sikra_team'},{k:'Локация',v:'Budapest · Kyiv · Remote'}],
+        ctaBand:{title:'Готовы обсудить ваш продукт?', sub:'Опишите идею — предложим оптимальный путь к запуску.'},
+        footer:{tagline:'Студия разработки ПО полного цикла. Проектируем, строим и запускаем цифровые продукты.', nav:'Навигация', contactT:'Контакты', rights:'Все права защищены.', made:'Собрано с точностью'}
+      },
+      en:{
+        cta:'Start a project', viewAll:'View all',
+        nav:['Services','Stack','About','Feedback','Contact'],
+        hero:{eyebrow:'Turnkey software development', title:'We design and build products that actually work.', sub:'Sikra is a full-cycle team — from idea and UI/UX to frontend, a Supabase backend and launch.', cta1:'Start a project', cta2:'View services'},
+        metrics:['Projects','Years running','Clients','NPS'],
+        secServices:{tag:'Services', title:'What we do', sub:'We take a product from the first sketch to production — and stay with you after launch.'},
+        services:[
+          {t:'Turnkey product', d:'Full cycle: research, design, engineering, launch and support from one team.', tags:['Discovery','MVP','Support']},
+          {t:'Web applications', d:'Fast, reliable web products on React and Next.js with a solid architecture.', tags:['React','Next.js','SaaS']},
+          {t:'Mobile apps', d:'Cross-platform apps on React Native — one codebase for iOS and Android.', tags:['React Native','Expo']},
+          {t:'UI/UX design', d:'Interfaces and design systems that make sense to users and scale with you.', tags:['Figma','Design System']},
+          {t:'Supabase backend', d:'Databases, auth, storage and realtime built on Supabase and PostgreSQL.', tags:['Supabase','PostgreSQL']},
+          {t:'MVP in 6 weeks', d:'Validate the hypothesis and ship a working product to your first users.', tags:['Sprint','Prototype']}
+        ],
+        secTech:{tag:'What we work with', title:'Our technology stack', sub:'Proven tools across every layer — open a block to see the details.'},
+        tech:[
+          {t:'Frontend', d:'We build fast interfaces with clean architecture, strong typing and a focus on performance.'},
+          {t:'Backend / Supabase', d:'We build the backend on Supabase — database, auth, storage and realtime — secure and scalable.'},
+          {t:'UI / UX', d:'We research users, design flows and build design systems that live in production.'},
+          {t:'Mobile / Web', d:'One codebase for iOS, Android and web — native feel without growing the team.'}
+        ],
+        secAbout:{tag:'About us', title:'A small team with a big background', p1:'Sikra is a full-cycle software studio. We build products that solve real business problems, not just look good.', p2:'We work transparently: clear timelines, regular demos and a single owner for the result. Your product is our product.'},
+        valuesTitle:'Our principles',
+        values:[
+          {t:'Transparency', d:'Clear estimates, honest timelines and access to progress at every step.'},
+          {t:'Engineering culture', d:'Tests, reviews and clean code — so the product lives and grows for years.'},
+          {t:'Speed', d:'We work in sprints and show results within the first weeks.'}
+        ],
+        processTitle:'How we work',
+        process:[
+          {t:'Discovery', d:'We dive into the problem, goals and users.'},
+          {t:'Design', d:'Prototypes, UI and the design system.'},
+          {t:'Build', d:'Sprint-based engineering with regular demos.'},
+          {t:'Launch', d:'Launch, analytics and support.'}
+        ],
+        secFeed:{tag:'Feedback', title:'What clients say', sub:'Words from the teams we built and shipped products with.'},
+        feed:[
+          {q:'They shipped our MVP in six weeks and got us to first users. Sikra really works like part of our team.', n:'Artem Kovach', r:'CEO, Fintrail'},
+          {q:'Clean code and a transparent process. Finally a vendor we do not have to double-check.', n:'Maria Lendy', r:'CTO, Nordis'},
+          {q:'We moved our backend to Supabase — faster and cheaper to maintain. Great work.', n:'David Nagy', r:'Product Lead, Kelp'},
+          {q:'The design system they built still saves us weeks on every new feature.', n:'Olia Stetsenko', r:'Head of Design, Vela'},
+          {q:'Our React Native app shipped to both platforms on time with no surprises.', n:'Balazs Toth', r:'Founder, Rideo'},
+          {q:'Communication was excellent: weekly demos, no black boxes.', n:'Iryna Moroz', r:'COO, Brightwave'}
+        ],
+        secContact:{tag:'Contact', title:'Tell us about your project', sub:'Leave a request — we will get back within one business day with a plan of first steps.', fName:'Name', fEmail:'Email', fCompany:'Company', fMsg:'About the project', submit:'Send request', sentTitle:'Thank you!', sentSub:'We received your request and will be in touch shortly.'},
+        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Telegram',v:'@sikra_team'},{k:'Location',v:'Budapest · Kyiv · Remote'}],
+        ctaBand:{title:'Ready to talk about your product?', sub:'Describe the idea — we will suggest the best path to launch.'},
+        footer:{tagline:'A full-cycle software studio. We design, build and launch digital products.', nav:'Navigation', contactT:'Contact', rights:'All rights reserved.', made:'Built with precision'}
+      },
+      uk:{
+        cta:'Обговорити проєкт', viewAll:'Усі',
+        nav:['Послуги','Стек','Про нас','Відгуки','Контакти'],
+        hero:{eyebrow:'Розробка ПЗ під ключ', title:'Проєктуємо й будуємо продукти, що справді працюють.', sub:'Sikra — команда повного циклу: від ідеї та UI/UX до фронтенду, бекенду на Supabase і запуску.', cta1:'Обговорити проєкт', cta2:'Дивитися послуги'},
+        metrics:['Проєктів','Років на ринку','Клієнтів','NPS'],
+        secServices:{tag:'Послуги', title:'Що ми робимо', sub:'Ведемо продукт від першого начерку до продакшену — і залишаємось поруч після запуску.'},
+        services:[
+          {t:'Продукт під ключ', d:'Повний цикл: аналітика, дизайн, розробка, запуск і підтримка однією командою.', tags:['Discovery','MVP','Підтримка']},
+          {t:'Вебзастосунки', d:'Швидкі та надійні вебпродукти на React і Next.js з продуманою архітектурою.', tags:['React','Next.js','SaaS']},
+          {t:'Мобільні застосунки', d:'Кросплатформні застосунки на React Native — один код для iOS та Android.', tags:['React Native','Expo']},
+          {t:'UI/UX дизайн', d:'Інтерфейси та дизайн-системи, зрозумілі користувачу й готові до масштабування.', tags:['Figma','Design System']},
+          {t:'Бекенд на Supabase', d:'Бази даних, авторизація, storage і realtime на Supabase та PostgreSQL.', tags:['Supabase','PostgreSQL']},
+          {t:'MVP за 6 тижнів', d:'Перевіряємо гіпотезу й випускаємо робочий продукт першим користувачам.', tags:['Sprint','Prototype']}
+        ],
+        secTech:{tag:'З чим ми працюємо', title:'Наш технологічний стек', sub:'Перевірені інструменти в усіх напрямах — розгорніть блок, щоб побачити деталі.'},
+        tech:[
+          {t:'Frontend', d:'Створюємо швидкі інтерфейси з чистою архітектурою, типізацією та увагою до продуктивності.'},
+          {t:'Backend / Supabase', d:'Будуємо бекенд на Supabase: база даних, авторизація, сховище файлів і realtime — безпечно та масштабовано.'},
+          {t:'UI / UX', d:'Досліджуємо користувачів, проєктуємо потоки й збираємо дизайн-системи, що живуть у продакшені.'},
+          {t:'Mobile / Web', d:'Один код для iOS, Android і вебу — нативний досвід без роздування команди.'}
+        ],
+        secAbout:{tag:'Про нас', title:'Невелика команда з великим бекграундом', p1:'Sikra — студія розробки ПЗ повного циклу. Ми збираємо продукти, що вирішують реальні задачі бізнесу, а не просто гарно виглядають.', p2:'Працюємо прозоро: зрозумілі терміни, регулярні демо й одна відповідальна особа за результат. Ваш продукт — наш продукт.'},
+        valuesTitle:'Наші принципи',
+        values:[
+          {t:'Прозорість', d:'Зрозумілі оцінки, чесні терміни й доступ до прогресу на кожному етапі.'},
+          {t:'Інженерна культура', d:'Тести, рев’ю та чистий код — щоб продукт жив і розвивався роками.'},
+          {t:'Швидкість', d:'Працюємо спринтами й показуємо результат уже в перші тижні.'}
+        ],
+        processTitle:'Як ми працюємо',
+        process:[
+          {t:'Discovery', d:'Занурюємось у задачу, цілі та користувачів.'},
+          {t:'Design', d:'Прототипи, UI та дизайн-система.'},
+          {t:'Build', d:'Розробка спринтами з регулярними демо.'},
+          {t:'Launch', d:'Запуск, аналітика та підтримка.'}
+        ],
+        secFeed:{tag:'Відгуки', title:'Що кажуть клієнти', sub:'Думки команд, з якими ми будували й запускали продукти.'},
+        feed:[
+          {q:'Зібрали MVP за шість тижнів і вивели на перших користувачів. Sikra реально працює як частина нашої команди.', n:'Артем Ковач', r:'CEO, Fintrail'},
+          {q:'Чистий код і прозорий процес. Нарешті підрядник, за яким не треба перевіряти кожен крок.', n:'Марія Лендь', r:'CTO, Nordis'},
+          {q:'Перенесли бекенд на Supabase — стало швидше й дешевше в підтримці. Чудова робота.', n:'Давид Надь', r:'Product Lead, Kelp'},
+          {q:'Дизайн-система, яку вони зібрали, досі економить нам тижні на кожній новій фічі.', n:'Оля Стеценко', r:'Head of Design, Vela'},
+          {q:'Мобільний застосунок на React Native вийшов на обидві платформи вчасно й без сюрпризів.', n:'Балаж Тот', r:'Founder, Rideo'},
+          {q:'Комунікація на висоті: демо щотижня, жодних чорних скриньок.', n:'Ірина Мороз', r:'COO, Brightwave'}
+        ],
+        secContact:{tag:'Контакти', title:'Розкажіть про проєкт', sub:'Залиште заявку — повернемось протягом одного робочого дня з планом перших кроків.', fName:'Ім’я', fEmail:'Email', fCompany:'Компанія', fMsg:'Про проєкт', submit:'Надіслати заявку', sentTitle:'Дякуємо!', sentSub:'Ми отримали заявку й скоро зв’яжемось із вами.'},
+        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Телеграм',v:'@sikra_team'},{k:'Локація',v:'Budapest · Kyiv · Remote'}],
+        ctaBand:{title:'Готові обговорити ваш продукт?', sub:'Опишіть ідею — запропонуємо оптимальний шлях до запуску.'},
+        footer:{tagline:'Студія розробки ПЗ повного циклу. Проєктуємо, будуємо й запускаємо цифрові продукти.', nav:'Навігація', contactT:'Контакти', rights:'Усі права захищено.', made:'Зроблено з точністю'}
+      },
+      hu:{
+        cta:'Projekt indítása', viewAll:'Összes',
+        nav:['Szolgáltatások','Stack','Rólunk','Vélemények','Kapcsolat'],
+        hero:{eyebrow:'Kulcsrakész szoftverfejlesztés', title:'Olyan termékeket tervezünk és építünk, amelyek működnek.', sub:'A Sikra teljes ciklusú csapat — az ötlettől és a UI/UX-től a frontendig, a Supabase backendig és az indulásig.', cta1:'Projekt indítása', cta2:'Szolgáltatások'},
+        metrics:['Projekt','Év a piacon','Ügyfél','NPS'],
+        secServices:{tag:'Szolgáltatások', title:'Amit csinálunk', sub:'A terméket az első vázlattól a produkcióig visszük — és az indulás után is veled maradunk.'},
+        services:[
+          {t:'Kulcsrakész termék', d:'Teljes ciklus: kutatás, dizájn, fejlesztés, indítás és támogatás egy csapattól.', tags:['Discovery','MVP','Support']},
+          {t:'Webalkalmazások', d:'Gyors, megbízható webes termékek React és Next.js alapon, átgondolt architektúrával.', tags:['React','Next.js','SaaS']},
+          {t:'Mobilalkalmazások', d:'Több platformos alkalmazások React Native-ben — egy kódbázis iOS-re és Androidra.', tags:['React Native','Expo']},
+          {t:'UI/UX dizájn', d:'Felületek és dizájnrendszerek, amelyek érthetők és jól skálázódnak.', tags:['Figma','Design System']},
+          {t:'Supabase backend', d:'Adatbázis, autentikáció, tárolás és realtime Supabase és PostgreSQL alapon.', tags:['Supabase','PostgreSQL']},
+          {t:'MVP 6 hét alatt', d:'Validáljuk a hipotézist, és működő terméket adunk az első felhasználók kezébe.', tags:['Sprint','Prototype']}
+        ],
+        secTech:{tag:'Amivel dolgozunk', title:'A technológiai stackünk', sub:'Bevált eszközök minden rétegben — nyisd meg a blokkot a részletekért.'},
+        tech:[
+          {t:'Frontend', d:'Gyors felületeket építünk tiszta architektúrával, típusossággal és teljesítményre fókuszálva.'},
+          {t:'Backend / Supabase', d:'A backendet Supabase-re építjük: adatbázis, autentikáció, tárolás és realtime — biztonságosan és skálázhatóan.'},
+          {t:'UI / UX', d:'Felhasználókat kutatunk, folyamatokat tervezünk és produkciós dizájnrendszereket építünk.'},
+          {t:'Mobile / Web', d:'Egy kódbázis iOS-re, Androidra és webre — natív élmény a csapat felduzzasztása nélkül.'}
+        ],
+        secAbout:{tag:'Rólunk', title:'Kis csapat, nagy háttérrel', p1:'A Sikra teljes ciklusú szoftverstúdió. Olyan termékeket építünk, amelyek valós üzleti problémákat oldanak meg, nem csak jól néznek ki.', p2:'Átláthatóan dolgozunk: világos határidők, rendszeres demók és egyetlen felelős az eredményért. A te terméked a mi termékünk.'},
+        valuesTitle:'Az elveink',
+        values:[
+          {t:'Átláthatóság', d:'Világos becslések, őszinte határidők és hozzáférés a haladáshoz minden lépésnél.'},
+          {t:'Mérnöki kultúra', d:'Tesztek, review-k és tiszta kód — hogy a termék évekig éljen és növekedjen.'},
+          {t:'Gyorsaság', d:'Sprintekben dolgozunk, és már az első hetekben eredményt mutatunk.'}
+        ],
+        processTitle:'Hogyan dolgozunk',
+        process:[
+          {t:'Discovery', d:'Elmélyülünk a feladatban, célokban és felhasználókban.'},
+          {t:'Design', d:'Prototípusok, UI és a dizájnrendszer.'},
+          {t:'Build', d:'Sprint-alapú fejlesztés rendszeres demókkal.'},
+          {t:'Launch', d:'Indítás, analitika és támogatás.'}
+        ],
+        secFeed:{tag:'Vélemények', title:'Mit mondanak az ügyfelek', sub:'Csapatok szavai, akikkel termékeket építettünk és indítottunk.'},
+        feed:[
+          {q:'Hat hét alatt kiadták az MVP-nket és eljuttattak az első felhasználókhoz. A Sikra tényleg a csapatunk része.', n:'Artem Kovach', r:'CEO, Fintrail'},
+          {q:'Tiszta kód és átlátható folyamat. Végre egy partner, akit nem kell duplán ellenőrizni.', n:'Maria Lendy', r:'CTO, Nordis'},
+          {q:'Supabase-re költöztettük a backendet — gyorsabb és olcsóbb karbantartani. Remek munka.', n:'Nagy Dávid', r:'Product Lead, Kelp'},
+          {q:'A dizájnrendszer, amit építettek, minden új funkciónál heteket spórol nekünk.', n:'Olia Stetsenko', r:'Head of Design, Vela'},
+          {q:'A React Native appunk időben, meglepetések nélkül jelent meg mindkét platformon.', n:'Tóth Balázs', r:'Founder, Rideo'},
+          {q:'Kiváló kommunikáció: heti demók, semmi fekete doboz.', n:'Iryna Moroz', r:'COO, Brightwave'}
+        ],
+        secContact:{tag:'Kapcsolat', title:'Mesélj a projektedről', sub:'Küldj egy megkeresést — egy munkanapon belül visszajelzünk az első lépések tervével.', fName:'Név', fEmail:'Email', fCompany:'Cég', fMsg:'A projektről', submit:'Küldés', sentTitle:'Köszönjük!', sentSub:'Megkaptuk a megkeresést, hamarosan jelentkezünk.'},
+        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Telegram',v:'@sikra_team'},{k:'Helyszín',v:'Budapest · Kyiv · Remote'}],
+        ctaBand:{title:'Beszéljünk a termékedről?', sub:'Írd le az ötletet — javasoljuk a legjobb utat az indulásig.'},
+        footer:{tagline:'Teljes ciklusú szoftverstúdió. Digitális termékeket tervezünk, építünk és indítunk.', nav:'Navigáció', contactT:'Kapcsolat', rights:'Minden jog fenntartva.', made:'Precízen megépítve'}
+      }
+    };
+  }
+
+  renderVals(){
+    const st=this.state;
+    const L=this.T[st.lang] || this.T.ru;
+    const page=st.page;
+    const num=['60+','8','40+','98%'];
+    const noOf=(i)=> (i<9?'0':'')+(i+1);
+
+    const navLinks = this.PAGES.slice(1).map((key,idx)=>({
+      label: L.nav[idx], key, active: page===key, go: ()=>this.goTo(key)
+    }));
+
+    const langs = [
+      {code:'ru',v:'ru'},{code:'en',v:'en'},{code:'uk',v:'uk'},{code:'hu',v:'hu'}
+    ].map(l=>({
+      code:l.code,
+      set:()=>this.setLang(l.v),
+      style: (st.lang===l.v
+        ? 'color:var(--invText,#0A0A0B);background:var(--inv,#F6F6F5);'
+        : 'color:var(--sub,#9C9CA2);background:transparent;')
+    }));
+
+    const services = L.services.map((s,i)=>({ no:noOf(i), t:s.t, d:s.d, tags:s.tags }));
+    const toolKeys=['front','back','uiux','mobile'];
+    const tech = L.tech.map((c,i)=>({
+      no:noOf(i), t:c.t, d:c.d, chips:this.TOOLS[toolKeys[i]],
+      open: st.openTech===i,
+      toggle: ()=>this.toggleTech(i),
+      iconStyle: st.openTech===i ? 'transform:rotate(45deg);' : ''
+    }));
+    const tileFills=['68%','82%','55%','74%'];
+    const techTiles = L.tech.map((c,i)=>({ no:noOf(i), t:c.t, tools:this.TOOLS[toolKeys[i]].slice(0,3).join(' · '), fill:tileFills[i], isFront:i===0, isBack:i===1, isUiux:i===2, isMobile:i===3 }));
+    const metrics = L.metrics.map((m,i)=>({ num:num[i], label:m }));
+    const feed = L.feed.map(f=>({ q:f.q, n:f.n, r:f.r, i:(f.n||'?').trim().charAt(0) }));
+    const feedTop = feed;
+    const values = L.values;
+    const process = L.process.map((p,i)=>({ no:noOf(i), t:p.t, d:p.d }));
+    const contactInfo = L.contactInfo;
+
+    const marqueeText = ' React · Next.js · TypeScript · Supabase · PostgreSQL · React Native · Figma · Node.js · Tailwind · Expo · TypeScript · ';
+    const marqueeText2 = ' TURNKEY · WEB · MOBILE · UI/UX · SUPABASE · MVP · DESIGN · ENGINEERING · LAUNCH · ';
+    const feedWords={
+      ru:['ДОВЕРИЕ · РЕЗУЛЬТАТ · ','ПАРТНЁРСТВО · КАЧЕСТВО · '],
+      en:['TRUST · RESULTS · ','PARTNERSHIP · QUALITY · '],
+      uk:['ДОВІРА · РЕЗУЛЬТАТ · ','ПАРТНЕРСТВО · ЯКІСТЬ · '],
+      hu:['BIZALOM · EREDMÉNY · ','PARTNERSÉG · MINŐSÉG · ']
+    };
+    const fw = feedWords[st.lang] || feedWords.ru;
+    const feedMarquee1 = fw[0];
+    const feedMarquee2 = fw[1];
+    const cHint={ru:'Ответим в течение рабочего дня',en:'We reply within a business day',uk:'Відповімо протягом робочого дня',hu:'Egy munkanapon belül válaszolunk'}[st.lang]||'';
+    L.secContact.locLabel={ru:'Локация',en:'Location',uk:'Локація',hu:'Helyszín'}[st.lang]||'Location';
+    const contactMethods=[
+      {k:'Telegram', v:'@sikra_team', href:'https://t.me/sikra_team', hint:cHint},
+      {k:'Email', v:'hello@sikra.dev', href:'mailto:hello@sikra.dev', hint:cHint}
+    ];
+
+    const rootStyle = Object.assign({}, this.tokens(), {
+      background:'var(--bg)', color:'var(--text)', minHeight:'100vh',
+      fontFamily:"'Space Grotesk', sans-serif",
+      transition:'background .45s ease, color .45s ease',
+      overflowX:'hidden'
+    });
+
+    return {
+      rootStyle,
+      logoSrc: st.theme==='dark' ? ((window.__resources||{}).logoDark||'assets/sikra-logo-dark.png') : ((window.__resources||{}).logoLight||'assets/sikra-logo-light.png'),
+      markSrc: st.theme==='dark' ? ((window.__resources||{}).markDark||'assets/sikra-mark-dark.png') : ((window.__resources||{}).markLight||'assets/sikra-mark-light.png'),
+      themeIcon: st.theme==='dark' ? '☾' : '☀',
+      L, navLinks, langs, services, tech, techTiles, metrics, feed, feedTop, values, process, contactInfo, marqueeText, marqueeText2, feedMarquee1, feedMarquee2, contactMethods,
+      toggleTheme: ()=>this.toggleTheme(),
+      goHome: ()=>this.goTo('home'),
+      goServices: ()=>this.goTo('services'),
+      goStack: ()=>this.goTo('stack'),
+      goFeedback: ()=>this.goTo('feedback'),
+      goContact: ()=>this.goTo('contact'),
+      submit: (e)=>this.submit(e),
+      isHome: page==='home', isServices: page==='services', isStack: page==='stack',
+      isAbout: page==='about', isFeedback: page==='feedback', isContact: page==='contact',
+      sent: st.sent, notSent: !st.sent
+    };
+  }
+}
+</script>
+</body>
+</html>
