@@ -7,8 +7,22 @@
 <link rel="preload" href="/assets/sikra-mark-dark.png" as="image" fetchpriority="high">
 <link rel="preload" href="/assets/sikra-logo-dark.png" as="image">
 <script src="/support.js" defer></script>
+<link rel="alternate" hreflang="en" href="https://sikra.agency/feedback">
+<link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/feedback">
+<link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/feedback">
+<link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/feedback">
+<link rel="alternate" hreflang="x-default" href="https://sikra.agency/feedback">
 </head>
 <body>
+<noscript><div style="max-width:800px;margin:0 auto;padding:32px;font-family:sans-serif;color:#F6F6F5;background:#0A0A0B;"><nav><a href="/">Sikra</a> · <a href="/services">Services</a> · <a href="/stack">Toolkit</a> · <a href="/about">About</a> · <a href="/contact">Contact</a></nav><p><a href="/feedback" hreflang="en">EN</a> <a href="/ru/feedback" hreflang="ru">RU</a> <a href="/uk/feedback" hreflang="uk">UK</a> <a href="/hu/feedback" hreflang="hu">HU</a></p>
+<h1>What clients say</h1>
+<p>Words from the teams we built and shipped products with.</p>
+<blockquote><p>They shipped our MVP in six weeks and got us to first users. Sikra really works like part of our team.</p><footer>Artem Kovach, CEO, Fintrail</footer></blockquote>
+<blockquote><p>Clean code and a transparent process. Finally a vendor we do not have to double-check.</p><footer>Maria Lendy, CTO, Nordis</footer></blockquote>
+<blockquote><p>We moved our backend to Supabase — faster and cheaper to maintain. Great work.</p><footer>David Nagy, Product Lead, Kelp</footer></blockquote>
+<blockquote><p>The design system they built still saves us weeks on every new feature.</p><footer>Olia Stetsenko, Head of Design, Vela</footer></blockquote>
+<blockquote><p>Our React Native app shipped to both platforms on time with no surprises.</p><footer>Balazs Toth, Founder, Rideo</footer></blockquote>
+<blockquote><p>Communication was excellent: weekly reviews, no black boxes.</p><footer>Iryna Moroz, COO, Brightwave</footer></blockquote></div></noscript>
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,7 +47,7 @@
 <meta name="twitter:title" content="Client Feedback | Sikra">
 <meta name="twitter:description" content="What clients say about working with Sikra — MVP launches, Supabase migrations, mobile apps and design systems.">
 <meta name="twitter:image" content="https://sikra.agency/assets/og-image.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Sikra","url":"https://sikra.agency/","logo":"https://sikra.agency/assets/sikra-logo-dark.png","image":"https://sikra.agency/assets/og-image.png","description":"Full-cycle software development studio building web and mobile apps for B2B and enterprise clients — from idea and design to architecture and launch.","email":"hello@sikra.dev","sameAs":["https://t.me/sikra_team"],"areaServed":["HU","UA"],"knowsLanguage":["ru","en","uk","hu"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Sikra","url":"https://sikra.agency/feedback","logo":"https://sikra.agency/assets/sikra-logo-dark.png","image":"https://sikra.agency/assets/og-image.png","description":"What clients say about working with Sikra — MVP launches, Supabase migrations, mobile apps and design systems.","email":"hello@sikra.dev","sameAs":["https://t.me/sikra_team"],"areaServed":["HU","UA"],"knowsLanguage":["ru","en","uk","hu"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0B'/%3E%3Cpath d='M19 5 L10 17 L15 17 L13 27 L22 15 L17 15 Z' fill='%23F6F6F5'/%3E%3C/svg%3E">
@@ -455,17 +469,14 @@ class Component extends DCLogic {
   constructor(p){
     super(p);
     this.PAGES = ['home','services','stack','about','feedback','contact'];
-    const ls = (k,d)=>{ try{ return localStorage.getItem(k)||d; }catch(e){ return d; } };
-    const path = (typeof location!=='undefined' ? location.pathname : '/').replace(/\/+$/,'');
-    let hp = path.split('/').pop()||'home';
+    this.LANGS = ['ru','uk','hu']; // 'en' is the unprefixed root
+    const initial = this.parseUrl(typeof location!=='undefined' ? location.pathname : '/');
     const legacy = (typeof location!=='undefined' ? (location.hash||'') : '').replace('#','').replace('/','');
-    if(this.PAGES.includes(legacy)){ hp=legacy; try{ history.replaceState(null,'', legacy==='home'?'/':'/'+legacy); }catch(e){} }
-    if(!this.PAGES.includes(hp)) hp='home';
-    this.state = {
-      lang:  ls('sikra-lang',  this.props.defaultLang  || 'ru'),
-      page:  hp,
-      openTech: 0
-    };
+    if(this.PAGES.includes(legacy)){
+      initial.page = legacy;
+      try{ history.replaceState(null,'', this.urlFor(initial.lang, initial.page)); }catch(e){}
+    }
+    this.state = { lang: initial.lang, page: initial.page, openTech: 0 };
     this.TOOLS = {
       front:  ['HTML','CSS','JavaScript'],
       back:   ['Supabase','PostgreSQL','Edge Functions','Row-Level Security','Auth','Storage','Realtime','Node.js'],
@@ -475,16 +486,29 @@ class Component extends DCLogic {
     this.T = this.buildDict();
   }
 
-  setLang(v){ try{ localStorage.setItem('sikra-lang',v); }catch(e){} this.setState({lang:v}); }
+  parseUrl(pathname){
+    const segs = (pathname||'/').replace(/\/+$/,'').split('/').filter(Boolean);
+    let lang = 'en', rest = segs;
+    if(segs[0] && this.LANGS.includes(segs[0])){ lang = segs[0]; rest = segs.slice(1); }
+    let page = rest[0] || 'home';
+    if(!this.PAGES.includes(page)) page = 'home';
+    return {lang, page};
+  }
+  urlFor(lang, page){
+    return (lang==='en' ? '' : '/'+lang) + (page==='home' ? '/' : '/'+page);
+  }
+  setLang(v){
+    const target = this.urlFor(v, this.state.page);
+    try{ location.href = target; }catch(e){}
+  }
   goTo(pg){
-    const target = pg==='home' ? '/' : '/'+pg;
+    const target = this.urlFor(this.state.lang, pg);
     try{ if(location.pathname.replace(/\/+$/,'')!==target.replace(/\/+$/,'')) history.pushState(null,'',target); }catch(e){}
     this.setState({page:pg});
   }
   syncPath(){
-    let hp=location.pathname.replace(/\/+$/,'').split('/').pop()||'home';
-    if(!this.PAGES.includes(hp)) hp='home';
-    if(hp!==this.state.page) this.setState({page:hp});
+    const {lang, page} = this.parseUrl(location.pathname);
+    if(lang!==this.state.lang || page!==this.state.page) this.setState({lang, page});
   }
   toggleTech(i){ this.setState(s=>({ openTech: s.openTech===i ? -1 : i })); }
 
@@ -642,13 +666,13 @@ class Component extends DCLogic {
   applySEO(){
     try{
       const st=this.state;
-      const L=this.T[st.lang]||this.T.ru;
+      const L=this.T[st.lang]||this.T.en;
       const seo=(L.seo && (L.seo[st.page]||L.seo.home));
       if(!seo) return;
       document.title=seo.title;
       document.documentElement.lang=st.lang;
       const setMeta=(sel,attr,val)=>{ const el=document.head.querySelector(sel); if(el) el.setAttribute(attr,val); };
-      const url='https://sikra.agency/'+(st.page==='home'?'':st.page);
+      const url='https://sikra.agency'+this.urlFor(st.lang, st.page);
       const canon=document.head.querySelector('link[rel="canonical"]'); if(canon) canon.setAttribute('href',url);
       setMeta('meta[property="og:url"]','content',url);
       setMeta('meta[name="description"]','content',seo.desc);
@@ -901,7 +925,7 @@ class Component extends DCLogic {
 
   renderVals(){
     const st=this.state;
-    const L=this.T[st.lang] || this.T.ru;
+    const L=this.T[st.lang] || this.T.en;
     const page=st.page;
     const num=['60+','8','40+','98%'];
     const noOf=(i)=> (i<9?'0':'')+(i+1);

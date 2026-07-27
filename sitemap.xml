@@ -1,27 +1,202 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sikra.agency/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/uk/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/hu/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://sikra.agency/services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/services"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/services"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/services"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/services"/>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/ru/services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/services"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/services"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/services"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/services"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/uk/services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/services"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/services"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/services"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/services"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/hu/services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/services"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/services"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/services"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/services"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://sikra.agency/stack</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/stack"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/stack"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/stack"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/stack"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/stack"/>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/ru/stack</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/stack"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/stack"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/stack"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/stack"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/stack"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/uk/stack</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/stack"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/stack"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/stack"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/stack"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/stack"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/hu/stack</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/stack"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/stack"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/stack"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/stack"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/stack"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://sikra.agency/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/about"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/about"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/about"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/about"/>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/ru/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/about"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/about"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/about"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/about"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/uk/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/about"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/about"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/about"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/about"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/hu/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/about"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/about"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/about"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/about"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://sikra.agency/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/contact"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/contact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/contact"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/contact"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/ru/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/contact"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/contact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/contact"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/contact"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/uk/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/contact"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/contact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/contact"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/contact"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sikra.agency/hu/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sikra.agency/contact"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/contact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/contact"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sikra.agency/contact"/>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
