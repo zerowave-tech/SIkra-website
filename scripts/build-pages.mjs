@@ -48,7 +48,11 @@ const EXTRA = {
   hu: { locLabel: 'Helyszín', calendarLabel: 'Foglalj hívást', calendarHint: 'Megnyitja a naptárt az időpont kiválasztásához' },
 };
 
-const urlFor = (lang, page) => (lang === 'en' ? '' : '/' + lang) + (page === 'home' ? '/' : '/' + page);
+// URL segment per language — kept separate from the hreflang/lang-attribute
+// code, which must stay a valid ISO 639-1 tag ('uk' for Ukrainian; 'ua' is a
+// country code, not a language code, and would be an invalid hreflang value).
+const URL_SLUG = { en: '', ru: 'ru', uk: 'ua', hu: 'hu' };
+const urlFor = (lang, page) => (URL_SLUG[lang] ? '/' + URL_SLUG[lang] : '') + (page === 'home' ? '/' : '/' + page);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // ---- 2. Build a real, crawlable <noscript> fragment per language × page ----
@@ -60,7 +64,7 @@ function navHtml(lang, page) {
     return `<a href="${urlFor(lang, p)}"${p === page ? ' aria-current="page"' : ''}>${esc(label)}</a>`;
   }).join(' · ');
   const home = `<a href="${urlFor(lang, 'home')}">Sikra</a>`;
-  const langSwitch = LANGS.map(l => `<a href="${urlFor(l, page)}" hreflang="${l}">${l.toUpperCase()}</a>`).join(' ');
+  const langSwitch = LANGS.map(l => `<a href="${urlFor(l, page)}" hreflang="${l}">${(URL_SLUG[l] || 'en').toUpperCase()}</a>`).join(' ');
   return `<nav>${home} · ${links}</nav><p>${langSwitch}</p>`;
 }
 
@@ -157,7 +161,8 @@ function buildFile(lang, page) {
 
 for (const lang of LANGS) {
   for (const page of ALL_PAGES) {
-    const dir = page === 'home' ? (lang === 'en' ? '.' : lang) : (lang === 'en' ? page : `${lang}/${page}`);
+    const slug = URL_SLUG[lang];
+    const dir = page === 'home' ? (slug || '.') : (slug ? `${slug}/${page}` : page);
     if (dir !== '.') mkdirSync(dir, { recursive: true });
     const outPath = dir === '.' ? 'index.html' : `${dir}/index.html`;
     writeFileSync(outPath, buildFile(lang, page));

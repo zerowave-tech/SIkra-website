@@ -9,12 +9,12 @@
 <script src="/support.js" defer></script>
 <link rel="alternate" hreflang="en" href="https://sikra.agency/contact">
 <link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/contact">
-<link rel="alternate" hreflang="uk" href="https://sikra.agency/uk/contact">
+<link rel="alternate" hreflang="uk" href="https://sikra.agency/ua/contact">
 <link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/contact">
 <link rel="alternate" hreflang="x-default" href="https://sikra.agency/contact">
 </head>
 <body>
-<noscript><div style="max-width:800px;margin:0 auto;padding:32px;font-family:sans-serif;color:#F6F6F5;background:#0A0A0B;"><nav><a href="/ru/">Sikra</a> · <a href="/ru/services">Услуги</a> · <a href="/ru/stack">Набор</a> · <a href="/ru/about">О нас</a> · <a href="/ru/contact" aria-current="page">Контакты</a></nav><p><a href="/contact" hreflang="en">EN</a> <a href="/ru/contact" hreflang="ru">RU</a> <a href="/uk/contact" hreflang="uk">UK</a> <a href="/hu/contact" hreflang="hu">HU</a></p>
+<noscript><div style="max-width:800px;margin:0 auto;padding:32px;font-family:sans-serif;color:#F6F6F5;background:#0A0A0B;"><nav><a href="/ru/">Sikra</a> · <a href="/ru/services">Услуги</a> · <a href="/ru/stack">Набор</a> · <a href="/ru/about">О нас</a> · <a href="/ru/contact" aria-current="page">Контакты</a></nav><p><a href="/contact" hreflang="en">EN</a> <a href="/ru/contact" hreflang="ru">RU</a> <a href="/ua/contact" hreflang="uk">UA</a> <a href="/hu/contact" hreflang="hu">HU</a></p>
 <h1>Расскажите о проекте</h1>
 <p>Оставьте заявку — вернёмся в течение одного рабочего дня с планом первых шагов.</p>
 <p><a href="https://calendar.app.google/x8A9M3cwczyeJAki6">Записаться на звонок</a> — Откроется календарь для выбора времени</p>
@@ -465,7 +465,11 @@ class Component extends DCLogic {
   constructor(p){
     super(p);
     this.PAGES = ['home','services','stack','about','feedback','contact'];
-    this.LANGS = ['ru','uk','hu']; // 'en' is the unprefixed root
+    // internal lang code -> URL slug ('en' has no prefix). hreflang/<html lang>
+    // stay on the real ISO code ('uk'); only the URL segment and the visible
+    // language-switcher label use 'ua'.
+    this.LANG_SLUG = { ru:'ru', uk:'ua', hu:'hu' };
+    this.SLUG_LANG = { ru:'ru', ua:'uk', hu:'hu' };
     const initial = this.parseUrl(typeof location!=='undefined' ? location.pathname : '/');
     const legacy = (typeof location!=='undefined' ? (location.hash||'') : '').replace('#','').replace('/','');
     if(this.PAGES.includes(legacy)){
@@ -485,13 +489,14 @@ class Component extends DCLogic {
   parseUrl(pathname){
     const segs = (pathname||'/').replace(/\/+$/,'').split('/').filter(Boolean);
     let lang = 'en', rest = segs;
-    if(segs[0] && this.LANGS.includes(segs[0])){ lang = segs[0]; rest = segs.slice(1); }
+    if(segs[0] && this.SLUG_LANG[segs[0]]){ lang = this.SLUG_LANG[segs[0]]; rest = segs.slice(1); }
     let page = rest[0] || 'home';
     if(!this.PAGES.includes(page)) page = 'home';
     return {lang, page};
   }
   urlFor(lang, page){
-    return (lang==='en' ? '' : '/'+lang) + (page==='home' ? '/' : '/'+page);
+    const slug = this.LANG_SLUG[lang];
+    return (slug ? '/'+slug : '') + (page==='home' ? '/' : '/'+page);
   }
   setLang(v){
     const target = this.urlFor(v, this.state.page);
@@ -931,7 +936,7 @@ class Component extends DCLogic {
     })).filter(n=>n.key!=='feedback'); // Feedback hidden from nav, keep for later
 
     const langs = [
-      {code:'ru',v:'ru'},{code:'en',v:'en'},{code:'uk',v:'uk'},{code:'hu',v:'hu'}
+      {code:'ru',v:'ru'},{code:'en',v:'en'},{code:'ua',v:'uk'},{code:'hu',v:'hu'}
     ].map(l=>({
       code:l.code,
       set:()=>this.setLang(l.v),

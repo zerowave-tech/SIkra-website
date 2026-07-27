@@ -15,7 +15,7 @@ robots.txt / sitemap.xml
 
 assets/                 ← images actually used by the live site
 services/  stack/  about/  contact/  feedback/     ← English (root) pages
-ru/  uk/  hu/                                      ← same 6 pages, per language
+ru/  ua/  hu/                                      ← same 6 pages, per language (ua = Ukrainian)
     └── index.html      ← generated per-language, per-page copies of index.html
 
 scripts/
