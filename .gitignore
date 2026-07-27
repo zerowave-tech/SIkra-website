@@ -1,8 +1,10 @@
-# Temporary & build artifacts
+# Builder-managed (dc-runtime) local artifacts — not part of the deployed site.
+# Left in place on disk since the builder app expects these paths; just untracked here.
 uploads/
 export/
 screenshots/
 .thumbnail
+Sikra Website (standalone).html
 
 # OS & IDE
 .DS_Store
