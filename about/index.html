@@ -3,30 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preload" href="/assets/sikra-mark-dark.png" as="image" fetchpriority="high">
+<link rel="preload" href="/assets/sikra-logo-dark.png" as="image">
+<script src="/support.js" defer></script>
 </head>
 <body>
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sikra — Full-Cycle Software Development | Web &amp; Mobile Apps</title>
-<meta name="description" content="Sikra is a full-cycle software studio building web and mobile apps for B2B and enterprise — from idea and design to architecture and launch.">
+<title>About Sikra — Software Development Studio</title>
+<meta name="description" content="Sikra is a small full-cycle software studio. Transparent timelines, engineering culture and products that solve real business problems.">
 <meta name="robots" content="index, follow">
 <meta name="domain" content="sikra.agency">
 <meta name="theme-color" content="#0A0A0B">
-<link rel="canonical" href="https://sikra.agency/">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src https://calendar.app.google; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://sikra.agency/about">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Sikra">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="Sikra — Full-Cycle Software Development | Web &amp; Mobile Apps">
-<meta property="og:description" content="Sikra is a full-cycle software studio building web and mobile apps for B2B and enterprise — from idea and design to architecture and launch.">
-<meta property="og:url" content="https://sikra.agency/">
-<meta property="og:image" content="https://sikra.agency/assets/sikra-logo-dark.png">
+<meta property="og:title" content="About Sikra — Software Development Studio">
+<meta property="og:description" content="Sikra is a small full-cycle software studio. Transparent timelines, engineering culture and products that solve real business problems.">
+<meta property="og:url" content="https://sikra.agency/about">
+<meta property="og:image" content="https://sikra.agency/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sikra — Full-Cycle Software Development | Web &amp; Mobile Apps">
-<meta name="twitter:description" content="Sikra is a full-cycle software studio building web and mobile apps for B2B and enterprise — from idea and design to architecture and launch.">
-<meta name="twitter:image" content="https://sikra.agency/assets/sikra-logo-dark.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Sikra","url":"https://sikra.agency/","logo":"https://sikra.agency/assets/sikra-logo-dark.png","image":"https://sikra.agency/assets/sikra-logo-dark.png","description":"Full-cycle software development studio building web and mobile apps for B2B and enterprise clients — from idea and design to architecture and launch.","email":"hello@sikra.dev","sameAs":["https://t.me/sikra_team"],"areaServed":["HU","UA"],"knowsLanguage":["ru","en","uk","hu"]}</script>
+<meta name="twitter:title" content="About Sikra — Software Development Studio">
+<meta name="twitter:description" content="Sikra is a small full-cycle software studio. Transparent timelines, engineering culture and products that solve real business problems.">
+<meta name="twitter:image" content="https://sikra.agency/assets/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Sikra","url":"https://sikra.agency/","logo":"https://sikra.agency/assets/sikra-logo-dark.png","image":"https://sikra.agency/assets/og-image.png","description":"Full-cycle software development studio building web and mobile apps for B2B and enterprise clients — from idea and design to architecture and launch.","email":"hello@sikra.dev","sameAs":["https://t.me/sikra_team"],"areaServed":["HU","UA"],"knowsLanguage":["ru","en","uk","hu"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0B'/%3E%3Cpath d='M19 5 L10 17 L15 17 L13 27 L22 15 L17 15 Z' fill='%23F6F6F5'/%3E%3C/svg%3E">
@@ -39,7 +46,6 @@
   @keyframes sk-marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   @keyframes sk-float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-14px) rotate(1.5deg);}}
   @keyframes sk-pulse{0%,100%{opacity:.35;}50%{opacity:1;}}
-  @keyframes sk-sheen{from{background-position:-200% 0;}to{background-position:200% 0;}}
   input,textarea,button{font-family:inherit;}
 </style>
 </helmet>
@@ -50,7 +56,7 @@
   <nav data-nav="" style="position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--navbg,rgba(10,10,11,.72));border-bottom:1px solid var(--line,rgba(255,255,255,.10));transform:translateY(0);transition:transform .35s cubic-bezier(.2,.7,.2,1);will-change:transform;">
     <div style="max-width:1600px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
       <a onClick="{{ goHome }}" style="display:flex;align-items:center;cursor:pointer;flex:0 0 auto;">
-        <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" style="height:26px;width:auto;display:block;">
+        <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" decoding="async" style="height:26px;width:auto;display:block;">
       </a>
       <div style="display:flex;align-items:center;gap:30px;flex-wrap:wrap;justify-content:flex-end;">
         <div style="display:flex;align-items:center;gap:26px;">
@@ -108,7 +114,7 @@
         <div data-reveal="" style="position:relative;aspect-ratio:1/1;border:1px solid var(--line,rgba(255,255,255,.10));border-radius:12px;background:var(--elev,#101012);display:flex;align-items:center;justify-content:center;overflow:hidden;">
           <div style="position:absolute;inset:0;background-image:linear-gradient(var(--grid,rgba(255,255,255,.04)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(255,255,255,.04)) 1px,transparent 1px);background-size:40px 40px;"></div>
           <div data-parallax="" style="position:relative;z-index:1;width:38%;transition:transform .6s cubic-bezier(.2,.7,.2,1);will-change:transform;">
-            <img data-sikra-img="mark" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" style="display:block;width:100%;height:auto;animation:sk-float 7s ease-in-out infinite;">
+            <img data-sikra-img="mark" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" decoding="async" fetchpriority="high" style="display:block;width:100%;height:auto;animation:sk-float 7s ease-in-out infinite;">
           </div>
           <div style="position:absolute;left:20px;bottom:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--faint,#5B5B61);">// full-cycle engineering</div>
           <div style="position:absolute;right:20px;top:18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--faint,#5B5B61);">v.2026</div>
@@ -399,10 +405,10 @@
       <p style="font-size:18px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;max-width:480px;">{{ L.secContact.sub }}</p>
     </div>
     <div data-reveal="" style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;overflow:hidden;background:var(--elev,#101012);">
-      <iframe src="https://calendar.app.google/x8A9M3cwczyeJAki6" title="Book a call" style="width:100%;height:820px;border:0;display:block;background:transparent;"></iframe>
+      <iframe src="https://calendar.app.google/x8A9M3cwczyeJAki6" title="Book a call" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" style="width:100%;height:820px;border:0;display:block;background:transparent;"></iframe>
       <div style="padding:16px 24px;border-top:1px solid var(--line,rgba(255,255,255,.12));display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
         <span style="font-size:14px;color:var(--sub,#9C9CA2);">{{ L.secContact.calendarHint }}</span>
-        <a href="https://calendar.app.google/x8A9M3cwczyeJAki6" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text,#F6F6F5);text-decoration:underline;">{{ L.footer.calendarLabel }} ↗</a>
+        <a href="https://calendar.app.google/x8A9M3cwczyeJAki6" target="_blank" rel="noopener noreferrer" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text,#F6F6F5);text-decoration:underline;">{{ L.footer.calendarLabel }} ↗</a>
       </div>
     </div>
     <div data-reveal="" style="margin-top:24px;border-top:1px solid var(--line,rgba(255,255,255,.12));padding-top:26px;">
@@ -416,7 +422,7 @@
   <footer style="border-top:1px solid var(--line,rgba(255,255,255,.10));">
     <div style="max-width:1600px;margin:0 auto;padding:56px 32px 44px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;">
       <div>
-        <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" style="height:24px;width:auto;display:block;margin-bottom:18px;">
+        <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" loading="lazy" decoding="async" style="height:24px;width:auto;display:block;margin-bottom:18px;">
         <p style="font-size:14.5px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;max-width:300px;">{{ L.footer.tagline }}</p>
       </div>
       <div>
@@ -444,20 +450,21 @@
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark'|'light'&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ru&quot;,&quot;en&quot;,&quot;uk&quot;,&quot;hu&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ru&quot;,&quot;en&quot;,&quot;uk&quot;,&quot;hu&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
 class Component extends DCLogic {
   constructor(p){
     super(p);
     this.PAGES = ['home','services','stack','about','feedback','contact'];
     const ls = (k,d)=>{ try{ return localStorage.getItem(k)||d; }catch(e){ return d; } };
-    let hp = (typeof location!=='undefined' ? (location.hash||'') : '').replace('#','').replace('/','');
+    const path = (typeof location!=='undefined' ? location.pathname : '/').replace(/\/+$/,'');
+    let hp = path.split('/').pop()||'home';
+    const legacy = (typeof location!=='undefined' ? (location.hash||'') : '').replace('#','').replace('/','');
+    if(this.PAGES.includes(legacy)){ hp=legacy; try{ history.replaceState(null,'', legacy==='home'?'/':'/'+legacy); }catch(e){} }
     if(!this.PAGES.includes(hp)) hp='home';
     this.state = {
-      theme: 'dark',
       lang:  ls('sikra-lang',  this.props.defaultLang  || 'ru'),
       page:  hp,
-      openTech: 0,
-      sent: false
+      openTech: 0
     };
     this.TOOLS = {
       front:  ['HTML','CSS','JavaScript'],
@@ -468,21 +475,18 @@ class Component extends DCLogic {
     this.T = this.buildDict();
   }
 
-  setTheme(v){ try{ localStorage.setItem('sikra-theme',v); }catch(e){} this.setState({theme:v}); }
-  toggleTheme(){ this.setTheme(this.state.theme==='dark'?'light':'dark'); }
   setLang(v){ try{ localStorage.setItem('sikra-lang',v); }catch(e){} this.setState({lang:v}); }
   goTo(pg){
-    if(pg==='home'){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
-    else { try{ location.hash = pg; }catch(e){} }
-    this.setState({page:pg, sent:false});
+    const target = pg==='home' ? '/' : '/'+pg;
+    try{ if(location.pathname.replace(/\/+$/,'')!==target.replace(/\/+$/,'')) history.pushState(null,'',target); }catch(e){}
+    this.setState({page:pg});
   }
-  syncHash(){
-    let hp=(location.hash||'').replace('#','').replace('/','');
+  syncPath(){
+    let hp=location.pathname.replace(/\/+$/,'').split('/').pop()||'home';
     if(!this.PAGES.includes(hp)) hp='home';
     if(hp!==this.state.page) this.setState({page:hp});
   }
   toggleTech(i){ this.setState(s=>({ openTech: s.openTech===i ? -1 : i })); }
-  submit(e){ e.preventDefault(); this.setState({sent:true}); }
 
   initReveal(){
     const root=document.getElementById('sikra-root'); if(!root) return;
@@ -596,15 +600,14 @@ class Component extends DCLogic {
     Object.keys(t).forEach(k=>root.style.setProperty(k, t[k]));
     root.style.setProperty('background', t['--bg']);
     root.style.setProperty('color', t['--text']);
-    const dark=this.state.theme==='dark';
-    const logo=dark?'assets/sikra-logo-dark.png':'assets/sikra-logo-light.png';
-    const mark=dark?'assets/sikra-mark-dark.png':'assets/sikra-mark-light.png';
+    const logo='/assets/sikra-logo-dark.png';
+    const mark='/assets/sikra-mark-dark.png';
     root.querySelectorAll('[data-sikra-img="logo"]').forEach(el=>{ if(el.getAttribute('src')!==logo) el.setAttribute('src',logo); });
     root.querySelectorAll('[data-sikra-img="mark"]').forEach(el=>{ if(el.getAttribute('src')!==mark) el.setAttribute('src',mark); });
   }
   componentDidMount(){
-    this._hh=()=>this.syncHash();
-    window.addEventListener('hashchange', this._hh);
+    this._hh=()=>this.syncPath();
+    window.addEventListener('popstate', this._hh);
     this._navLastY=0;
     this._navInit=false;
     this._sc=(ev)=>{
@@ -635,7 +638,7 @@ class Component extends DCLogic {
     this.applySEO();
     requestAnimationFrame(()=>{ this.initReveal(); this._sc(); });
   }
-  componentWillUnmount(){ window.removeEventListener('hashchange', this._hh); window.removeEventListener('scroll', this._sc, {capture:true}); document.removeEventListener('scroll', this._sc, {capture:true}); if(this._heroEl&&this._heroMove){ this._heroEl.removeEventListener('pointermove', this._heroMove); this._heroEl.removeEventListener('pointerleave', this._heroLeave); } }
+  componentWillUnmount(){ window.removeEventListener('popstate', this._hh); window.removeEventListener('scroll', this._sc, {capture:true}); document.removeEventListener('scroll', this._sc, {capture:true}); if(this._heroEl&&this._heroMove){ this._heroEl.removeEventListener('pointermove', this._heroMove); this._heroEl.removeEventListener('pointerleave', this._heroLeave); } }
   applySEO(){
     try{
       const st=this.state;
@@ -645,6 +648,9 @@ class Component extends DCLogic {
       document.title=seo.title;
       document.documentElement.lang=st.lang;
       const setMeta=(sel,attr,val)=>{ const el=document.head.querySelector(sel); if(el) el.setAttribute(attr,val); };
+      const url='https://sikra.agency/'+(st.page==='home'?'':st.page);
+      const canon=document.head.querySelector('link[rel="canonical"]'); if(canon) canon.setAttribute('href',url);
+      setMeta('meta[property="og:url"]','content',url);
       setMeta('meta[name="description"]','content',seo.desc);
       setMeta('meta[property="og:title"]','content',seo.title);
       setMeta('meta[property="og:description"]','content',seo.desc);
@@ -721,8 +727,7 @@ class Component extends DCLogic {
           {q:'Мобильное приложение на React Native вышло на обе платформы без сюрпризов и в срок.', n:'Балаж Тот', r:'Founder, Rideo'},
           {q:'Коммуникация на высоте: ревью каждую неделю, никаких чёрных ящиков.', n:'Ирина Мороз', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Контакты', title:'Расскажите о проекте', sub:'Оставьте заявку — вернёмся в течение одного рабочего дня с планом первых шагов.', fName:'Имя', fEmail:'Email', fCompany:'Компания', fMsg:'О проекте', submit:'Отправить заявку', sentTitle:'Спасибо!', sentSub:'Мы получили заявку и скоро свяжемся с вами.'},
-        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Телеграм',v:'@sikra_team'},{k:'Локация',v:'Budapest · Kyiv · Remote'}],
+        secContact:{tag:'Контакты', title:'Расскажите о проекте', sub:'Оставьте заявку — вернёмся в течение одного рабочего дня с планом первых шагов.'},
         ctaBand:{title:'Готовы обсудить ваш продукт?', sub:'Опишите идею — предложим оптимальный путь к запуску.'},
         footer:{tagline:'Студия разработки ПО полного цикла. Проектируем, строим и запускаем цифровые продукты.', nav:'Навигация', contactT:'Контакты', rights:'Все права защищены.', made:'Собрано с точностью'}
       },
@@ -777,8 +782,7 @@ class Component extends DCLogic {
           {q:'Our React Native app shipped to both platforms on time with no surprises.', n:'Balazs Toth', r:'Founder, Rideo'},
           {q:'Communication was excellent: weekly reviews, no black boxes.', n:'Iryna Moroz', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Contact', title:'Tell us about your project', sub:'Leave a request — we will get back within one business day with a plan of first steps.', fName:'Name', fEmail:'Email', fCompany:'Company', fMsg:'About the project', submit:'Send request', sentTitle:'Thank you!', sentSub:'We received your request and will be in touch shortly.'},
-        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Telegram',v:'@sikra_team'},{k:'Location',v:'Budapest · Kyiv · Remote'}],
+        secContact:{tag:'Contact', title:'Tell us about your project', sub:'Leave a request — we will get back within one business day with a plan of first steps.'},
         ctaBand:{title:'Ready to talk about your product?', sub:'Describe the idea — we will suggest the best path to launch.'},
         footer:{tagline:'A full-cycle software studio. We design, build and launch digital products.', nav:'Navigation', contactT:'Contact', rights:'All rights reserved.', made:'Built with precision'}
       },
@@ -833,8 +837,7 @@ class Component extends DCLogic {
           {q:'Мобільний застосунок на React Native вийшов на обидві платформи вчасно й без сюрпризів.', n:'Балаж Тот', r:'Founder, Rideo'},
           {q:'Комунікація на висоті: рев’ю щотижня, жодних чорних скриньок.', n:'Ірина Мороз', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Контакти', title:'Розкажіть про проєкт', sub:'Залиште заявку — повернемось протягом одного робочого дня з планом перших кроків.', fName:'Ім’я', fEmail:'Email', fCompany:'Компанія', fMsg:'Про проєкт', submit:'Надіслати заявку', sentTitle:'Дякуємо!', sentSub:'Ми отримали заявку й скоро зв’яжемось із вами.'},
-        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Телеграм',v:'@sikra_team'},{k:'Локація',v:'Budapest · Kyiv · Remote'}],
+        secContact:{tag:'Контакти', title:'Розкажіть про проєкт', sub:'Залиште заявку — повернемось протягом одного робочого дня з планом перших кроків.'},
         ctaBand:{title:'Готові обговорити ваш продукт?', sub:'Опишіть ідею — запропонуємо оптимальний шлях до запуску.'},
         footer:{tagline:'Студія розробки ПЗ повного циклу. Проєктуємо, будуємо й запускаємо цифрові продукти.', nav:'Навігація', contactT:'Контакти', rights:'Усі права захищено.', made:'Зроблено з точністю'}
       },
@@ -889,8 +892,7 @@ class Component extends DCLogic {
           {q:'A React Native appunk időben, meglepetések nélkül jelent meg mindkét platformon.', n:'Tóth Balázs', r:'Founder, Rideo'},
           {q:'Kiváló kommunikáció: heti demók, semmi fekete doboz.', n:'Iryna Moroz', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Kapcsolat', title:'Mesélj a projektedről', sub:'Küldj egy megkeresést — egy munkanapon belül visszajelzünk az első lépések tervével.', fName:'Név', fEmail:'Email', fCompany:'Cég', fMsg:'A projektről', submit:'Küldés', sentTitle:'Köszönjük!', sentSub:'Megkaptuk a megkeresést, hamarosan jelentkezünk.'},
-        contactInfo:[{k:'Email',v:'hello@sikra.dev'},{k:'Telegram',v:'@sikra_team'},{k:'Helyszín',v:'Budapest · Kyiv · Remote'}],
+        secContact:{tag:'Kapcsolat', title:'Mesélj a projektedről', sub:'Küldj egy megkeresést — egy munkanapon belül visszajelzünk az első lépések tervével.'},
         ctaBand:{title:'Beszéljünk a termékedről?', sub:'Írd le az ötletet — javasoljuk a legjobb utat az indulásig.'},
         footer:{tagline:'Teljes ciklusú szoftverstúdió. Digitális termékeket tervezünk, építünk és indítunk.', nav:'Navigáció', contactT:'Kapcsolat', rights:'Minden jog fenntartva.', made:'Precízen megépítve'}
       }
@@ -933,7 +935,6 @@ class Component extends DCLogic {
     const feedTop = feed;
     const values = L.values;
     const process = L.process.map((p,i)=>({ no:noOf(i), t:p.t, d:p.d }));
-    const contactInfo = L.contactInfo;
 
     const marqueeText = ' React · Next.js · TypeScript · Supabase · PostgreSQL · React Native · Figma · Node.js · Tailwind · Expo · TypeScript · ';
     const marqueeText2 = ' TURNKEY · WEB · MOBILE · SUPABASE · MVP · DESIGN · ENGINEERING · LAUNCH · ';
@@ -960,20 +961,14 @@ class Component extends DCLogic {
 
     return {
       rootStyle,
-      logoSrc: st.theme==='dark' ? 'assets/sikra-logo-dark.png' : 'assets/sikra-logo-light.png',
-      markSrc: st.theme==='dark' ? 'assets/sikra-mark-dark.png' : 'assets/sikra-mark-light.png',
-      themeIcon: st.theme==='dark' ? '☾' : '☀',
-      L, navLinks, langs, services, tech, techTiles, metrics, feed, feedTop, values, process, contactInfo, marqueeText, marqueeText2, feedMarquee1, feedMarquee2,
-      toggleTheme: ()=>this.toggleTheme(),
+      L, navLinks, langs, services, tech, techTiles, metrics, feed, feedTop, values, process, marqueeText, marqueeText2, feedMarquee1, feedMarquee2,
       goHome: ()=>this.goTo('home'),
       goServices: ()=>this.goTo('services'),
       goStack: ()=>this.goTo('stack'),
       goFeedback: ()=>this.goTo('feedback'),
       goContact: ()=>this.goTo('contact'),
-      submit: (e)=>this.submit(e),
       isHome: page==='home', isServices: page==='services', isStack: page==='stack',
-      isAbout: page==='about', isFeedback: page==='feedback', isContact: page==='contact',
-      sent: st.sent, notSent: !st.sent
+      isAbout: page==='about', isFeedback: page==='feedback', isContact: page==='contact'
     };
   }
 }
