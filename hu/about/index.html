@@ -3,10 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/assets/favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" href="/assets/sikra-mark-dark.png" as="image" fetchpriority="high">
 <link rel="preload" href="/assets/sikra-logo-dark.png" as="image">
 <script src="/support.js" defer></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VM756WGCL0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VM756WGCL0');
+</script>
 <link rel="alternate" hreflang="en" href="https://sikra.agency/about">
 <link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/about">
 <link rel="alternate" hreflang="uk" href="https://sikra.agency/ua/about">
@@ -35,7 +48,7 @@
 <meta name="robots" content="index, follow">
 <meta name="domain" content="sikra.agency">
 <meta name="theme-color" content="#0A0A0B">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src https://calendar.app.google https://calendar.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://calendar.app.google https://calendar.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://sikra.agency/hu/about">
 <meta property="og:type" content="website">
@@ -54,7 +67,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Sikra","url":"https://sikra.agency/hu/about","logo":"https://sikra.agency/assets/sikra-logo-dark.png","image":"https://sikra.agency/assets/og-image.png","description":"A Sikra egy kis, teljes ciklusú szoftverstúdió. Átlátható határidők, mérnöki kultúra és valós üzleti problémákat megoldó termékek.","email":"hello@sikra.dev","sameAs":["https://t.me/sikra_team"],"areaServed":["HU","UA"],"knowsLanguage":["ru","en","uk","hu"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0B'/%3E%3Cpath d='M19 5 L10 17 L15 17 L13 27 L22 15 L17 15 Z' fill='%23F6F6F5'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;}
@@ -713,8 +726,8 @@ class Component extends DCLogic {
         cta:'Обсудить проект', viewAll:'Все',
         nav:['Услуги','Набор','О нас','Отзывы','Контакты'],
         seo:{
-          home:{title:'Sikra — разработка ПО под ключ | Веб и мобильные приложения', desc:'Sikra — студия full-cycle разработки. Создаём веб- и мобильные приложения для B2B и enterprise: от идеи и дизайна до архитектуры и запуска.'},
-          services:{title:'Услуги: веб-разработка, мобильные приложения, дизайн | Sikra', desc:'Услуги Sikra: продукт под ключ, мобильные приложения, UI/UX-дизайн, Supabase-бэкенд и деплой. Берём продукт от идеи до запуска.'},
+          home:{title:'Sikra — разработка ПО под ключ | Веб и мобильные приложения', desc:'Sikra — студия full-cycle разработки. Разработка веб- и мобильных приложений под ключ для B2B и enterprise: от идеи и дизайна до архитектуры и запуска.'},
+          services:{title:'Разработка приложений и ПО под ключ | Sikra', desc:'Услуги Sikra: разработка приложений и продукта под ключ, мобильные приложения, UI/UX-дизайн, Supabase-бэкенд и деплой. Берём продукт от идеи до запуска.'},
           stack:{title:'Технологический стек разработки | Sikra', desc:'Стек Sikra: React, TypeScript, Supabase, PostgreSQL, React Native — проверенные инструменты для веба и мобильных приложений.'},
           about:{title:'О компании Sikra — студия разработки ПО', desc:'Sikra — небольшая команда full-cycle разработки ПО. Прозрачные сроки, инженерная культура и продукты, которые решают реальные задачи бизнеса.'},
           feedback:{title:'Отзывы клиентов | Sikra', desc:'Что говорят клиенты о работе с Sikra: запуск MVP, перенос на Supabase, мобильные приложения и дизайн-системы.'},
