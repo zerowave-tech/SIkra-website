@@ -114,7 +114,7 @@ ${L.process.map(p => `<article><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></article>`
       return `
 <h1>${esc(L.secContact.title)}</h1>
 <p>${esc(L.secContact.sub)}</p>
-<p><a href="https://calendar.app.google/x8A9M3cwczyeJAki6">${esc(X.calendarLabel)}</a> — ${esc(X.calendarHint)}</p>
+<p><a href="https://cal.com/sikra-agency/30min">${esc(X.calendarLabel)}</a> — ${esc(X.calendarHint)}</p>
 <p>${esc(X.locLabel)}: Budapest · Kyiv · Remote</p>`;
     case 'feedback':
       return `
