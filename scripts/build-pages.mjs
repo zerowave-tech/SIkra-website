@@ -20,7 +20,12 @@ const ALL_PAGES = [...SITEMAP_PAGES, 'feedback'];
 // build output — strip anything a previous run injected before treating it
 // as the template, so re-running this script stays idempotent instead of
 // stacking up duplicate <link>/<noscript> tags on every pass.
-let src = readFileSync('index.html', 'utf8');
+// Normalize to LF up front so every literal/regex match below behaves the
+// same regardless of the checkout's line-ending config (e.g. Windows
+// core.autocrlf=true rewrites the working tree to CRLF, which would
+// otherwise make '\n'-based matches — and the noscript reinjection below —
+// silently miss).
+let src = readFileSync('index.html', 'utf8').replace(/\r\n/g, '\n');
 src = src.replace(/<link rel="alternate"[^>]*>\n?/g, '');
 src = src.replace(/<noscript>[\s\S]*?<\/noscript>\n?/g, '');
 
