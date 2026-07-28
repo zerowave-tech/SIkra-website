@@ -35,7 +35,7 @@
 <article><h2>Як ми їх використовуємо</h2><p>Контактні дані та дані бронювання ми використовуємо лише для того, щоб відповісти на ваш запит, підготуватися до дзвінка й обговорити проєкт. Аналітика допомагає зрозуміти, як відвідувачі користуються сайтом, і покращувати його — ми не використовуємо ці дані для ідентифікації конкретної людини.</p></article>
 <article><h2>Сторонні сервіси</h2><p>Ми використовуємо два сторонні сервіси: Google Analytics (Google LLC) — для аналітики сайту, і Cal.com, Inc. — для бронювання дзвінків. Обидва обробляють дані згідно з власними політиками конфіденційності.</p></article>
 <article><h2>Файли cookie</h2><p>Ми не встановлюємо власних cookie для відстеження. Google Analytics і вбудований віджет Cal.com можуть встановлювати cookie у вашому браузері для коректної роботи й підрахунку відвідувань — ви можете заблокувати їх у будь-який момент через налаштування приватності браузера.</p></article>
-<article><h2>Ваші права</h2><p>Якщо ви перебуваєте в ЄС/ЄЕЗ, Великій Британії чи іншій юрисдикції із законами про захист даних, ви маєте право на доступ, виправлення або видалення будь-яких персональних даних, які ми зберігаємо про вас. Щоб скористатися цим правом, напишіть на hello@sikra.dev.</p></article>
+<article><h2>Ваші права</h2><p>Якщо ви перебуваєте в ЄС/ЄЕЗ, Великій Британії чи іншій юрисдикції із законами про захист даних, ви маєте право на доступ, виправлення або видалення будь-яких персональних даних, які ми зберігаємо про вас. Щоб скористатися цим правом, напишіть на sikraagency@gmail.com.</p></article>
 <article><h2>Зміни політики</h2><p>Ми можемо час від часу оновлювати цю сторінку в міру зміни інструментів чи практик. Дата вище відображає останню редакцію.</p></article></div></noscript>
 <x-dc>
 <helmet>
@@ -427,6 +427,18 @@
   <!-- ===== CONTACT PAGE ===== -->
   <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
   <main style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
+    <sc-if value="{{ needsConsent }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:200;background:rgba(10,10,11,.82);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px;">
+      <div style="max-width:460px;width:100%;background:var(--elev,#101012);border:1px solid var(--line,rgba(255,255,255,.14));border-radius:16px;padding:36px 32px;text-align:center;">
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:21px;margin:0 0 14px;color:var(--text,#F6F6F5);">{{ L.secContact.consentTitle }}</h2>
+        <p style="font-size:14.5px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0 0 26px;">{{ L.secContact.consentText }}</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button onClick="{{ acceptPrivacy }}" style="font-family:'JetBrains Mono',monospace;font-size:13px;padding:12px 26px;border-radius:8px;border:1px solid var(--text,#F6F6F5);background:var(--text,#F6F6F5);color:var(--invText,#0A0A0B);cursor:pointer;">{{ L.secContact.consentAccept }}</button>
+          <a onClick="{{ goPrivacy }}" style="cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:13px;padding:12px 26px;border-radius:8px;border:1px solid var(--line,rgba(255,255,255,.2));color:var(--sub,#9C9CA2);text-decoration:none;display:inline-flex;align-items:center;">{{ L.secContact.consentLink }}</a>
+        </div>
+      </div>
+    </div>
+    </sc-if>
     <div data-reveal="" style="max-width:760px;margin-bottom:52px;">
       <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secContact.tag }}</div>
       <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4.4vw,58px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secContact.title }}</h1>
@@ -517,7 +529,9 @@ class Component extends DCLogic {
       initial.page = legacy;
       try{ history.replaceState(null,'', this.urlFor(initial.lang, initial.page)); }catch(e){}
     }
-    this.state = { lang: initial.lang, page: initial.page, openTech: 0 };
+    let privacyConsent = false;
+    try{ privacyConsent = localStorage.getItem('sikra_privacy_consent')==='1'; }catch(e){}
+    this.state = { lang: initial.lang, page: initial.page, openTech: 0, privacyConsent };
     this.TOOLS = {
       front:  ['HTML','CSS','JavaScript'],
       back:   ['Supabase','PostgreSQL','Edge Functions','Row-Level Security','Auth','Storage','Realtime','Node.js'],
@@ -553,6 +567,10 @@ class Component extends DCLogic {
     if(lang!==this.state.lang || page!==this.state.page) this.setState({lang, page});
   }
   toggleTech(i){ this.setState(s=>({ openTech: s.openTech===i ? -1 : i })); }
+  acceptPrivacy(){
+    try{ localStorage.setItem('sikra_privacy_consent','1'); }catch(e){}
+    this.setState({ privacyConsent: true });
+  }
 
   initReveal(){
     const root=document.getElementById('sikra-root'); if(!root) return;
@@ -794,13 +812,13 @@ class Component extends DCLogic {
           {q:'Мобильное приложение на React Native вышло на обе платформы без сюрпризов и в срок.', n:'Балаж Тот', r:'Founder, Rideo'},
           {q:'Коммуникация на высоте: ревью каждую неделю, никаких чёрных ящиков.', n:'Ирина Мороз', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Контакты', title:'Расскажите о проекте', sub:'Оставьте заявку — вернёмся в течение одного рабочего дня с планом первых шагов.'},
+        secContact:{tag:'Контакты', title:'Расскажите о проекте', sub:'Оставьте заявку — вернёмся в течение одного рабочего дня с планом первых шагов.', consentTitle:'Прежде чем продолжить', consentText:'Для бронирования звонка мы используем сервис Cal.com, который обработает ваши имя, email и данные встречи. Продолжая, вы соглашаетесь с нашей Политикой конфиденциальности.', consentAccept:'Согласен, продолжить', consentLink:'Политика конфиденциальности'},
         secPrivacy:{tag:'Правовая информация', title:'Политика конфиденциальности', updated:'Обновлено: 28 июля 2026', intro:'Эта страница объясняет, какие персональные данные Sikra собирает, когда вы посещаете sikra.agency или бронируете звонок, и как мы их используем.', sections:[
           {t:'Какие данные мы собираем', d:'Когда вы заполняете форму на сайте или бронируете звонок через виджет Cal.com, мы получаем данные, которые вы указываете сами — имя, email и детали запроса или встречи. При обычном просмотре сайта Google Analytics автоматически собирает обезличенные данные об использовании: какие страницы вы смотрели, тип устройства и браузера, а также приблизительное местоположение по IP-адресу.'},
           {t:'Как мы их используем', d:'Контактные данные и данные бронирования мы используем только для того, чтобы ответить на ваш запрос, подготовиться к звонку и обсудить проект. Аналитика помогает понять, как посетители используют сайт, и улучшать его — мы не используем эти данные для идентификации конкретного человека.'},
           {t:'Сторонние сервисы', d:'Мы используем два сторонних сервиса: Google Analytics (Google LLC) — для аналитики сайта, и Cal.com, Inc. — для бронирования звонков. Оба обрабатывают данные согласно собственным политикам конфиденциальности.'},
           {t:'Файлы cookie', d:'Мы не устанавливаем собственных cookie для отслеживания. Google Analytics и встроенный виджет Cal.com могут устанавливать cookie в вашем браузере для корректной работы и подсчёта посещений — вы можете заблокировать их в любой момент через настройки приватности браузера.'},
-          {t:'Ваши права', d:'Если вы находитесь в ЕС/ЕЭЗ, Великобритании или другой юрисдикции с законами о защите данных, у вас есть право на доступ, исправление или удаление любых персональных данных, которые мы храним о вас. Чтобы воспользоваться этим правом, напишите на hello@sikra.dev.'},
+          {t:'Ваши права', d:'Если вы находитесь в ЕС/ЕЭЗ, Великобритании или другой юрисдикции с законами о защите данных, у вас есть право на доступ, исправление или удаление любых персональных данных, которые мы храним о вас. Чтобы воспользоваться этим правом, напишите на sikraagency@gmail.com.'},
           {t:'Изменения политики', d:'Мы можем время от времени обновлять эту страницу по мере изменения инструментов или практик. Дата выше отражает последнюю редакцию.'}
         ]},
         ctaBand:{title:'Готовы обсудить ваш продукт?', sub:'Опишите идею — предложим оптимальный путь к запуску.'},
@@ -858,13 +876,13 @@ class Component extends DCLogic {
           {q:'Our React Native app shipped to both platforms on time with no surprises.', n:'Balazs Toth', r:'Founder, Rideo'},
           {q:'Communication was excellent: weekly reviews, no black boxes.', n:'Iryna Moroz', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Contact', title:'Tell us about your project', sub:'Leave a request — we will get back within one business day with a plan of first steps.'},
+        secContact:{tag:'Contact', title:'Tell us about your project', sub:'Leave a request — we will get back within one business day with a plan of first steps.', consentTitle:'Before you continue', consentText:'To book a call we use Cal.com, which will process your name, email, and meeting details. By continuing, you agree to our Privacy Policy.', consentAccept:'Agree & continue', consentLink:'Privacy Policy'},
         secPrivacy:{tag:'Legal', title:'Privacy Policy', updated:'Last updated: July 28, 2026', intro:'This page explains what personal data Sikra collects when you visit sikra.agency or book a call with us, and how we use it.', sections:[
           {t:'Data we collect', d:'When you fill in the contact form or book a call through our Cal.com widget, we collect the information you provide — your name, email address, and the details of your request or meeting. When you browse the site, Google Analytics automatically collects anonymized usage data: pages viewed, device and browser type, and an approximate location derived from your IP address.'},
           {t:'How we use it', d:'We use contact and booking details solely to respond to your inquiry, prepare for a call, and follow up about your project. Analytics data helps us understand how visitors use the site so we can improve it — we do not use it to identify you personally.'},
           {t:'Third-party services', d:'We rely on two third-party processors: Google Analytics (Google LLC) for site analytics, and Cal.com, Inc. for call scheduling. Both process data under their own privacy policies.'},
           {t:'Cookies', d:"We do not set our own tracking cookies. Google Analytics and the embedded Cal.com booking widget may set cookies in your browser to function correctly and measure usage; you can block these through your browser's privacy settings at any time."},
-          {t:'Your rights', d:'If you are located in the EU/EEA, the UK, or elsewhere with data protection laws, you have the right to access, correct, or request deletion of any personal data we hold about you. To exercise these rights, email us at hello@sikra.dev.'},
+          {t:'Your rights', d:'If you are located in the EU/EEA, the UK, or elsewhere with data protection laws, you have the right to access, correct, or request deletion of any personal data we hold about you. To exercise these rights, email us at sikraagency@gmail.com.'},
           {t:'Changes to this policy', d:'We may update this page from time to time as our tools or practices change. The date above reflects the most recent revision.'}
         ]},
         ctaBand:{title:'Ready to talk about your product?', sub:'Describe the idea — we will suggest the best path to launch.'},
@@ -922,13 +940,13 @@ class Component extends DCLogic {
           {q:'Мобільний застосунок на React Native вийшов на обидві платформи вчасно й без сюрпризів.', n:'Балаж Тот', r:'Founder, Rideo'},
           {q:'Комунікація на висоті: рев’ю щотижня, жодних чорних скриньок.', n:'Ірина Мороз', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Контакти', title:'Розкажіть про проєкт', sub:'Залиште заявку — повернемось протягом одного робочого дня з планом перших кроків.'},
+        secContact:{tag:'Контакти', title:'Розкажіть про проєкт', sub:'Залиште заявку — повернемось протягом одного робочого дня з планом перших кроків.', consentTitle:'Перш ніж продовжити', consentText:'Для бронювання дзвінка ми використовуємо сервіс Cal.com, який обробить ваше ім’я, email та дані зустрічі. Продовжуючи, ви погоджуєтесь з нашою Політикою конфіденційності.', consentAccept:'Погоджуюсь, продовжити', consentLink:'Політика конфіденційності'},
         secPrivacy:{tag:'Правова інформація', title:'Політика конфіденційності', updated:'Оновлено: 28 липня 2026', intro:'Ця сторінка пояснює, які персональні дані Sikra збирає, коли ви відвідуєте sikra.agency або бронюєте дзвінок, і як ми їх використовуємо.', sections:[
           {t:'Які дані ми збираємо', d:'Коли ви заповнюєте форму на сайті або бронюєте дзвінок через віджет Cal.com, ми отримуємо дані, які ви вказуєте самі — ім’я, email та деталі запиту чи зустрічі. Під час звичайного перегляду сайту Google Analytics автоматично збирає знеособлені дані про використання: які сторінки ви переглядали, тип пристрою й браузера, а також приблизне місцезнаходження за IP-адресою.'},
           {t:'Як ми їх використовуємо', d:'Контактні дані та дані бронювання ми використовуємо лише для того, щоб відповісти на ваш запит, підготуватися до дзвінка й обговорити проєкт. Аналітика допомагає зрозуміти, як відвідувачі користуються сайтом, і покращувати його — ми не використовуємо ці дані для ідентифікації конкретної людини.'},
           {t:'Сторонні сервіси', d:'Ми використовуємо два сторонні сервіси: Google Analytics (Google LLC) — для аналітики сайту, і Cal.com, Inc. — для бронювання дзвінків. Обидва обробляють дані згідно з власними політиками конфіденційності.'},
           {t:'Файли cookie', d:'Ми не встановлюємо власних cookie для відстеження. Google Analytics і вбудований віджет Cal.com можуть встановлювати cookie у вашому браузері для коректної роботи й підрахунку відвідувань — ви можете заблокувати їх у будь-який момент через налаштування приватності браузера.'},
-          {t:'Ваші права', d:'Якщо ви перебуваєте в ЄС/ЄЕЗ, Великій Британії чи іншій юрисдикції із законами про захист даних, ви маєте право на доступ, виправлення або видалення будь-яких персональних даних, які ми зберігаємо про вас. Щоб скористатися цим правом, напишіть на hello@sikra.dev.'},
+          {t:'Ваші права', d:'Якщо ви перебуваєте в ЄС/ЄЕЗ, Великій Британії чи іншій юрисдикції із законами про захист даних, ви маєте право на доступ, виправлення або видалення будь-яких персональних даних, які ми зберігаємо про вас. Щоб скористатися цим правом, напишіть на sikraagency@gmail.com.'},
           {t:'Зміни політики', d:'Ми можемо час від часу оновлювати цю сторінку в міру зміни інструментів чи практик. Дата вище відображає останню редакцію.'}
         ]},
         ctaBand:{title:'Готові обговорити ваш продукт?', sub:'Опишіть ідею — запропонуємо оптимальний шлях до запуску.'},
@@ -986,13 +1004,13 @@ class Component extends DCLogic {
           {q:'A React Native appunk időben, meglepetések nélkül jelent meg mindkét platformon.', n:'Tóth Balázs', r:'Founder, Rideo'},
           {q:'Kiváló kommunikáció: heti demók, semmi fekete doboz.', n:'Iryna Moroz', r:'COO, Brightwave'}
         ],
-        secContact:{tag:'Kapcsolat', title:'Mesélj a projektedről', sub:'Küldj egy megkeresést — egy munkanapon belül visszajelzünk az első lépések tervével.'},
+        secContact:{tag:'Kapcsolat', title:'Mesélj a projektedről', sub:'Küldj egy megkeresést — egy munkanapon belül visszajelzünk az első lépések tervével.', consentTitle:'Mielőtt folytatná', consentText:'A hívás foglalásához a Cal.com szolgáltatást használjuk, amely feldolgozza a nevét, e-mail címét és a találkozó adatait. A folytatással elfogadja Adatvédelmi tájékoztatónkat.', consentAccept:'Elfogadom, folytatás', consentLink:'Adatvédelmi tájékoztató'},
         secPrivacy:{tag:'Jogi információ', title:'Adatvédelmi tájékoztató', updated:'Utolsó frissítés: 2026. július 28.', intro:'Ez az oldal elmagyarázza, milyen személyes adatokat gyűjt a Sikra, amikor Ön meglátogatja a sikra.agency oldalt vagy hívást foglal, és hogyan használjuk fel ezeket.', sections:[
           {t:'Milyen adatokat gyűjtünk', d:'Amikor kitölti a kapcsolatfelvételi űrlapot, vagy hívást foglal a Cal.com widgeten keresztül, megkapjuk az Ön által megadott adatokat — nevét, e-mail címét, valamint a megkeresés vagy a találkozó részleteit. A weboldal böngészése közben a Google Analytics automatikusan anonimizált használati adatokat gyűjt: megtekintett oldalak, eszköz- és böngészőtípus, valamint az IP-cím alapján becsült hozzávetőleges tartózkodási hely.'},
           {t:'Hogyan használjuk fel', d:'A kapcsolattartási és foglalási adatokat kizárólag arra használjuk, hogy válaszoljunk a megkeresésére, felkészüljünk a hívásra, és egyeztessünk a projektjéről. Az analitikai adatok segítenek megérteni, hogyan használják a látogatók az oldalt, hogy fejleszthessük azt — ezeket az adatokat nem használjuk személyazonosításra.'},
           {t:'Harmadik féltől származó szolgáltatások', d:'Két harmadik féltől származó szolgáltatót veszünk igénybe: a Google Analytics-et (Google LLC) az oldal elemzésére, és a Cal.com, Inc.-et a hívások ütemezésére. Mindkettő a saját adatvédelmi szabályzata szerint kezeli az adatokat.'},
           {t:'Sütik', d:'Nem használunk saját nyomkövető sütiket. A Google Analytics és a beágyazott Cal.com foglalási widget sütiket helyezhet el a böngészőjében a megfelelő működéshez és a látogatottság méréséhez — ezeket bármikor letilthatja a böngésző adatvédelmi beállításaiban.'},
-          {t:'Az Ön jogai', d:'Ha Ön az EU/EGT területén, az Egyesült Királyságban vagy más adatvédelmi jogszabállyal rendelkező joghatóságban tartózkodik, joga van hozzáférni, helyesbíteni vagy törölni kérni az Önről tárolt személyes adatokat. E jog gyakorlásához írjon nekünk a hello@sikra.dev címre.'},
+          {t:'Az Ön jogai', d:'Ha Ön az EU/EGT területén, az Egyesült Királyságban vagy más adatvédelmi jogszabállyal rendelkező joghatóságban tartózkodik, joga van hozzáférni, helyesbíteni vagy törölni kérni az Önről tárolt személyes adatokat. E jog gyakorlásához írjon nekünk a sikraagency@gmail.com címre.'},
           {t:'A szabályzat módosításai', d:'Ezt az oldalt időről időre frissíthetjük, ahogy az eszközeink vagy gyakorlatunk változik. A fenti dátum a legutóbbi módosítást tükrözi.'}
         ]},
         ctaBand:{title:'Beszéljünk a termékedről?', sub:'Írd le az ötletet — javasoljuk a legjobb utat az indulásig.'},
@@ -1062,6 +1080,7 @@ class Component extends DCLogic {
     });
 
     const privacySections = (L.secPrivacy && L.secPrivacy.sections) || [];
+    const needsConsent = page==='contact' && !st.privacyConsent;
 
     return {
       rootStyle,
@@ -1072,6 +1091,8 @@ class Component extends DCLogic {
       goFeedback: ()=>this.goTo('feedback'),
       goContact: ()=>this.goTo('contact'),
       goPrivacy: ()=>this.goTo('privacy'),
+      acceptPrivacy: ()=>this.acceptPrivacy(),
+      needsConsent,
       isHome: page==='home', isServices: page==='services', isStack: page==='stack',
       isAbout: page==='about', isFeedback: page==='feedback', isContact: page==='contact', isPrivacy: page==='privacy'
     };
