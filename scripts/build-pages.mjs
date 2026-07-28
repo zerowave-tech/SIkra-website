@@ -12,9 +12,9 @@ import vm from 'node:vm';
 const SITE = 'https://sikra.agency';
 const LANGS = ['en', 'ru', 'uk', 'hu'];
 const OG_LOCALE = { en: 'en_US', ru: 'ru_RU', uk: 'uk_UA', hu: 'hu_HU' };
-// Sitemap-worthy pages (feedback stays generated but unlisted, matching the hidden nav item)
+// Sitemap-worthy pages (feedback/privacy stay generated but unlisted, matching the hidden nav items)
 const SITEMAP_PAGES = ['home', 'services', 'stack', 'about', 'contact'];
-const ALL_PAGES = [...SITEMAP_PAGES, 'feedback'];
+const ALL_PAGES = [...SITEMAP_PAGES, 'feedback', 'privacy'];
 
 // index.html is both the hand-edited source AND (for lang=en/page=home) a
 // build output — strip anything a previous run injected before treating it
@@ -121,6 +121,12 @@ ${L.process.map(p => `<article><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></article>`
 <h1>${esc(L.secFeed.title)}</h1>
 <p>${esc(L.secFeed.sub)}</p>
 ${L.feed.map(f => `<blockquote><p>${esc(f.q)}</p><footer>${esc(f.n)}, ${esc(f.r)}</footer></blockquote>`).join('\n')}`;
+    case 'privacy':
+      return `
+<h1>${esc(L.secPrivacy.title)}</h1>
+<p>${esc(L.secPrivacy.updated)}</p>
+<p>${esc(L.secPrivacy.intro)}</p>
+${L.secPrivacy.sections.map(s => `<article><h2>${esc(s.t)}</h2><p>${esc(s.d)}</p></article>`).join('\n')}`;
     default:
       return '';
   }
