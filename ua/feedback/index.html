@@ -74,6 +74,30 @@
   @keyframes sk-float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-14px) rotate(1.5deg);}}
   @keyframes sk-pulse{0%,100%{opacity:.35;}50%{opacity:1;}}
   input,textarea,button{font-family:inherit;}
+  /* ---- Mobile only: every rule below is scoped to narrow viewports, so the
+         desktop layout above stays byte-for-byte what it always was. ---- */
+  @media (max-width:900px){
+    [data-nav-desktop]{display:none !important;}
+    [data-nav-hamburger]{display:flex !important;}
+    [data-mq="nav-bar"]{padding:0 20px !important;height:66px !important;gap:16px !important;}
+    [data-mq="nav-logo"]{height:24px !important;}
+  }
+  @media (max-width:760px){
+    [data-mq="hero"]{grid-template-columns:1fr !important;gap:36px !important;padding:44px 20px 40px !important;}
+    [data-mq="section-pad"]{padding-left:20px !important;padding-right:20px !important;}
+    [data-mq="cta-pad"]{padding:44px 24px !important;}
+    [data-mq="tiles4"]{grid-template-columns:1fr 1fr !important;}
+    [data-mq="tiles3"]{grid-template-columns:1fr !important;}
+    [data-mq="services-row"]{grid-template-columns:1fr !important;gap:14px !important;padding:28px 0 !important;}
+    [data-mq="feed-columns"]{columns:1 !important;}
+    [data-mq="contact-iframe"]{height:640px !important;}
+    [data-mq="footer-grid"]{grid-template-columns:1fr !important;gap:36px !important;}
+    [data-hero]{cursor:auto !important;}
+    [data-hero-cursor]{display:none !important;}
+  }
+  @media (max-width:480px){
+    [data-mq="tiles4"]{grid-template-columns:1fr !important;}
+  }
 </style>
 </helmet>
 <div id="sikra-root" style="background:var(--bg,#0A0A0B);color:var(--text,#F6F6F5);min-height:100vh;font-family:'Space Grotesk',sans-serif;transition:background .45s ease,color .45s ease;overflow-x:hidden;">
@@ -81,11 +105,11 @@
 
   <!-- ===== NAV ===== -->
   <nav data-nav="" style="position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:var(--navbg,rgba(10,10,11,.72));border-bottom:1px solid var(--line,rgba(255,255,255,.10));transform:translateY(0);transition:transform .35s cubic-bezier(.2,.7,.2,1);will-change:transform;">
-    <div style="max-width:1600px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+    <div data-mq="nav-bar" style="max-width:1600px;margin:0 auto;padding:0 32px;height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
       <a onClick="{{ goHome }}" style="display:flex;align-items:center;cursor:pointer;flex:0 0 auto;">
-        <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" decoding="async" style="height:26px;width:auto;display:block;">
+        <img data-sikra-img="logo" data-mq="nav-logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" decoding="async" style="height:26px;width:auto;display:block;">
       </a>
-      <div style="display:flex;align-items:center;gap:30px;flex-wrap:wrap;justify-content:flex-end;">
+      <div data-nav-desktop="" style="display:flex;align-items:center;gap:30px;flex-wrap:wrap;justify-content:flex-end;">
         <div style="display:flex;align-items:center;gap:26px;">
           <sc-for list="{{ navLinks }}" as="item" hint-placeholder-count="5">
             <a onClick="{{ item.go }}" style="position:relative;cursor:pointer;font-size:14px;letter-spacing:.01em;color:var(--navtext,#c9c9cf);padding:6px 0;transition:color .2s;" style-hover="color:var(--text,#F6F6F5);">
@@ -105,7 +129,29 @@
           <button onClick="{{ goContact }}" style="font-family:'Space Grotesk';font-size:13.5px;font-weight:600;padding:9px 18px;border-radius:6px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s,opacity .2s;white-space:nowrap;" style-hover="transform:translateY(-1px);opacity:.9;">{{ L.cta }}</button>
         </div>
       </div>
+      <button data-nav-hamburger="" onClick="{{ toggleMenu }}" aria-label="Menu" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;flex:0 0 auto;border:1px solid var(--line,rgba(255,255,255,.14));border-radius:8px;background:transparent;cursor:pointer;padding:0;">
+        <div style="width:18px;height:12px;position:relative;">
+          <span style="position:absolute;left:0;top:0;width:100%;height:1.6px;background:var(--text,#F6F6F5);transition:transform .25s,opacity .2s;{{ hamburgerLine1 }}"></span>
+          <span style="position:absolute;left:0;top:5px;width:100%;height:1.6px;background:var(--text,#F6F6F5);transition:opacity .2s;{{ hamburgerLine2 }}"></span>
+          <span style="position:absolute;left:0;bottom:0;width:100%;height:1.6px;background:var(--text,#F6F6F5);transition:transform .25s;{{ hamburgerLine3 }}"></span>
+        </div>
+      </button>
     </div>
+    <sc-if value="{{ mobileMenuOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-nav-mobile-panel="" style="border-top:1px solid var(--line,rgba(255,255,255,.10));background:var(--navbg,rgba(10,10,11,.96));padding:20px;display:flex;flex-direction:column;gap:4px;">
+        <sc-for list="{{ navLinks }}" as="item" hint-placeholder-count="5">
+          <a onClick="{{ item.go }}" style="font-size:19px;font-weight:600;font-family:'Chakra Petch',sans-serif;color:var(--text,#F6F6F5);padding:14px 4px;border-bottom:1px solid var(--line,rgba(255,255,255,.08));cursor:pointer;">{{ item.label }}</a>
+        </sc-for>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;">
+          <div style="display:flex;align-items:center;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:6px;overflow:hidden;">
+            <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="4">
+              <button onClick="{{ lg.set }}" style="border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;padding:9px 12px;text-transform:uppercase;font-weight:600;{{ lg.style }}">{{ lg.code }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ goContact }}" style="flex:1;font-family:'Space Grotesk';font-size:14px;font-weight:600;padding:13px 18px;border-radius:6px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);">{{ L.cta }}</button>
+        </div>
+      </div>
+    </sc-if>
   </nav>
 
   <!-- ===== HOME ===== -->
@@ -126,7 +172,7 @@
         <span style="position:absolute;left:30%;top:42%;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.15;animation:sk-float 9.5s ease-in-out infinite 2.6s;">TYPESCRIPT</span>
         <span style="position:absolute;right:30%;top:46%;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.2;animation:sk-float 10s ease-in-out infinite 1s;">99.9%</span>
       </div>
-      <div style="position:relative;max-width:1600px;margin:0 auto;padding:96px 32px 84px;display:grid;grid-template-columns:1.25fr .75fr;gap:64px;align-items:center;z-index:1;">
+      <div data-mq="hero" style="position:relative;max-width:1600px;margin:0 auto;padding:96px 32px 84px;display:grid;grid-template-columns:1.25fr .75fr;gap:64px;align-items:center;z-index:1;">
         <div>
           <div data-reveal="" style="display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:26px;">
             <span style="width:7px;height:7px;border-radius:50%;background:var(--text,#F6F6F5);animation:sk-pulse 2.4s ease-in-out infinite;"></span>{{ L.hero.eyebrow }}
@@ -176,7 +222,7 @@
     </sc-if>
 
     <!-- SERVICES PREVIEW -->
-    <section style="max-width:1600px;margin:0 auto;padding:96px 32px;">
+    <section data-mq="section-pad" style="max-width:1600px;margin:0 auto;padding:96px 32px;">
       <div data-reveal="" style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:48px;flex-wrap:wrap;">
         <div>
           <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:14px;">{{ L.secServices.tag }}</div>
@@ -197,12 +243,12 @@
 
     <!-- STACK PREVIEW -->
     <section style="border-top:1px solid var(--line,rgba(255,255,255,.10));border-bottom:1px solid var(--line,rgba(255,255,255,.10));background:var(--elev,#101012);">
-      <div style="max-width:1600px;margin:0 auto;padding:96px 32px;">
+      <div data-mq="section-pad" style="max-width:1600px;margin:0 auto;padding:96px 32px;">
         <div data-reveal="" style="margin-bottom:48px;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:14px;">{{ L.secTech.tag }}</div>
           <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(28px,3vw,42px);margin:0;letter-spacing:-.01em;color:var(--text,#F6F6F5);max-width:640px;text-wrap:balance;">{{ L.secTech.title }}</h2>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+        <div data-mq="tiles4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
           <sc-for list="{{ techTiles }}" as="c" hint-placeholder-count="4">
             <a onClick="{{ goStack }}" data-reveal="" style="--sk-fill:{{ c.fill }};--sk-ibd:var(--line,rgba(255,255,255,.14));--sk-ibg:transparent;position:relative;cursor:pointer;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:10px;padding:26px 22px;background:var(--bg,#0A0A0B);transition:transform .25s cubic-bezier(.2,.7,.2,1),border-color .25s;display:block;overflow:hidden;" style-hover="--sk-fill:100%;--sk-ibd:var(--lineS,rgba(255,255,255,.32));--sk-ibg:var(--chip,rgba(255,255,255,.05));transform:translateY(-6px);border-color:var(--lineS,rgba(255,255,255,.32));">
               <span style="position:absolute;top:0;left:0;height:2px;width:var(--sk-fill);background:var(--text,#F6F6F5);transition:width .5s cubic-bezier(.2,.7,.2,1);"></span>
@@ -278,8 +324,8 @@
     </sc-if>
 
     <!-- CTA BAND -->
-    <section data-reveal="" style="max-width:1600px;margin:0 auto 96px;padding:0 32px;">
-      <div style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;padding:72px 48px;background:var(--elev,#101012);text-align:center;position:relative;overflow:hidden;">
+    <section data-reveal="" data-mq="section-pad" style="max-width:1600px;margin:0 auto 96px;padding:0 32px;">
+      <div data-mq="cta-pad" style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;padding:72px 48px;background:var(--elev,#101012);text-align:center;position:relative;overflow:hidden;">
         <div style="position:absolute;inset:0;background-image:linear-gradient(var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(circle at 50% 0%,#000,transparent 70%);-webkit-mask-image:radial-gradient(circle at 50% 0%,#000,transparent 70%);"></div>
         <div style="position:relative;">
           <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(30px,3.4vw,46px);margin:0 0 16px;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.ctaBand.title }}</h2>
@@ -293,7 +339,7 @@
 
   <!-- ===== SERVICES PAGE ===== -->
   <sc-if value="{{ isServices }}" hint-placeholder-val="{{ false }}">
-  <main style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
+  <main data-mq="section-pad" style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
     <div data-reveal="" style="max-width:720px;margin-bottom:64px;">
       <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secServices.tag }}</div>
       <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secServices.title }}</h1>
@@ -301,7 +347,7 @@
     </div>
     <div style="display:flex;flex-direction:column;">
       <sc-for list="{{ services }}" as="s" hint-placeholder-count="5">
-        <div data-reveal="" style="display:grid;grid-template-columns:120px 1fr;gap:32px;padding:40px 0;border-top:1px solid var(--line,rgba(255,255,255,.12));align-items:start;">
+        <div data-reveal="" data-mq="services-row" style="display:grid;grid-template-columns:120px 1fr;gap:32px;padding:40px 0;border-top:1px solid var(--line,rgba(255,255,255,.12));align-items:start;">
           <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:40px;color:var(--faint,#5B5B61);">{{ s.no }}</div>
           <div>
             <h3 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 12px;color:var(--text,#F6F6F5);">{{ s.t }}</h3>
@@ -324,7 +370,7 @@
 
   <!-- ===== STACK PAGE ===== -->
   <sc-if value="{{ isStack }}" hint-placeholder-val="{{ false }}">
-  <main style="max-width:1080px;margin:0 auto;padding:80px 32px 96px;">
+  <main data-mq="section-pad" style="max-width:1080px;margin:0 auto;padding:80px 32px 96px;">
     <div data-reveal="" style="max-width:720px;margin-bottom:56px;">
       <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secTech.tag }}</div>
       <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secTech.title }}</h1>
@@ -356,7 +402,7 @@
 
   <!-- ===== ABOUT PAGE ===== -->
   <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
-  <main style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
+  <main data-mq="section-pad" style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
     <div data-reveal="" style="max-width:760px;margin-bottom:64px;">
       <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secAbout.tag }}</div>
       <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 24px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secAbout.title }}</h1>
@@ -373,7 +419,7 @@
     </div>
     <div data-reveal="" style="margin-bottom:64px;">
       <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:clamp(24px,2.6vw,34px);margin:0 0 32px;color:var(--text,#F6F6F5);">{{ L.valuesTitle }}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div data-mq="tiles3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
         <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
           <div style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;padding:30px 26px;background:var(--elev,#101012);">
             <h3 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:19px;margin:0 0 10px;color:var(--text,#F6F6F5);">{{ v.t }}</h3>
@@ -384,7 +430,7 @@
     </div>
     <div data-reveal="">
       <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:clamp(24px,2.6vw,34px);margin:0 0 32px;color:var(--text,#F6F6F5);">{{ L.processTitle }}</h2>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line,rgba(255,255,255,.12));border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;overflow:hidden;">
+      <div data-mq="tiles4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line,rgba(255,255,255,.12));border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;overflow:hidden;">
         <sc-for list="{{ process }}" as="p" hint-placeholder-count="4">
           <div style="background:var(--bg,#0A0A0B);padding:30px 24px;">
             <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint,#5B5B61);margin-bottom:18px;">{{ p.no }}</div>
@@ -399,13 +445,13 @@
 
   <!-- ===== FEEDBACK PAGE ===== -->
   <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
-  <main style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
+  <main data-mq="section-pad" style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
     <div data-reveal="" style="max-width:720px;margin-bottom:56px;">
       <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secFeed.tag }}</div>
       <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);margin:0 0 20px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secFeed.title }}</h1>
       <p style="font-size:18px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;">{{ L.secFeed.sub }}</p>
     </div>
-    <div style="columns:3;column-gap:16px;">
+    <div data-mq="feed-columns" style="columns:3;column-gap:16px;">
       <sc-for list="{{ feed }}" as="f" hint-placeholder-count="6">
         <div data-reveal="" style="break-inside:avoid;margin-bottom:16px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:12px;padding:28px 26px;background:var(--elev,#101012);">
           <div style="font-family:'Chakra Petch';font-size:40px;line-height:.6;color:var(--faint,#5B5B61);margin-bottom:14px;">“</div>
@@ -425,7 +471,7 @@
 
   <!-- ===== CONTACT PAGE ===== -->
   <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
-  <main style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
+  <main data-mq="section-pad" style="max-width:1600px;margin:0 auto;padding:80px 32px 96px;">
     <sc-if value="{{ needsConsent }}" hint-placeholder-val="{{ false }}">
     <div style="position:fixed;inset:0;z-index:200;background:rgba(10,10,11,.82);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px;">
       <div style="max-width:460px;width:100%;background:var(--elev,#101012);border:1px solid var(--line,rgba(255,255,255,.14));border-radius:16px;padding:36px 32px;text-align:center;">
@@ -444,7 +490,7 @@
       <p style="font-size:18px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;max-width:480px;">{{ L.secContact.sub }}</p>
     </div>
     <div data-reveal="" style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;overflow:hidden;background:var(--elev,#101012);">
-      <iframe src="https://cal.com/sikra-agency/30min?theme=dark" title="Book a call" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" style="width:100%;height:820px;border:0;display:block;background:transparent;"></iframe>
+      <iframe data-mq="contact-iframe" src="https://cal.com/sikra-agency/30min?theme=dark" title="Book a call" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" style="width:100%;height:820px;border:0;display:block;background:transparent;"></iframe>
       <div style="padding:16px 24px;border-top:1px solid var(--line,rgba(255,255,255,.12));display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
         <span style="font-size:14px;color:var(--sub,#9C9CA2);">{{ L.secContact.calendarHint }}</span>
         <a href="https://cal.com/sikra-agency/30min" target="_blank" rel="noopener noreferrer" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text,#F6F6F5);text-decoration:underline;">{{ L.footer.calendarLabel }} ↗</a>
@@ -459,7 +505,7 @@
 
   <!-- ===== PRIVACY PAGE ===== -->
   <sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
-  <main style="max-width:820px;margin:0 auto;padding:80px 32px 96px;">
+  <main data-mq="section-pad" style="max-width:820px;margin:0 auto;padding:80px 32px 96px;">
     <div data-reveal="" style="margin-bottom:48px;">
       <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub,#9C9CA2);margin-bottom:16px;">{{ L.secPrivacy.tag }}</div>
       <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(30px,3.6vw,48px);margin:0 0 16px;letter-spacing:-.01em;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.secPrivacy.title }}</h1>
@@ -479,7 +525,7 @@
 
   <!-- ===== FOOTER ===== -->
   <footer style="border-top:1px solid var(--line,rgba(255,255,255,.10));">
-    <div style="max-width:1600px;margin:0 auto;padding:56px 32px 44px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;">
+    <div data-mq="footer-grid" style="max-width:1600px;margin:0 auto;padding:56px 32px 44px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;">
       <div>
         <img data-sikra-img="logo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Sikra" loading="lazy" decoding="async" style="height:24px;width:auto;display:block;margin-bottom:18px;">
         <p style="font-size:14.5px;line-height:1.6;color:var(--sub,#9C9CA2);margin:0;max-width:300px;">{{ L.footer.tagline }}</p>
@@ -530,7 +576,7 @@ class Component extends DCLogic {
     }
     let privacyConsent = false;
     try{ privacyConsent = localStorage.getItem('sikra_privacy_consent')==='1'; }catch(e){}
-    this.state = { lang: initial.lang, page: initial.page, openTech: 0, privacyConsent };
+    this.state = { lang: initial.lang, page: initial.page, openTech: 0, privacyConsent, mobileMenuOpen:false };
     this.TOOLS = {
       front:  ['HTML','CSS','JavaScript'],
       back:   ['Supabase','PostgreSQL','Edge Functions','Row-Level Security','Auth','Storage','Realtime','Node.js'],
@@ -559,8 +605,10 @@ class Component extends DCLogic {
   goTo(pg){
     const target = this.urlFor(this.state.lang, pg);
     try{ if(location.pathname.replace(/\/+$/,'')!==target.replace(/\/+$/,'')) history.pushState(null,'',target); }catch(e){}
-    this.setState({page:pg});
+    this.setState({page:pg, mobileMenuOpen:false});
   }
+  toggleMenu(){ this.setState(s=>({ mobileMenuOpen: !s.mobileMenuOpen })); }
+  closeMenu(){ this.setState({ mobileMenuOpen:false }); }
   syncPath(){
     const {lang, page} = this.parseUrl(location.pathname);
     if(lang!==this.state.lang || page!==this.state.page) this.setState({lang, page});
@@ -1087,6 +1135,11 @@ class Component extends DCLogic {
       goContact: ()=>this.goTo('contact'),
       goPrivacy: ()=>this.goTo('privacy'),
       acceptPrivacy: ()=>this.acceptPrivacy(),
+      mobileMenuOpen: st.mobileMenuOpen,
+      toggleMenu: ()=>this.toggleMenu(),
+      hamburgerLine1: st.mobileMenuOpen ? 'transform:translateY(5px) rotate(45deg);' : '',
+      hamburgerLine2: st.mobileMenuOpen ? 'opacity:0;' : '',
+      hamburgerLine3: st.mobileMenuOpen ? 'transform:translateY(-5px) rotate(-45deg);' : '',
       needsConsent,
       isHome: page==='home', isServices: page==='services', isStack: page==='stack',
       isAbout: page==='about', isFeedback: page==='feedback', isContact: page==='contact', isPrivacy: page==='privacy'
