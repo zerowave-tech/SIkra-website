@@ -126,7 +126,11 @@ ${L.feed.map(f => `<blockquote><p>${esc(f.q)}</p><footer>${esc(f.n)}, ${esc(f.r)
 <h1>${esc(L.secPrivacy.title)}</h1>
 <p>${esc(L.secPrivacy.updated)}</p>
 <p>${esc(L.secPrivacy.intro)}</p>
-${L.secPrivacy.sections.map(s => `<article><h2>${esc(s.t)}</h2><p>${esc(s.d)}</p></article>`).join('\n')}`;
+${L.secPrivacy.sections.map(s => {
+        const items = (s.items || []).length ? `<ul>${s.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : '';
+        const tail = s.d2 ? `<p>${esc(s.d2)}</p>` : '';
+        return `<article><h2>${esc(s.t)}</h2><p>${esc(s.d)}</p>${items}${tail}</article>`;
+      }).join('\n')}`;
     default:
       return '';
   }
