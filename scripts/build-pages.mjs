@@ -98,7 +98,7 @@ ${L.services.map(s => `<article><h2>${esc(s.t)}</h2><p>${esc(s.d)}</p><p>${s.tag
 <h1>${esc(L.secTech.title)}</h1>
 <p>${esc(L.secTech.sub)}</p>
 ${L.tech.map((t, i) => {
-        const key = ['front', 'back', 'uiux', 'mobile'][i];
+        const key = ['site', 'mail', 'send', 'crm'][i];
         return `<article><h2>${esc(t.t)}</h2><p>${esc(t.d)}</p><p>${(TOOLS[key] || []).map(esc).join(', ')}</p></article>`;
       }).join('\n')}`;
     case 'about':
