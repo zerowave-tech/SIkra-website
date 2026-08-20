@@ -18,6 +18,13 @@ node_modules/
 package-lock.json
 yarn.lock
 
+# Agent skills installed by `npx skills add` — reinstallable from
+# skills-lock.json, so treated like node_modules. .claude/skills additionally
+# holds absolute symlinks into the local checkout, which git-on-Windows would
+# check out as plain text files (see the no-symlinks note in CLAUDE.md).
+.agents/
+.claude/skills/
+
 # Local env
 .env.local
 .env.*.local
