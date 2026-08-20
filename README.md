@@ -73,3 +73,24 @@ builder expects them at these paths, just not versioned.
 4. Every push to `main` auto-deploys. No build step for the site itself —
    only run `build-pages.mjs` locally before committing if you changed
    `index.html`.
+
+## Contact form (`api/brief.js`)
+
+The brief form on `/contact` POSTs to `/api/brief`, a Vercel Node function that
+forwards the submission by email through Resend. Same-origin, so it satisfies the
+`connect-src 'self'` CSP in `vercel.json` without changes.
+
+Set these in **Project → Settings → Environment Variables**:
+
+| Variable | Required | Default |
+|---|---|---|
+| `RESEND_API_KEY` | yes | — |
+| `BRIEF_TO` | no | `hello@sikra.agency` |
+| `BRIEF_FROM` | no | `Sikra <noreply@sikra.agency>` |
+
+`BRIEF_FROM` must be on a domain verified in Resend, otherwise Resend rejects the
+send and the form shows its error state. Without `RESEND_API_KEY` the endpoint
+returns 500 and the form falls back to offering a `mailto:` link.
+
+The function has no npm dependencies — it calls the Resend REST API with `fetch`,
+so the repo stays build-free.
