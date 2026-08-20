@@ -110,12 +110,21 @@ ${L.tech.map((t, i) => {
 ${L.values.map(v => `<article><h3>${esc(v.t)}</h3><p>${esc(v.d)}</p></article>`).join('\n')}
 <h2>${esc(L.processTitle)}</h2>
 ${L.process.map(p => `<article><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p></article>`).join('\n')}`;
-    case 'contact':
+    case 'contact': {
+      // The brief form is JS-driven, so the fallback offers the same fields as
+      // a plain mailto instead of a dead <form>.
+      const f = L.secContact.form;
+      const fields = [f.lName, f.lContact, f.lLangs, f.lDesc].map(esc).join(', ');
       return `
 <h1>${esc(L.secContact.title)}</h1>
 <p>${esc(L.secContact.sub)}</p>
-<p><a href="https://cal.com/sikra-agency/30min">${esc(X.calendarLabel)}</a> — ${esc(X.calendarHint)}</p>
+<section><h2>${esc(f.title)}</h2><p>${esc(f.sub)}</p>
+<p>${fields}</p>
+<p><a href="mailto:hello@sikra.agency?subject=${encodeURIComponent(f.mailSubject)}">hello@sikra.agency</a></p>
+</section>
+<p>${esc(f.orBook)} <a href="https://cal.com/sikra-agency/30min">${esc(X.calendarLabel)}</a> — ${esc(X.calendarHint)}</p>
 <p>${esc(X.locLabel)}: Budapest · Kyiv · Remote</p>`;
+    }
     case 'feedback':
       return `
 <h1>${esc(L.secFeed.title)}</h1>
