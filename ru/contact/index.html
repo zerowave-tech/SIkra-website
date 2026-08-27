@@ -504,7 +504,7 @@
           <p role="alert" style="margin:0 0 14px;font-size:13.5px;line-height:1.6;color:#FF9B9B;">
             {{ briefErrText }}
             <sc-if value="{{ briefErrIsSend }}" hint-placeholder-val="{{ false }}">
-              <a href="{{ briefMailto }}" style="color:#FF9B9B;text-decoration:underline;">hello@sikra.agency</a>
+              <a href="{{ briefMailto }}" style="color:#FF9B9B;text-decoration:underline;">{{ briefMailtoLabel }}</a>
             </sc-if>
           </p>
         </sc-if>
@@ -614,6 +614,9 @@ class Component extends DCLogic {
     // connect-src 'self' CSP without touching vercel.json. Set this to an empty
     // string to fall back to composing a mail in the visitor's own client.
     this.BRIEF_ENDPOINT = '/api/brief';
+    // Split so the address is assembled at render time; see briefMailtoLabel.
+    this.CONTACT_USER = 'hello';
+    this.CONTACT_HOST = 'sikra.agency';
     this.BRIEF_LANGS = ['RU','EN','UA','HU'];
     this.state = { lang: initial.lang, page: initial.page, openTech: 0, mobileMenuOpen:false,
                    brief:{name:'',contact:'',desc:''}, briefLangs:[], briefHp:'',
@@ -1279,6 +1282,7 @@ class Component extends DCLogic {
                   : st.briefErr==='required' ? L.secContact.form.errRequired : '',
       briefErrIsSend: st.briefErr==='send',
       briefMailto: this.briefMailtoHref(),
+      briefMailtoLabel: this.CONTACT_USER + '@' + this.CONTACT_HOST,
       briefSending: st.briefSending,
       briefBtnLabel: st.briefSending ? L.secContact.form.sending : L.secContact.form.send,
       briefBtnStyle: st.briefSending ? 'opacity:.6;cursor:default;' : '',
