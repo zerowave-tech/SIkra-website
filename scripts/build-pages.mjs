@@ -42,7 +42,6 @@ vm.createContext(context);
 vm.runInContext(scriptMatch[1] + '\nvar __EXPORTED__ = Component;', context);
 const inst = new context.__EXPORTED__({ defaultLang: 'en' });
 const DICT = inst.buildDict();
-const TOOLS = inst.TOOLS;
 
 // Small strings computed at render-time in renderVals() rather than stored in
 // buildDict() — mirrored here since they're not part of the extracted dict.
@@ -97,10 +96,7 @@ ${L.services.map(s => `<article><h2>${esc(s.t)}</h2><p>${esc(s.d)}</p><p>${s.tag
       return `
 <h1>${esc(L.secTech.title)}</h1>
 <p>${esc(L.secTech.sub)}</p>
-${L.tech.map((t, i) => {
-        const key = ['site', 'mail', 'send', 'crm'][i];
-        return `<article><h2>${esc(t.t)}</h2><p>${esc(t.d)}</p><p>${(TOOLS[key] || []).map(esc).join(', ')}</p></article>`;
-      }).join('\n')}`;
+${L.tech.map(t => `<article><h2>${esc(t.t)}</h2><p>${esc(t.d)}</p></article>`).join('\n')}`;
     case 'about':
       return `
 <h1>${esc(L.secAbout.title)}</h1>
@@ -164,6 +160,7 @@ function buildFile(lang, page) {
   html = html.replace(/(<meta property="og:title" content=")[^"]*(">)/, `$1${esc(seo.title)}$2`);
   html = html.replace(/(<meta property="og:description" content=")[^"]*(">)/, `$1${esc(seo.desc)}$2`);
   html = html.replace(/(<meta property="og:url" content=")[^"]*(">)/, `$1${url}$2`);
+  html = html.replace(/(<meta property="og:image:alt" content=")[^"]*(">)/, `$1${esc(seo.title)}$2`);
   html = html.replace(/(<meta name="twitter:title" content=")[^"]*(">)/, `$1${esc(seo.title)}$2`);
   html = html.replace(/(<meta name="twitter:description" content=")[^"]*(">)/, `$1${esc(seo.desc)}$2`);
   html = html.replace(/("description":")[^"]*(",)/, `$1${esc(seo.desc)}$2`);
@@ -194,8 +191,11 @@ for (const lang of LANGS) {
   }
 }
 
-// 404.html stays English, at root
-writeFileSync('404.html', buildFile('en', 'home'));
+// 404.html stays English, at root. It is a copy of the home page served under
+// arbitrary URLs, so it opts out of indexing instead of canonicalising itself
+// onto '/' and reading as a soft 404.
+writeFileSync('404.html', buildFile('en', 'home')
+  .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, follow">'));
 console.log('wrote 404.html');
 
 // ---- 4. Sitemap with hreflang alternates per URL ----
