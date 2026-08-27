@@ -20,7 +20,27 @@ ru/  ua/  hu/                                      ← same 6 pages, per languag
 
 scripts/
   build-pages.mjs       ← regenerates every page × language file + sitemap.xml + 404.html
+  fetch-fonts.mjs       ← re-downloads the self-hosted woff2 files + assets/fonts.css
 ```
+
+### Fonts are self-hosted
+
+The three Google Fonts (all SIL OFL, so redistribution is fine) live in
+`assets/fonts/`, and their `@font-face` rules are inlined into `<head>`. A
+`<link rel=stylesheet>` pointing at fonts.googleapis.com is render-blocking and
+chains into a second cold connection to fonts.gstatic.com for the woff2 itself;
+inlining removes both. It also means no visitor data reaches Google Fonts, so
+the privacy policy does not have to account for it.
+
+`assets/fonts.css` is the source of that inlined block. To change weights or
+subsets, edit the family list in `scripts/fetch-fonts.mjs`, re-run it, then copy
+the regenerated CSS into the `<style>` in `index.html`'s `<head>`.
+
+### The analytics init is a file, not an inline script
+
+`assets/analytics.js` holds the gtag bootstrap. It cannot be inline: the CSP in
+`vercel.json` sets `script-src` without `'unsafe-inline'`, so the browser
+refuses to run an inline block and gtag never gets configured.
 
 ### Why the page folders exist
 
