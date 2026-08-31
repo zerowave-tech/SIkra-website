@@ -46,9 +46,21 @@ module.exports = async (req, res) => {
     ? String(body.lang).toUpperCase()
     : str(body.lang).slice(0, 5);
 
-  const apiKey = process.env.RESEND_API_KEY;
+  // Trimmed because a key pasted into the Vercel UI easily carries a trailing
+  // newline or space, and a header value containing one tears the outbound
+  // request down at the runtime level — the function dies before the catch
+  // below can turn it into a response, so the caller just sees a bare gateway
+  // 502 with no clue in it. The shape check catches a truncated paste the same
+  // way: a clear 500 in the logs beats a crash.
+  const apiKey = str(process.env.RESEND_API_KEY);
   if (!apiKey) {
     console.error('brief: RESEND_API_KEY is not set');
+    return res.status(500).json({ error: 'not_configured' });
+  }
+  if (!/^re_[A-Za-z0-9_-]{10,}$/.test(apiKey)) {
+    console.error('brief: RESEND_API_KEY is malformed —',
+      `${apiKey.length} chars, starts "${apiKey.slice(0, 3)}"`,
+      '(expected a single-line key like re_xxxxxxxx)');
     return res.status(500).json({ error: 'not_configured' });
   }
 
