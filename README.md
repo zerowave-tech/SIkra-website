@@ -14,6 +14,8 @@ robots.txt / sitemap.xml
 404.html                ← generated fallback, auto-served by Vercel for unmatched routes
 
 assets/                 ← images actually used by the live site
+  vendor/               ← self-hosted React + ReactDOM (generated, see below)
+  vendor.js             ← points the dc-runtime at those copies (generated)
 services/  stack/  about/  contact/  feedback/     ← English (root) pages
 ru/  ua/  hu/                                      ← same 6 pages, per language (ua = Ukrainian)
     └── index.html      ← generated per-language, per-page copies of index.html
@@ -21,6 +23,7 @@ ru/  ua/  hu/                                      ← same 6 pages, per languag
 scripts/
   build-pages.mjs       ← regenerates every page × language file + sitemap.xml + 404.html
   fetch-fonts.mjs       ← re-downloads the self-hosted woff2 files + assets/fonts.css
+  fetch-vendor.mjs      ← re-downloads the self-hosted React UMD bundles + assets/vendor.js
 ```
 
 ### Fonts are self-hosted
@@ -35,6 +38,37 @@ the privacy policy does not have to account for it.
 `assets/fonts.css` is the source of that inlined block. To change weights or
 subsets, edit the family list in `scripts/fetch-fonts.mjs`, re-run it, then copy
 the regenerated CSS into the `<style>` in `index.html`'s `<head>`.
+
+### React is self-hosted too
+
+`support.js` boots the page with React 18, and out of the box it injects two
+`<script>` tags pointing at **unpkg.com** every time `window.React` is missing —
+which is every cold page load. That put a third-party CDN on the critical render
+path: an unpkg outage would leave every URL on the site a blank page, and even on
+a good day it cost a DNS + TLS + fetch round trip to another origin before the
+app could boot.
+
+`scripts/fetch-vendor.mjs` mirrors the two UMD bundles into `assets/vendor/` and
+writes `assets/vendor.js`, a three-line shim setting `window.__resources`. The
+runtime checks that map in its `cdnScriptFor()` before falling back to the CDN,
+so no patching of the generated `support.js` is needed. `assets/vendor.js` is
+loaded by a `defer` script placed *before* the `support.js` tag — deferred
+scripts run in document order, so the map is always populated in time.
+
+The URLs and their SRI hashes are read out of `support.js` itself rather than
+hardcoded, and every download is checked against the hash the runtime already
+commits to. So if a regenerated `support.js` bumps React, just re-run:
+
+```bash
+node scripts/fetch-vendor.mjs
+node scripts/build-pages.mjs
+```
+
+The first command also rewrites the `<!-- vendor-preload -->` block in
+`index.html` in place, so the `rel=preload` hints can never point at a stale
+version. `https://unpkg.com` is deliberately left in the CSP `script-src`: the
+CDN path stays available as a fallback, and it is SRI-pinned, so a compromised
+unpkg still cannot execute.
 
 ### The analytics init is a file, not an inline script
 

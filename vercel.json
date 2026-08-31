@@ -24,6 +24,18 @@
       ]
     },
     {
+      "source": "/assets/vendor/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/assets/vendor.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
       "source": "/support.js",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=604800" }
