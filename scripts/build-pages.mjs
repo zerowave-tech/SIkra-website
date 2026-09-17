@@ -42,6 +42,8 @@ vm.createContext(context);
 vm.runInContext(scriptMatch[1] + '\nvar __EXPORTED__ = Component;', context);
 const inst = new context.__EXPORTED__({ defaultLang: 'en' });
 const DICT = inst.buildDict();
+// Read off the same instance so the fallback can never drift from the live footer.
+const SOCIAL = inst.SOCIAL;
 
 // Small strings computed at render-time in renderVals() rather than stored in
 // buildDict() — mirrored here since they're not part of the extracted dict.
@@ -141,8 +143,16 @@ ${L.secPrivacy.sections.map(s => {
   }
 }
 
+// The social profiles live in the footer on every page, so the fallback carries
+// them on every page too — they double as the crawlable counterpart of the
+// JSON-LD "sameAs" for crawlers that never render the JS app.
+function socialHtml(lang) {
+  const links = SOCIAL.map(s => `<a href="${s.href}" rel="noopener noreferrer">${esc(s.label)}</a>`).join(' · ');
+  return `<p>${esc(DICT[lang].footer.social)}: ${links}</p>`;
+}
+
 function noscriptBlock(lang, page) {
-  return `<noscript><div style="max-width:800px;margin:0 auto;padding:32px;font-family:sans-serif;color:#F6F6F5;background:#0A0A0B;">${navHtml(lang, page)}${pageBody(lang, page)}</div></noscript>`;
+  return `<noscript><div style="max-width:800px;margin:0 auto;padding:32px;font-family:sans-serif;color:#F6F6F5;background:#0A0A0B;">${navHtml(lang, page)}${pageBody(lang, page)}${socialHtml(lang)}</div></noscript>`;
 }
 
 // ---- 3. Assemble one static file per language × page ----
