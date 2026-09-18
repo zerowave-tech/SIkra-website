@@ -108,6 +108,21 @@ This is idempotent (safe to run repeatedly, including on its own output) —
 it strips any previously-injected `<link rel="alternate">`/`<noscript>` tags
 from `index.html` before treating it as the template again.
 
+### Guides (`/guides`, `/ru/guides`, …)
+
+Long-form SEO articles targeting searches like "технический стек для агентства",
+"создание бизнеса", "tech stack for an agency". Unlike the app pages they are
+plain static HTML with no JS, so their full text is indexed on the first crawl.
+
+- Copy lives in `scripts/guides/{en,ru,uk,hu}.mjs`, one object per slug.
+- Slugs, their order and the shared chrome strings live in `scripts/guides/ui.mjs`.
+- `scripts/guides/render.mjs` renders the hub and article pages (Article,
+  FAQPage and BreadcrumbList JSON-LD, hreflang, related links).
+- `build-pages.mjs` writes them, adds them to `sitemap.xml` and links them from
+  every page's `<noscript>` block. The app footer links to them too — if you add
+  or rename a guide, update `GUIDE_SLUGS`/`guideLabels` in `index.html`'s
+  `renderVals()` as well.
+
 ## Not tracked in git (builder-managed, local only)
 
 `uploads/`, `export/`, `screenshots/`, `.thumbnail`, `Sikra Website (standalone).html`

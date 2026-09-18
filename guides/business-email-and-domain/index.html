@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/assets/favicon-16x16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<title>Business email on your own domain — setup guide | Sikra</title>
+<meta name="description" content="How to set up business email on your company domain: choosing a provider, MX, SPF, DKIM and DMARC so your mail stays out of spam. A guide for businesses and agencies.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0A0A0B">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://sikra.agency/guides/business-email-and-domain">
+<link rel="alternate" hreflang="en" href="https://sikra.agency/guides/business-email-and-domain">
+<link rel="alternate" hreflang="ru" href="https://sikra.agency/ru/guides/business-email-and-domain">
+<link rel="alternate" hreflang="uk" href="https://sikra.agency/ua/guides/business-email-and-domain">
+<link rel="alternate" hreflang="hu" href="https://sikra.agency/hu/guides/business-email-and-domain">
+<link rel="alternate" hreflang="x-default" href="https://sikra.agency/guides/business-email-and-domain">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Sikra">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Business email on your own domain — setup guide | Sikra">
+<meta property="og:description" content="How to set up business email on your company domain: choosing a provider, MX, SPF, DKIM and DMARC so your mail stays out of spam. A guide for businesses and agencies.">
+<meta property="og:url" content="https://sikra.agency/guides/business-email-and-domain">
+<meta property="og:image" content="https://sikra.agency/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Business email on your own domain — setup guide | Sikra">
+<meta name="twitter:description" content="How to set up business email on your company domain: choosing a provider, MX, SPF, DKIM and DMARC so your mail stays out of spam. A guide for businesses and agencies.">
+<meta name="twitter:image" content="https://sikra.agency/assets/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Business email and domain: how to set them up properly","description":"How to set up business email on your company domain: choosing a provider, MX, SPF, DKIM and DMARC so your mail stays out of spam. A guide for businesses and agencies.","inLanguage":"en","mainEntityOfPage":"https://sikra.agency/guides/business-email-and-domain","url":"https://sikra.agency/guides/business-email-and-domain","image":"https://sikra.agency/assets/og-image.png","datePublished":"2026-09-18","dateModified":"2026-09-18","author":{"@type":"Organization","name":"Sikra","url":"https://sikra.agency/","logo":"https://sikra.agency/assets/sikra-logo-dark.png"},"publisher":{"@type":"Organization","name":"Sikra","url":"https://sikra.agency/","logo":"https://sikra.agency/assets/sikra-logo-dark.png"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does email from my company domain go to spam?","acceptedAnswer":{"@type":"Answer","text":"Most often SPF, DKIM and DMARC are missing or misconfigured, or the domain is new and has no reputation yet. Checking and fixing the DNS records usually solves it."}},{"@type":"Question","name":"Can I move email to another provider without losing messages?","acceptedAnswer":{"@type":"Answer","text":"Yes. Messages are copied with migration tools and the MX records are switched last, so no new mail is lost."}},{"@type":"Question","name":"How many mailboxes does a small company need?","acceptedAnswer":{"@type":"Answer","text":"One personal mailbox per employee, plus free aliases such as info@, sales@ and support@ forwarded to the right people."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://sikra.agency/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://sikra.agency/guides"},{"@type":"ListItem","position":3,"name":"Business email and domain: how to set them up properly","item":"https://sikra.agency/guides/business-email-and-domain"}]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VM756WGCL0"></script>
+<script src="/assets/analytics.js" defer></script>
+<style>@font-face {font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/chakra-petch-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/chakra-petch-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/chakra-petch-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/chakra-petch-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/chakra-petch-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/chakra-petch-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/space-grotesk-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/space-grotesk-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/space-grotesk-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/space-grotesk-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/space-grotesk-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/space-grotesk-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/space-grotesk-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'Space Grotesk';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/space-grotesk-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/jetbrains-mono-400-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/jetbrains-mono-400-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/jetbrains-mono-400-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/jetbrains-mono-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/jetbrains-mono-500-cyrillic-ext.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/jetbrains-mono-500-cyrillic.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/jetbrains-mono-500-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face {font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/jetbrains-mono-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}</style>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#0A0A0B;color:#F6F6F5;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.65}
+::selection{background:#F6F6F5;color:#0A0A0B}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+header.top{position:sticky;top:0;z-index:10;background:rgba(10,10,11,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.10)}
+header.top .wrap{height:66px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+header.top img{height:24px;width:auto;display:block}
+.nav{display:flex;align-items:center;gap:22px;font-size:14px}
+.nav .pages{display:contents}
+.nav a{text-decoration:none;color:#c9c9cf}
+.nav a:hover,.nav a[aria-current]{color:#F6F6F5}
+.nav a.btn,.nav a.btn:hover{color:#0A0A0B}
+.langs{display:flex;border:1px solid rgba(255,255,255,.12);border-radius:6px;overflow:hidden}
+.langs a{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;text-decoration:none;color:#9C9CA2}
+.langs a[aria-current]{background:#F6F6F5;color:#0A0A0B}
+.btn{display:inline-block;font-weight:600;font-size:15px;padding:13px 24px;border-radius:7px;background:#F6F6F5;color:#0A0A0B;text-decoration:none;white-space:nowrap}
+.btn:hover{opacity:.9}
+.crumbs{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;color:#5B5B61;margin:40px 0 22px}
+.crumbs a{color:#9C9CA2;text-decoration:none}
+.crumbs a:hover{color:#F6F6F5}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9C9CA2}
+h1,h2,h3{font-family:'Chakra Petch',sans-serif;line-height:1.15;letter-spacing:-.005em;text-wrap:balance}
+h1{font-size:clamp(32px,4.2vw,52px);font-weight:700;margin:14px 0 22px}
+h2{font-size:clamp(23px,2.4vw,30px);font-weight:600;margin:52px 0 16px;scroll-margin-top:90px}
+h3{font-size:20px;font-weight:600;margin:0 0 10px}
+.lead{font-size:19px;color:#c9c9cf;max-width:760px;margin:0}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:64px;align-items:start;padding-bottom:40px}
+article p,article li{font-size:17px;color:#d4d4d8}
+article p{margin:0 0 16px}
+article ul,article ol{margin:0 0 16px;padding-left:22px}
+article li{margin:0 0 9px}
+article li::marker{color:#5B5B61}
+.toc{position:sticky;top:96px;border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:20px 22px;background:#101012}
+.toc .eyebrow{display:block;margin-bottom:12px;font-size:11px}
+.toc ol{margin:0;padding-left:18px;font-size:14px;line-height:1.5}
+.toc li{margin:0 0 8px;color:#5B5B61}
+.toc a{color:#9C9CA2;text-decoration:none}
+.toc a:hover{color:#F6F6F5}
+details{border-top:1px solid rgba(255,255,255,.10);padding:16px 0}
+details:last-of-type{border-bottom:1px solid rgba(255,255,255,.10)}
+summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-family:'JetBrains Mono',monospace;color:#9C9CA2;flex:0 0 auto}
+details[open] summary::after{content:'\2212'}
+details p{margin:12px 0 0}
+.cta{margin:56px 0 0;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:36px;background:#101012;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
+.cta h2{margin:0 0 8px;font-size:26px}
+.cta p{margin:0;color:#9C9CA2;max-width:560px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:0 0 20px}
+.card{display:flex;flex-direction:column;gap:10px;border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:24px;background:#101012;text-decoration:none;transition:border-color .2s,transform .2s}
+.card:hover{border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+.card .no{font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B5B61}
+.card p{margin:0;font-size:15px;color:#9C9CA2;line-height:1.55}
+.card .more{margin-top:auto;font-size:14px;font-weight:600}
+.related{border-top:1px solid rgba(255,255,255,.10);margin-top:64px;padding-top:8px}
+footer.bottom{border-top:1px solid rgba(255,255,255,.10);margin-top:72px}
+footer.bottom .wrap{padding-top:36px;padding-bottom:36px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:14px;color:#9C9CA2}
+footer.bottom p{margin:0;max-width:420px}
+footer.bottom nav{display:flex;gap:18px;flex-wrap:wrap}
+footer.bottom a{color:#9C9CA2;text-decoration:none}
+footer.bottom a:hover{color:#F6F6F5}
+.meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B5B61;margin-top:18px}
+@media (max-width:900px){
+  .nav .pages{display:none}
+  .layout{grid-template-columns:1fr;gap:0}
+  .toc{position:static;margin:28px 0 0}
+}
+@media (max-width:560px){
+  .wrap{padding:0 18px}
+  header.top .btn{display:none}
+  .cta{padding:26px}
+}</style>
+</head>
+<body><header class="top"><div class="wrap">
+<a href="/" aria-label="Sikra"><img src="/assets/sikra-logo-dark.webp" width="180" height="80" alt="Sikra"></a>
+<nav class="nav" aria-label="Sikra">
+<span class="pages">
+<a href="/services">Services</a>
+<a href="/stack">Toolkit</a>
+<a href="/guides" aria-current="page">Guides</a>
+</span>
+<span class="langs"><a href="/guides/business-email-and-domain" hreflang="en" aria-current="true">en</a><a href="/ru/guides/business-email-and-domain" hreflang="ru">ru</a><a href="/ua/guides/business-email-and-domain" hreflang="uk">ua</a><a href="/hu/guides/business-email-and-domain" hreflang="hu">hu</a></span>
+<a class="btn" href="/contact" style="padding:9px 18px;font-size:13.5px">Discuss your launch</a>
+</nav>
+</div></header><main class="wrap">
+<div class="crumbs"><a href="/">Home</a> / <a href="/guides">Guides</a></div>
+<span class="eyebrow">Guides</span>
+<h1>Business email and domain: how to set them up properly</h1>
+<p class="lead">An address like name@company is the first thing a client sees after your website. But the DNS records behind it matter more than the address: without them even legitimate email lands in spam. Here is how to set up business email and a domain.</p>
+<p class="meta">Sikra · Updated <time datetime="2026-09-18">2026-09-18</time></p>
+<div class="layout">
+<article>
+<section><h2 id="s1">Choosing a domain</h2>
+
+<ul><li>Short and easy to spell out over the phone, without hyphens or digits.</li><li>On a TLD your clients trust: .com, your country code or an industry TLD.</li><li>Registered to the company, with auto-renewal switched on.</li><li>DNS kept with a reliable provider such as Cloudflare.</li></ul></section>
+<section><h2 id="s2">Choosing an email provider</h2>
+<p>The most common options are Google Workspace, Microsoft 365 and Zoho Mail. They differ in interface, office apps and price per user. For a small team the brand matters less than having every mailbox, alias such as info@ and sales@, and shared calendar in one place.</p>
+</section>
+<section><h2 id="s3">DNS records: MX, SPF, DKIM, DMARC</h2>
+<p>Since 2024 Gmail and Yahoo require SPF, DKIM and DMARC from bulk senders. Even if you only email clients by hand, deliverability is noticeably worse without them.</p>
+<ul><li>MX — tells the world which server receives mail for the domain.</li><li>SPF — lists the servers allowed to send mail on behalf of the domain.</li><li>DKIM — a cryptographic signature proving the message was not tampered with.</li><li>DMARC — the policy for messages that fail those checks, plus reports on spoofing attempts.</li></ul></section>
+<section><h2 id="s4">Campaigns and transactional email</h2>
+<p>Your campaign tool and website notifications (confirmations, receipts) must also be included in SPF and signed with DKIM. Bulk campaigns are often sent from a separate subdomain so that campaign issues do not hurt day-to-day email.</p>
+</section>
+<section><h2 id="faq">Frequently asked questions</h2>
+<details><summary>Why does email from my company domain go to spam?</summary><p>Most often SPF, DKIM and DMARC are missing or misconfigured, or the domain is new and has no reputation yet. Checking and fixing the DNS records usually solves it.</p></details>
+<details><summary>Can I move email to another provider without losing messages?</summary><p>Yes. Messages are copied with migration tools and the MX records are switched last, so no new mail is lost.</p></details>
+<details><summary>How many mailboxes does a small company need?</summary><p>One personal mailbox per employee, plus free aliases such as info@, sales@ and support@ forwarded to the right people.</p></details>
+</section>
+<aside class="cta"><div><h2>Want this set up for you?</h2><p>Tell us about your agency or business — we reply within one business day with a scope and timeline.</p></div><a class="btn" href="/contact">Discuss your launch</a></aside>
+</article>
+<nav class="toc" aria-label="On this page"><span class="eyebrow">On this page</span><ol><li><a href="#s1">Choosing a domain</a></li><li><a href="#s2">Choosing an email provider</a></li><li><a href="#s3">DNS records: MX, SPF, DKIM, DMARC</a></li><li><a href="#s4">Campaigns and transactional email</a></li><li><a href="#faq">Frequently asked questions</a></li></ol></nav>
+</div>
+<section class="related"><h2>More guides</h2><div class="cards"><a class="card" href="/guides/crm-for-small-business"><span class="no">06</span><h3>CRM for a small business or agency: how to choose and roll it out</h3><p>How to choose a CRM for a small business or agency: HubSpot, Pipedrive, Kommo, Bitrix24 and others. Pipeline, website and email integration, and a painless rollout.</p><span class="more">Read the guide →</span></a><a class="card" href="/guides/tech-stack-for-agency"><span class="no">01</span><h3>The tech stack for an agency: what you need in 2026</h3><p>The tech stack for an agency: domain, website, work email, CRM, database, email campaigns, forms, payments and analytics. What to pick and in what order.</p><span class="more">Read the guide →</span></a><a class="card" href="/guides/tech-stack-for-business"><span class="no">02</span><h3>The tech stack for a business: which tools a small or mid-sized business needs</h3><p>The tech stack for a business: website, domain, work email, CRM, database, email campaigns, forms and payments. A ready-made set for small and mid-sized businesses.</p><span class="more">Read the guide →</span></a></div></section>
+</main><footer class="bottom"><div class="wrap">
+<p>Sikra helps launch agencies and businesses: website, domain and email, campaigns, databases, CRM, forms and payments.</p>
+<nav>
+<a href="/">Home</a>
+<a href="/services">Services</a>
+<a href="/stack">Toolkit</a>
+<a href="/guides">Guides</a>
+<a href="/contact">Contact</a>
+<a href="/privacy">Privacy</a>
+</nav>
+</div></footer>
+</body>
+</html>

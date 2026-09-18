@@ -8,6 +8,8 @@
 // Run after every change to index.html:  node scripts/build-pages.mjs
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import vm from 'node:vm';
+import { GUIDES, GUIDE_SLUGS, renderHub, renderGuide, hubUrl, guideUrl } from './guides/render.mjs';
+import { UI as GUIDE_UI } from './guides/ui.mjs';
 
 const SITE = 'https://sikra.agency';
 const LANGS = ['en', 'ru', 'uk', 'hu'];
@@ -68,8 +70,16 @@ function navHtml(lang, page) {
     return `<a href="${urlFor(lang, p)}"${p === page ? ' aria-current="page"' : ''}>${esc(label)}</a>`;
   }).join(' · ');
   const home = `<a href="${urlFor(lang, 'home')}">Sikra</a>`;
+  const guides = `<a href="${hubUrl(lang)}">${esc(GUIDE_UI[lang].guides)}</a>`;
   const langSwitch = LANGS.map(l => `<a href="${urlFor(l, page)}" hreflang="${l}">${(URL_SLUG[l] || 'en').toUpperCase()}</a>`).join(' ');
-  return `<nav>${home} · ${links}</nav><p>${langSwitch}</p>`;
+  return `<nav>${home} · ${links} · ${guides}</nav><p>${langSwitch}</p>`;
+}
+
+// Every noscript page ends with links to the guides, so the static articles
+// are reachable from every URL in the crawl graph, not only from the sitemap.
+function guideLinks(lang) {
+  return `<section><h2>${esc(GUIDE_UI[lang].guides)}</h2><ul>${GUIDE_SLUGS.map(s =>
+    `<li><a href="${guideUrl(lang, s)}">${esc(GUIDES[lang][s].title)}</a></li>`).join('')}</ul></section>`;
 }
 
 function pageBody(lang, page) {
@@ -142,7 +152,7 @@ ${L.secPrivacy.sections.map(s => {
 }
 
 function noscriptBlock(lang, page) {
-  return `<noscript><div style="max-width:800px;margin:0 auto;padding:32px;font-family:sans-serif;color:#F6F6F5;background:#0A0A0B;">${navHtml(lang, page)}${pageBody(lang, page)}</div></noscript>`;
+  return `<noscript><div style="max-width:800px;margin:0 auto;padding:32px;font-family:sans-serif;color:#F6F6F5;background:#0A0A0B;">${navHtml(lang, page)}${pageBody(lang, page)}${guideLinks(lang)}</div></noscript>`;
 }
 
 // ---- 3. Assemble one static file per language × page ----
@@ -198,6 +208,23 @@ writeFileSync('404.html', buildFile('en', 'home')
   .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, follow">'));
 console.log('wrote 404.html');
 
+// ---- 3b. Static guide pages (long-form SEO content, no JS) ----
+// Reuse the exact @font-face block inlined in index.html's <head>.
+const fontCss = (src.match(/<style>@font-face[\s\S]*?<\/style>/) || [''])[0];
+if (!fontCss) throw new Error('Could not find the inlined @font-face block in index.html');
+for (const lang of LANGS) {
+  const hubDir = hubUrl(lang).slice(1);
+  mkdirSync(hubDir, { recursive: true });
+  writeFileSync(`${hubDir}/index.html`, renderHub(lang, fontCss));
+  console.log(`wrote ${hubDir}/index.html`);
+  for (const slug of GUIDE_SLUGS) {
+    const dir = guideUrl(lang, slug).slice(1);
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(`${dir}/index.html`, renderGuide(lang, slug, fontCss));
+    console.log(`wrote ${dir}/index.html`);
+  }
+}
+
 // ---- 4. Sitemap with hreflang alternates per URL ----
 const urlBlocks = [];
 for (const page of SITEMAP_PAGES) {
@@ -209,6 +236,20 @@ for (const page of SITEMAP_PAGES) {
 ${alternates}
     <changefreq>${page === 'home' ? 'weekly' : 'monthly'}</changefreq>
     <priority>${page === 'home' ? '1.0' : page === 'contact' ? '0.9' : '0.7'}</priority>
+  </url>`);
+  }
+}
+// Guides: the hub plus every article, each with its own hreflang set.
+const guideEntries = [[hubUrl, '0.8'], ...GUIDE_SLUGS.map(s => [(l) => guideUrl(l, s), '0.8'])];
+for (const [urlOf, priority] of guideEntries) {
+  for (const lang of LANGS) {
+    const alternates = LANGS.map(l => `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE}${urlOf(l)}"/>`).join('\n')
+      + `\n    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${urlOf('en')}"/>`;
+    urlBlocks.push(`  <url>
+    <loc>${SITE}${urlOf(lang)}</loc>
+${alternates}
+    <changefreq>monthly</changefreq>
+    <priority>${priority}</priority>
   </url>`);
   }
 }
