@@ -35,6 +35,7 @@
 <link rel="preload" href="/assets/vendor/react-18.3.1.js" as="script">
 <link rel="preload" href="/assets/vendor/react-dom-18.3.1.js" as="script">
 <!-- vendor-preload:end -->
+<script src="/assets/theme.js"></script>
 <script src="/assets/vendor.js" defer></script>
 <script src="/support.js" defer></script>
 <!-- Google tag (gtag.js) -->
@@ -42,9 +43,19 @@
 <script src="/assets/analytics.js" defer></script>
 <style>
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;color-scheme:dark;}
   body{margin:0;background:#0A0A0B;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
   ::selection{background:#f6f6f5;color:#0a0a0b;}
+  /* Light theme: data-theme is set on <html> by assets/theme.js before paint and
+     kept in sync by the component. Everything inside #sikra-root is themed via
+     its tokens(); these rules only cover what sits outside it. */
+  html[data-theme="light"]{color-scheme:light;}
+  html[data-theme="light"] body{background:#F5F4F0;}
+  html[data-theme="light"] ::selection{background:#0B0B0C;color:#F5F4F0;}
+  /* Held for the length of a theme switch so every element takes its new
+     colours at once instead of running its own colour transition. */
+  html[data-theme-switching] *,html[data-theme-switching] *::before,html[data-theme-switching] *::after{transition:none !important;}
+  ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal;}
   @keyframes sk-marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   @keyframes sk-float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-14px) rotate(1.5deg);}}
   @keyframes sk-pulse{0%,100%{opacity:.35;}50%{opacity:1;}}
@@ -53,7 +64,7 @@
          desktop layout above stays byte-for-byte what it always was. ---- */
   @media (max-width:900px){
     [data-nav-desktop]{display:none !important;}
-    [data-nav-hamburger]{display:flex !important;}
+    [data-nav-hamburger],[data-nav-theme]{display:flex !important;}
     [data-mq="nav-bar"]{padding:0 20px !important;height:66px !important;gap:16px !important;}
     [data-mq="nav-logo"]{height:24px !important;}
   }
@@ -120,9 +131,25 @@
               <button onClick="{{ lg.set }}" style="border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;padding:6px 8px;text-transform:uppercase;font-weight:600;transition:background .2s,color .2s;{{ lg.style }}">{{ lg.code }}</button>
             </sc-for>
           </div>
+          <button type="button" onClick="{{ toggleTheme }}" onPointerEnter="{{ warmTheme }}" onFocus="{{ warmTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;flex:0 0 auto;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:6px;background:transparent;color:var(--sub,#9C9CA2);cursor:pointer;transition:color .2s,border-color .2s;" style-hover="color:var(--text,#F6F6F5);border-color:var(--lineS,rgba(255,255,255,.22));">
+            <sc-if value="{{ isDark }}" hint-placeholder-val="{{ true }}">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" style="display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg>
+            </sc-if>
+            <sc-if value="{{ isLight }}" hint-placeholder-val="{{ false }}">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" style="display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;"><path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a6.8 6.8 0 0 0 10.8 10.8z"></path></svg>
+            </sc-if>
+          </button>
           <button onClick="{{ goContact }}" style="font-family:'Space Grotesk';font-size:13.5px;font-weight:600;padding:9px 18px;border-radius:6px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s,opacity .2s;white-space:nowrap;" style-hover="transform:translateY(-1px);opacity:.9;">{{ L.cta }}</button>
         </div>
       </div>
+      <button data-nav-theme="" type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;flex:0 0 auto;margin-left:auto;border:1px solid var(--line,rgba(255,255,255,.14));border-radius:8px;background:transparent;color:var(--text,#F6F6F5);cursor:pointer;padding:0;">
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ true }}">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg>
+        </sc-if>
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ false }}">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;"><path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a6.8 6.8 0 0 0 10.8 10.8z"></path></svg>
+        </sc-if>
+      </button>
       <button data-nav-hamburger="" onClick="{{ toggleMenu }}" aria-label="{{ menuLabel }}" aria-expanded="{{ mobileMenuOpen }}" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;flex:0 0 auto;border:1px solid var(--line,rgba(255,255,255,.14));border-radius:8px;background:transparent;cursor:pointer;padding:0;">
         <div style="width:18px;height:12px;position:relative;">
           <span style="position:absolute;left:0;top:0;width:100%;height:1.6px;background:var(--text,#F6F6F5);transition:transform .25s,opacity .2s;{{ hamburgerLine1 }}"></span>
@@ -153,8 +180,8 @@
   <main>
     <!-- HERO -->
     <section data-hero="" style="position:relative;overflow:hidden;border-bottom:1px solid var(--line,rgba(255,255,255,.10));cursor:none;">
-      <div data-hero-glow="" style="position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 62%);pointer-events:none;left:50%;top:30%;transform:translate(-50%,-50%);opacity:0;transition:opacity .5s ease;z-index:0;"></div>
-      <div data-hero-cursor="" style="position:fixed;left:0;top:0;width:26px;height:26px;border-radius:50%;background:#F6F6F5;border:3px solid #0A0A0B;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(0);transition:opacity .2s ease;z-index:60;will-change:transform;"></div>
+      <div data-hero-glow="" style="position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,var(--glow,rgba(255,255,255,.08)),transparent 62%);pointer-events:none;left:50%;top:30%;transform:translate(-50%,-50%);opacity:0;transition:opacity .5s ease;z-index:0;"></div>
+      <div data-hero-cursor="" style="position:fixed;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--inv,#F6F6F5);border:3px solid var(--bg,#0A0A0B);pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(0);transition:opacity .2s ease;z-index:60;will-change:transform;"></div>
       <div style="position:absolute;inset:0;background-image:linear-gradient(var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(255,255,255,.03)) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 90% 80% at 70% 20%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse 90% 80% at 70% 20%,#000 30%,transparent 80%);"></div>
       <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;">
         <span style="position:absolute;left:6%;top:16%;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;color:var(--sub,#9C9CA2);opacity:.22;animation:sk-float 9s ease-in-out infinite;">DOMAIN</span>
@@ -174,7 +201,7 @@
           <h1 data-reveal="" style="position:relative;z-index:1;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(38px,4.4vw,64px);line-height:1.08;letter-spacing:-.01em;margin:0 0 26px;color:var(--text,#F6F6F5);text-wrap:balance;">{{ L.hero.title }}</h1>
           <p data-reveal="" style="font-size:19px;line-height:1.55;color:var(--sub,#9C9CA2);max-width:520px;margin:0 0 38px;">{{ L.hero.sub }}</p>
           <div data-reveal="" style="display:flex;gap:14px;flex-wrap:wrap;">
-            <button onClick="{{ goContact }}" style="white-space:nowrap;font-size:15px;font-weight:600;padding:14px 26px;border-radius:7px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s,box-shadow .2s;" style-hover="transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.25);">{{ L.hero.cta1 }}</button>
+            <button onClick="{{ goContact }}" style="white-space:nowrap;font-size:15px;font-weight:600;padding:14px 26px;border-radius:7px;border:none;cursor:pointer;background:var(--inv,#F6F6F5);color:var(--invText,#0A0A0B);transition:transform .18s,box-shadow .2s;" style-hover="transform:translateY(-2px);box-shadow:0 12px 30px var(--shadow,rgba(0,0,0,.25));">{{ L.hero.cta1 }}</button>
             <button onClick="{{ goServices }}" style="white-space:nowrap;font-size:15px;font-weight:500;padding:14px 26px;border-radius:7px;cursor:pointer;background:transparent;color:var(--text,#F6F6F5);border:1px solid var(--lineS,rgba(255,255,255,.22));transition:border-color .2s,transform .18s;" style-hover="transform:translateY(-2px);border-color:var(--text,#F6F6F5);">{{ L.hero.cta2 }}</button>
           </div>
         </div>
@@ -506,10 +533,10 @@
           <input tabindex="-1" autocomplete="off" value="{{ briefHp }}" onChange="{{ onBriefHp }}" placeholder="Company">
         </div>
         <sc-if value="{{ briefErr }}" hint-placeholder-val="{{ false }}">
-          <p role="alert" style="margin:0 0 14px;font-size:13.5px;line-height:1.6;color:#FF9B9B;">
+          <p role="alert" style="margin:0 0 14px;font-size:13.5px;line-height:1.6;color:var(--danger,#FF9B9B);">
             {{ briefErrText }}
             <sc-if value="{{ briefErrIsSend }}" hint-placeholder-val="{{ false }}">
-              <a href="{{ briefMailto }}" style="color:#FF9B9B;text-decoration:underline;">{{ briefMailtoLabel }}</a>
+              <a href="{{ briefMailto }}" style="color:var(--danger,#FF9B9B);text-decoration:underline;">{{ briefMailtoLabel }}</a>
             </sc-if>
           </p>
         </sc-if>
@@ -518,7 +545,14 @@
     </div>
     <p data-reveal="" style="margin:0 0 14px;font-size:14px;color:var(--sub,#9C9CA2);">{{ L.secContact.form.orBook }}</p>
     <div data-reveal="" style="border:1px solid var(--line,rgba(255,255,255,.12));border-radius:16px;overflow:hidden;background:var(--elev,#101012);">
-      <iframe data-mq="contact-iframe" src="https://cal.com/sikra-agency/30min?theme=dark" title="Book a call" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" style="width:100%;height:820px;border:0;display:block;background:transparent;"></iframe>
+      <!-- One iframe per theme rather than rewriting src: re-pointing a loaded
+           iframe pushes a history entry, so Back would land inside Cal.com. -->
+      <sc-if value="{{ isDark }}" hint-placeholder-val="{{ true }}">
+        <iframe data-mq="contact-iframe" src="https://cal.com/sikra-agency/30min?theme=dark" title="Book a call" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" style="width:100%;height:820px;border:0;display:block;background:transparent;"></iframe>
+      </sc-if>
+      <sc-if value="{{ isLight }}" hint-placeholder-val="{{ false }}">
+        <iframe data-mq="contact-iframe" src="https://cal.com/sikra-agency/30min?theme=light" title="Book a call" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" style="width:100%;height:820px;border:0;display:block;background:transparent;"></iframe>
+      </sc-if>
       <div style="padding:16px 24px;border-top:1px solid var(--line,rgba(255,255,255,.12));display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
         <span style="font-size:14px;color:var(--sub,#9C9CA2);">{{ L.secContact.calendarHint }}</span>
         <a href="https://cal.com/sikra-agency/30min" target="_blank" rel="noopener noreferrer" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text,#F6F6F5);text-decoration:underline;">{{ L.footer.calendarLabel }} ↗</a>
@@ -623,7 +657,9 @@ class Component extends DCLogic {
     this.CONTACT_USER = 'hello';
     this.CONTACT_HOST = 'sikra.agency';
     this.BRIEF_LANGS = ['RU','EN','UA','HU'];
-    this.state = { lang: initial.lang, page: initial.page, openTech: 0, mobileMenuOpen:false,
+    // Must match the key assets/theme.js reads before paint.
+    this.THEME_KEY = 'sikra-theme';
+    this.state = { lang: initial.lang, page: initial.page, theme: this.initialTheme(), openTech: 0, mobileMenuOpen:false,
                    brief:{name:'',contact:'',desc:''}, briefLangs:[], briefHp:'',
                    briefSent:false, briefSending:false, briefErr:'' };
     this.T = this.buildDict();
@@ -658,6 +694,43 @@ class Component extends DCLogic {
     this.setState({page:pg, mobileMenuOpen:false});
   }
   toggleMenu(){ this.setState(s=>({ mobileMenuOpen: !s.mobileMenuOpen })); }
+  initialTheme(){
+    // assets/theme.js has already put a saved choice on <html> before paint, so
+    // the first render starts from the same theme. Dark is the default.
+    try{ return document.documentElement.getAttribute('data-theme')==='light' ? 'light' : 'dark'; }catch(e){ return 'dark'; }
+  }
+  themeImg(kind, theme){ return '/assets/sikra-'+kind+'-'+theme+'.webp'; }
+  warmTheme(){
+    // Fetch the other theme's logo and mark ahead of the click (on hover/focus
+    // of the toggle), so they are not blank in the new frame when it swaps.
+    if(this._warmed) return;
+    this._warmed=true;
+    const other = this.state.theme==='light' ? 'dark' : 'light';
+    ['logo','mark'].forEach(k=>{ const img=new Image(); img.src=this.themeImg(k, other); });
+  }
+  toggleTheme(e){
+    const next = this.state.theme==='light' ? 'dark' : 'light';
+    try{ localStorage.setItem(this.THEME_KEY, next); }catch(err){}
+    this.warmTheme();
+    const html=document.documentElement;
+    const btn = e && e.currentTarget && e.currentTarget.getBoundingClientRect ? e.currentTarget.getBoundingClientRect() : null;
+    const commit=()=>new Promise(res=>this.setState({theme:next}, res));
+    const done=()=>requestAnimationFrame(()=>html.removeAttribute('data-theme-switching'));
+    html.setAttribute('data-theme-switching','');
+    const reduce = this.props.reduceMotion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if(reduce || !document.startViewTransition){ commit().then(done); return; }
+    // The new theme grows out of the toggle as a circle over a snapshot of the
+    // old one. Browsers without View Transitions just swap instantly above.
+    const vt=document.startViewTransition(commit);
+    vt.ready.then(()=>{
+      const w=window.innerWidth, h=window.innerHeight;
+      const x = btn ? btn.left+btn.width/2 : w-40, y = btn ? btn.top+btn.height/2 : 36;
+      const r = Math.hypot(Math.max(x, w-x), Math.max(y, h-y));
+      html.animate({ clipPath:['circle(0px at '+x+'px '+y+'px)', 'circle('+r+'px at '+x+'px '+y+'px)'] },
+        { duration:560, easing:'cubic-bezier(.2,.7,.2,1)', pseudoElement:'::view-transition-new(root)' });
+    }).catch(()=>{});
+    vt.finished.then(done, done);
+  }
   setBrief(k,v){ this.setState(s=>({ brief: Object.assign({}, s.brief, {[k]:v}), briefErr:'' })); }
   toggleBriefLang(code){
     this.setState(s=>({ briefLangs: s.briefLangs.indexOf(code)>=0
@@ -821,8 +894,15 @@ class Component extends DCLogic {
     Object.keys(t).forEach(k=>root.style.setProperty(k, t[k]));
     root.style.setProperty('background', t['--bg']);
     root.style.setProperty('color', t['--text']);
-    const logo='/assets/sikra-logo-dark.webp';
-    const mark='/assets/sikra-mark-dark.webp';
+    // <html> carries the theme too, for the few rules in <head> that style
+    // things outside #sikra-root (body background, ::selection, color-scheme).
+    const theme = this.state.theme==='light' ? 'light' : 'dark';
+    const html=document.documentElement;
+    if(html.getAttribute('data-theme')!==theme) html.setAttribute('data-theme', theme);
+    const meta=document.head.querySelector('meta[name="theme-color"]');
+    if(meta && meta.getAttribute('content')!==t['--bg']) meta.setAttribute('content', t['--bg']);
+    const logo=this.themeImg('logo', theme);
+    const mark=this.themeImg('mark', theme);
     root.querySelectorAll('[data-sikra-img="logo"]').forEach(el=>{ if(el.getAttribute('src')!==logo) el.setAttribute('src',logo); });
     root.querySelectorAll('[data-sikra-img="mark"]').forEach(el=>{ if(el.getAttribute('src')!==mark) el.setAttribute('src',mark); });
   }
@@ -892,7 +972,12 @@ class Component extends DCLogic {
   }
 
   tokens(){
-    return {'--bg':'#0A0A0B','--elev':'#101012','--surface':'#161619','--line':'rgba(255,255,255,.10)','--lineS':'rgba(255,255,255,.22)','--text':'#F6F6F5','--sub':'#9C9CA2','--faint':'#5B5B61','--inv':'#F6F6F5','--invText':'#0A0A0B','--chip':'rgba(255,255,255,.05)','--grid':'rgba(255,255,255,.035)','--navbg':'rgba(10,10,11,.72)','--navtext':'#c9c9cf'};
+    if(this.state.theme==='light'){
+      // Warm paper and ink, after the Sikra Light mockup. --faint is darker
+      // than its dark-theme counterpart so small labels still clear 4.5:1.
+      return {'--bg':'#F5F4F0','--elev':'#FFFFFF','--surface':'#EFEDE7','--line':'#E1DFD8','--lineS':'#C4C2BA','--text':'#0B0B0C','--sub':'#55555C','--faint':'#6C6C73','--inv':'#0B0B0C','--invText':'#F5F4F0','--chip':'rgba(11,11,12,.05)','--grid':'rgba(11,11,12,.055)','--navbg':'rgba(245,244,240,.8)','--navtext':'#3A3A40','--glow':'rgba(255,255,255,.9)','--shadow':'rgba(11,11,12,.14)','--danger':'#B42318'};
+    }
+    return {'--bg':'#0A0A0B','--elev':'#101012','--surface':'#161619','--line':'rgba(255,255,255,.10)','--lineS':'rgba(255,255,255,.22)','--text':'#F6F6F5','--sub':'#9C9CA2','--faint':'#5B5B61','--inv':'#F6F6F5','--invText':'#0A0A0B','--chip':'rgba(255,255,255,.05)','--grid':'rgba(255,255,255,.035)','--navbg':'rgba(10,10,11,.72)','--navtext':'#c9c9cf','--glow':'rgba(255,255,255,.08)','--shadow':'rgba(0,0,0,.25)','--danger':'#FF9B9B'};
   }
 
   buildDict(){
@@ -1243,6 +1328,14 @@ class Component extends DCLogic {
     const marqueeText = mq[0];
     const marqueeText2 = mq[1];
     const menuLabel = {ru:'Меню',en:'Menu',uk:'Меню',hu:'Menü'}[st.lang] || 'Menu';
+    const isLight = st.theme==='light';
+    const themeLabels = {
+      ru:['Включить светлую тему','Включить тёмную тему'],
+      en:['Switch to light theme','Switch to dark theme'],
+      uk:['Увімкнути світлу тему','Увімкнути темну тему'],
+      hu:['Váltás világos témára','Váltás sötét témára']
+    };
+    const themeLabel = (themeLabels[st.lang] || themeLabels.en)[isLight ? 1 : 0];
     const feedWords={
       ru:['ДОВЕРИЕ · РЕЗУЛЬТАТ · ','ПАРТНЁРСТВО · КАЧЕСТВО · '],
       en:['TRUST · RESULTS · ','PARTNERSHIP · QUALITY · '],
@@ -1281,6 +1374,9 @@ class Component extends DCLogic {
       hrefFeedback: this.urlFor(st.lang,'feedback'),
       hrefPrivacy: this.urlFor(st.lang,'privacy'),
       menuLabel,
+      isLight, isDark: !isLight, themeLabel,
+      toggleTheme: (e)=>this.toggleTheme(e),
+      warmTheme: ()=>this.warmTheme(),
       briefSent: st.briefSent, briefOpen: !st.briefSent,
       briefErr: !!st.briefErr,
       briefErrText: st.briefErr==='send' ? L.secContact.form.errSend

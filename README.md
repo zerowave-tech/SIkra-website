@@ -76,6 +76,23 @@ unpkg still cannot execute.
 `vercel.json` sets `script-src` without `'unsafe-inline'`, so the browser
 refuses to run an inline block and gtag never gets configured.
 
+### Light / dark theme
+
+Both palettes live in `tokens()` in `index.html` and are applied to
+`#sikra-root` as CSS custom properties. The markup only uses `var(--…)`, so a
+new colour means a new token in both sets, not a hardcoded hex.
+
+The toggle (nav bar, and next to the hamburger on mobile) stores the choice in
+`localStorage` under `sikra-theme`; dark is the default. `assets/theme.js` is a
+deliberately *blocking* `<script>` in `<head>` that reads that key and sets
+`<html data-theme="light">` before the first paint — without it a light-theme
+visitor would see the dark background until React boots. It is a file rather
+than inline for the same CSP reason as the analytics init.
+
+The logo and mark swap between `sikra-*-dark.webp` and `sikra-*-light.webp`
+(same size and framing, so nothing shifts), and the Cal.com embed is rendered
+with `?theme=dark` or `?theme=light`.
+
 ### Why the page folders exist
 
 The site uses path-based client routing (`/contact`, `/ru/stack`, …) via
