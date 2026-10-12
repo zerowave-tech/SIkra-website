@@ -37,4 +37,8 @@ node_modules/
 Thumbs.db
 export/
 *.log
-Sikra Website (standalone)*.html
+Sikra Website (standalone)*.
+.env.*.local
+.mcp.json
+.claude/
+skills-lock.json
