@@ -1,3 +1,4 @@
+<img width="1917" height="1023" alt="Screenshot 2026-09-08 132837" src="https://github.com/user-attachments/assets/0c387867-8180-4c02-a68e-377542258fc2" />
 # Sikra — sikra.agency
 
 Static single-page site (dc-runtime component), deployed on Vercel.
